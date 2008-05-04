@@ -1,0 +1,18 @@
+<project name="TemplateEngine" default="distribute">
+		
+	<property environment="env"/>
+	<property file="build.properties"/>
+	<property name="common.build.dir" value="${env.COMMON_BUILD_HOME}"/>
+	
+	<!-- import common build files -->
+	<import file="${common.build.dir}/ant/common.properties.xml"/>
+	<import file="${common.build.dir}/ant/common.build.xml"/>
+
+	<property file="${lib.dir}/version.properties"/>
+	
+	<!-- project specific -->
+	<target name="initialize-local">
+		<copy todir="${lib.runtime.dir}" file="${global.lib.repository}/jakarta-oro-${jakarta-oro.version}.jar"/>
+	</target>
+	
+</project>

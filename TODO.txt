@@ -1,0 +1,4 @@
+Todo's TemplateEngine:
+
+* support string a = 'Hello' -> DECL (ASSIGN (IDENTIFIER + EXPRESSION))
+* escape for '''

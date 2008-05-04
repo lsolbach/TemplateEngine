@@ -1,0 +1,8 @@
+org.soulspace.template
+org.soulspace.template.datasource
+test.org.soulspace.template.datasource
+org.soulspace.template.parser.ast
+org.soulspace.template.symbols
+org.soulspace.template.tokenizer
+org.soulspace.template.util
+org.soulspace.util

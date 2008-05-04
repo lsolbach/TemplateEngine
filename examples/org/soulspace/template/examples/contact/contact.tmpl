@@ -1,0 +1,20 @@
+<html>
+<head>
+	<title>Contact details</title>
+</head>
+<body>
+	<h1>Contact details of <?Firstname?> <?Name?></h1>
+	<p>
+<?printAddresses(Addresses)?>
+	</p>
+</body>
+</html>
+
+<?
+string printAddresses(list addresses) {
+	foreach addresses {?>
+	<?addresses:Street?> <?addresses:HouseNo?>, <?addresses:Zip?> <?addresses:City?><br>
+<?
+	}
+}
+?>

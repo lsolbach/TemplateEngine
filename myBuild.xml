@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TemplateEngine" basedir="." default="deploy">
+
+	<!-- define local properties -->
+	<property name="target.jar" value="TemplateEngine.jar"/>
+	<property file="./build.properties"/>
+
+	<import file="../Build/common.properties.xml"/>
+	
+	<path id="source.path">
+		<path refid="common.source.path"/>
+	</path>
+	
+	<!--
+	 | The build classpath
+	 -->
+	<path id="compile.classpath">
+		<path refid="common.compile.classpath"/>
+		<pathelement location="${junit}"/>
+		<pathelement location="${junitperf}"/>
+		<pathelement location="${oro}"/>
+	</path>
+
+	<path id="test.classpath">
+		<path refid="common.test.classpath"/>
+		<pathelement location="${junit}"/>
+		<pathelement location="${junitperf}"/>
+		<pathelement location="${oro}"/>
+		<pathelement location="${lib.dev.dir}/fitnesse.jar"/>
+		<pathelement location="${lib.dev.dir}/fitlibrary.jar"/>
+	</path>
+	
+	<target name="test-local" depends="" description=""/>
+
+	<target name="create-manifest" depends="init">
+		<manifest file="${build.dir}/MANIFEST.MF">
+			<attribute name="Build-On" value="${timestamp.iso}"/>
+			<attribute name="Build-By" value="${user.name}"/>
+		</manifest>
+	</target>
+	
+	<target name="package-local" depends="" description="">
+		<mkdir dir="${dist.dir}"/>
+		<jar destfile="${dist.dir}/${target.jar}">
+			<zipfileset dir="${classes.dir}" includes="**/*.class"/>
+		</jar>
+	</target>
+	
+	<target name="distclean-local" depends="" description=""/>
+
+	<target name="package-only" depends="package-local" description="generate jar files"/>
+
+	<import file="../Build/common.build.xml"/>
+
+</project>

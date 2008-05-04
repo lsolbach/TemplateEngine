@@ -1,0 +1,19 @@
+<dependencies>
+	<dependency type="dev">
+		<package name="fitnesse" version="20070619" type="lib">
+			<module name="fitnesse"/>
+			<module name="fitlibrary"/>
+		</package>
+		<package name="junit" version="3.8.1" type="lib">
+			<module name="junit"/>
+		</package>
+		<package name="junitperf" version="1.9.1" type="lib">
+			<module name="junitperf"/>
+		</package>
+	</dependency>
+	<dependency type="runtime">
+		<package name="jakarta-oro" version="2.0.8" type="lib">
+			<module name="jakarta-oro"/>
+		</package>
+	</dependency>
+</dependencies>

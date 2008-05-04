@@ -1,0 +1,205 @@
+TemplateEngine Language Specification 
+
+Autor: Ludger Solbach
+
+Version: 1.1 (19.02.03)
+Version: 1.2 (21.04.03)
+Version: 1.3 (19.07.05)
+
+Nicht-Terminale
+===============
+
+T_HTML
+T_CODE
+CODE
+LOOP
+BRANCH
+BLOCK
+HTML
+EXPRESSION
+ASSIGN_EXPR
+L_OR_EXPR
+L_AND_EXPR
+EQUAL_EXPR
+REL_EXPR
+ADD_EXPR
+MULT_EXPR
+DEREF_EXPR
+UNARY_EXPR
+ID_EXPR
+PRIMARY_EXPR
+DECLARATION
+SYMBOL_DECL
+METHOD_DECL
+ARG_DECL_LIST
+METHOD_CALL
+ARG_LIST
+ARG
+
+
+Terminale
+=========
+
+ts_begin       ::= '<', 0{'!--'}1, '?'
+ts_end         ::= '?', 0{'--'}1, '>'
+
+block_begin    ::= 'begin' | '{'
+block_end      ::= 'end' | '}'
+
+if             ::= 'if'
+else           ::= 'else'
+foreach        ::= 'foreach'
+while          ::= 'while'
+break          ::= 'break'
+continue       ::= 'continue'
+
+paren_left   ::= '('
+paren_right  ::= ')'
+
+bracket_left  ::= '['
+bracket_right ::= ']'
+
+text           ::= 0{alphanumeric}N
+xml_dec        ::= '<?xml *?>'
+
+identifier     ::= 1{alphanumeric}N
+
+less           ::= '<'
+greater        ::= '>'
+lesseq         ::= '<='
+greatereq      ::= '>='
+
+equals         ::= '=='
+notequals      ::= '!='
+
+streq          ::= 'eq'
+strne          ::= 'ne'
+
+plus           ::= '+'
+minus          ::= '-'
+
+mul	           ::= '*'
+div	           ::= '/'
+idiv           ::= '//'
+modulo         ::= '%'
+
+and	           ::= '&&'
+or             ::= '||'
+
+not	           ::= '!'
+
+deref          ::= ':'
+
+assign         ::= '='
+
+number_const   ::= 0{digit}N
+string_const   ::= '\'' + 1{alphanumeric}N + '\''
+
+seperator      ::= ','
+
+epsilon        ::= '' 
+
+
+Grammatik
+=========
+
+TEMPLATE_CONTENT =
+	{( XML_DECL | T_CODE | text )}*
+
+TEMPLATE_CODE =
+	ts_start, TERM, ts_end
+
+TERM = 
+	{STATEMENT | EXPRESSION}*
+
+STATEMENT =
+	LOOP | BRANCH | DECLARATION | BLOCK
+
+LOOP =
+	foreach, identifier, BLOCK | while, EXPRESSION, block
+
+BRANCH =
+	if, EXPRESSION, BLOCK | if, EXPRESSION, BLOCK, else, BLOCK
+
+BLOCK =
+	block_start, {( TERM | CONTENT )} block_end
+
+CONTENT =
+	ts_end, TEMPLATE_CONTENT, ts_start
+
+LITERAL =
+	number_const | string_const
+
+PRIMARY_EXPR =
+  LITERAL | ID_EXPR | paren_left EXPRESSION paren_right | METHOD_CALL
+
+ID_EXPR =
+  identifier | identifier bracket_left EXPRESSION bracket_right
+  | PRIMARY_EXPR
+
+DEREF_EXPR = 
+	UNARY_EXPR | DEREF_EXPR deref UNARY_EXPR
+
+UNARY_EXPR =
+  PRIMARY_EXPR | not PRIMARY_EXPR | minus PRIMARY_EXPRESSION
+
+MULT_EXPR =
+	DEREF_EXPR mul DEREF_EXPR | DEREF_EXPR div DEREF_EXPR
+	| DEREF_EXPR modulo DEREF_EXPR | DEREF_EXPR_ idiv DEREF_EXPR
+
+ADD_EXPR = 
+	MULT_EXPR | MULT_EXPR plus MULT_EXPR | MULT_EXPR minus MULT_EXPR
+
+REL_EXPR = 
+  ADD_EXPR | ADD_EXPR less ADD_EXPR | ADD_EXPR greater ADD_EXPR
+  | ADD_EXPR lesseq ADD_EXPR | ADD_EXPR greatereq ADD_EXPR
+
+
+EQUAL_EXPR = 
+	REL_EXPR | REL_EXPR equals REL_EXPR | REL_EXPR notequals REL_EXPR
+	| REL_EXPR str_eq REL_EXPR | REL_EXPR str_ne REL_EXPR 
+
+L_AND_EXPR =
+  L_EQUAL_EXPR | L_AND_EXPR and EQUAL_EXPR
+
+L_OR_EXPR =
+  L_AND_EXPR | L_OR_EXPR or L_AND_EXPR
+
+ASSIGN_EXPR =
+	L_OR_EXPR | L_OR_EXPR assign ASSIGN_EXPR
+
+EXPRESSION =
+  ASSIGN_EXPR | EXPRESSION seperator ASSIGN_EXPR
+
+MULT_OP =
+	mul | div | idiv | modulo
+
+ADD_OP =
+	plus | minus
+
+REL_OP =
+	greater | less | greatereq | lesseq
+
+DECLARATION =
+	SYMBOL_DECL | METHOD_DECL
+
+SYMBOL_DECL =
+	DECLARATOR identifier
+
+METHOD_DECL =
+	DECLARATOR identifier paren_left ARG_DECL_LIST paren_right BLOCK
+
+ARG_DECL_LIST =
+	SYMBOL_DECL | SYMBOL_DECL seperator ARG_DECL_LIST
+
+ARG_DECL =
+	DECLARATOR identifier
+
+METHOD_CALL =
+	identifier paren_left ARG_LIST paren_right
+
+ARG_LIST =
+	ARG_LIST seperator ARG  | ARG | epsilon 
+
+ARG =
+	EXPRESSION
