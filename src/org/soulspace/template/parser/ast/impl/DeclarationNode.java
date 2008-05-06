@@ -34,10 +34,16 @@ public class DeclarationNode extends AstNode {
     String name = "";
     String type = getData();
     
-    if((child = getChild(0)) != null) {
-      name = child.getData();
-      symbol = lookupSymbolInBlock(name);
+    if((child = getChild(0)) == null) {
+    	throw new GenerateException("No identifier given for declaration");
     }
+  	if(child instanceof IdentifierNode) {
+    	name = child.getData();
+      symbol = lookupSymbolInBlock(name);    		
+  	} else if(child instanceof AssignNode) {
+  		name = child.getChild(0).getData();
+      symbol = lookupSymbolInBlock(name);    		
+  	}
     
     if(symbol != null) {
       throw new GenerateException("Symbol already exists: " + name);
@@ -52,7 +58,11 @@ public class DeclarationNode extends AstNode {
     } else if (type.equals("map")) {
       getSymbolTable().addNewMapSymbol(name, new SymbolTable());
     }
-
+    if(child instanceof AssignNode) {
+    	// evaluate assign expression
+    	child.generateSymbol();
+    }
+    
     // TODO is returning of the created symbol useful?
     // return symbol = lookupSymbolInBlock(name);
 		return new StringSymbol("");

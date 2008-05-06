@@ -26,8 +26,8 @@ public class EqualNode extends ExpressionNode implements IExpressionNode {
   }
 
 	public ISymbol generateSymbol() {
-		NumericSymbol op1 = (NumericSymbol) ((IExpressionNode) getChild(0)).generateSymbol();
-		NumericSymbol op2 = (NumericSymbol) ((IExpressionNode) getChild(1)).generateSymbol();
+		NumericSymbol op1 = asNumeric(getChild(0).generateSymbol());
+		NumericSymbol op2 = asNumeric(getChild(1).generateSymbol());
 		return op1.equal(op2);
 	}
 }

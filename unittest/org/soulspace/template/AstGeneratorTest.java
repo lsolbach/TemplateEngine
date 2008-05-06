@@ -54,6 +54,32 @@ public class AstGeneratorTest extends TestCase {
     super.tearDown();
 	}
 
+	public void testGenAssign() {
+    String result = "";
+    st.addNewStringSymbol("a", "Hello World");
+
+    try {
+	    tl = t.tokenize("<?" +
+	    		"string b " +
+	    		"b = a " +
+	    		"b " +
+	    		"?>");
+	    root = p.parse(tl);
+	    result = g.generate(root, st);
+	    assertEquals("Result correct", "Hello World", result);    
+    
+	    tl = t.tokenize("<?" +
+	    		"string b = a " +
+	    		"b " +
+	    		"?>");
+	    root = p.parse(tl);
+	    result = g.generate(root, st);
+	    assertEquals("Result correct", "Hello World", result);    
+    } catch (Exception e) {
+      e.printStackTrace();
+    }    
+	}
+	
 	public void testGenAssignMapAccess() {
     String result = "";
     ISymbolTable map = new SymbolTable();

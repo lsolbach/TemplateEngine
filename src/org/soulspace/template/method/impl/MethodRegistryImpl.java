@@ -6,43 +6,28 @@ import java.util.List;
 import java.util.Map;
 
 import org.soulspace.template.method.IMethod;
+import org.soulspace.template.util.ClassLoaderUtils;
 
 public class MethodRegistryImpl {
 
-	static List<String> methodClassList = new ArrayList<String>();
-	static {
-		methodClassList.add("org.soulspace.template.method.impl.FirstLowerMethodImpl");
-		methodClassList.add("org.soulspace.template.method.impl.FirstUpperMethodImpl");
-		methodClassList.add("org.soulspace.template.method.impl.ToLowerMethodImpl");
-		methodClassList.add("org.soulspace.template.method.impl.ToUpperMethodImpl");
-		methodClassList.add("org.soulspace.template.method.impl.StartsWithMethodImpl");
-		methodClassList.add("org.soulspace.template.method.impl.SplitMethodImpl");
-		methodClassList.add("org.soulspace.template.method.impl.ElementMethodImpl");
-		methodClassList.add("org.soulspace.template.method.impl.ElementIndexMethodImpl");
-		methodClassList.add("org.soulspace.template.method.impl.SizeMethodImpl");
-	}
-	
-	String name = "";
-	String className = "";
 	Map<String, IMethod> registry = new HashMap<String, IMethod>();
 
 	public MethodRegistryImpl() {
-		this(methodClassList);
-	}
-	
-	public MethodRegistryImpl(List<String> methodClassList) {
-		for(String methodClassName : methodClassList) {
-			try {
-				IMethod method = (IMethod) Class.forName(methodClassName).newInstance();
-				registry.put(method.getName(), method);
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+		List<Class> classList = ClassLoaderUtils.getImplementationsInPackage("org.soulspace.template.method.impl", IMethod.class);
+		IMethod method;
+		for(Class methodClass : classList) {
+				try {
+					method = (IMethod) methodClass.newInstance();
+					registry.put(method.getName(), method);
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
+		
 	}	
 	
 	public IMethod lookup(String name) {
