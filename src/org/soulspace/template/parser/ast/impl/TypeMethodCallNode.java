@@ -28,6 +28,10 @@ public class TypeMethodCallNode extends ExpressionNode implements IExpressionNod
     }
 
     IMethod method = methodRegistry.lookup(getData());
+    if(method == null) {
+      throw new GenerateException("Method " + getData()
+          + " not found!");    	
+    }
     List<ISymbol> args = new ArrayList<ISymbol>();
     args.add(symbol);
 

@@ -197,7 +197,9 @@ public class BeanDataSource implements IDataSource {
       Iterator it = ((Map) result).keySet().iterator();
       while(it.hasNext()) {
         Object key = it.next();
-        insert(st, key.toString(), ((Map) result).get(key));
+        if(key != null) {
+          insert(st, key.toString(), ((Map) result).get(key));        	
+        }
       }
       symbolTable.addNewMapSymbol(symbolName, st);
 		} else if(result instanceof Collection) {
