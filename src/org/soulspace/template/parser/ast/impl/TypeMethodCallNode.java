@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.IMethod;
-import org.soulspace.template.method.impl.MethodRegistryImpl;
+import org.soulspace.template.method.IMethodRegistry;
+import org.soulspace.template.method.impl.DynamicMethodRegistryImpl;
+import org.soulspace.template.method.impl.StaticMethodRegistryImpl;
 import org.soulspace.template.parser.GenerateException;
 import org.soulspace.template.parser.ast.IAstNode;
 import org.soulspace.template.parser.ast.IExpressionNode;
@@ -12,7 +14,8 @@ import org.soulspace.template.symbols.ISymbol;
 
 public class TypeMethodCallNode extends ExpressionNode implements IExpressionNode {
 
-	private static MethodRegistryImpl methodRegistry = new MethodRegistryImpl();
+	// TODO make configurable
+	private static IMethodRegistry methodRegistry = new StaticMethodRegistryImpl();
 	
 	public TypeMethodCallNode() {
 		super();
