@@ -3,17 +3,17 @@ package org.soulspace.template.method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.StringSymbol;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.StringValue;
 
 public abstract class StringToStringMethod extends AbstractMethod {
 
-	protected static final List<Class<? extends ISymbol>> DEFINED_TYPES = new ArrayList<Class<? extends ISymbol>>();
-	protected static final List<Class<? extends ISymbol>> ARGUMENT_TYPES = new ArrayList<Class<? extends ISymbol>>();
-	protected static final Class<? extends ISymbol> RETURN_TYPE = StringSymbol.class;
+	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
+	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
+	protected static final Class<? extends IValue> RETURN_TYPE = StringValue.class;
 
 	static {
-		DEFINED_TYPES.add(StringSymbol.class);
+		DEFINED_TYPES.add(StringValue.class);
 	}
 	
 	public StringToStringMethod() {

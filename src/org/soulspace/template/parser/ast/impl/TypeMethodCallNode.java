@@ -3,16 +3,15 @@ package org.soulspace.template.parser.ast.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.method.IMethod;
 import org.soulspace.template.method.IMethodRegistry;
-import org.soulspace.template.method.impl.DynamicMethodRegistryImpl;
 import org.soulspace.template.method.impl.StaticMethodRegistryImpl;
-import org.soulspace.template.parser.GenerateException;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.parser.ast.IExpressionNode;
-import org.soulspace.template.symbols.ISymbol;
+import org.soulspace.template.value.IValue;
 
-public class TypeMethodCallNode extends ExpressionNode implements IExpressionNode {
+public class TypeMethodCallNode extends AbstractAstNode {
 
 	// TODO make configurable
 	private static IMethodRegistry methodRegistry = new StaticMethodRegistryImpl();
@@ -22,11 +21,11 @@ public class TypeMethodCallNode extends ExpressionNode implements IExpressionNod
 		setType(AstNodeType.TYPE_METHOD_CALL);
 	}
 
-	public ISymbol generateSymbol() {
+	public IValue generateSymbol() {
 		IAstNode typeNode = getChild(0);
-    ISymbol symbol = getSymbol(typeNode);    
+    IValue symbol = getSymbol(typeNode);    
     if (symbol == null) {
-      throw new GenerateException("Variable " + typeNode.getData()
+      throw new GenerateException("Type method call " + getData() + "(). Variable " + typeNode.getData()
           + " is not initialized!");
     }
 
@@ -35,18 +34,18 @@ public class TypeMethodCallNode extends ExpressionNode implements IExpressionNod
       throw new GenerateException("Method " + getData()
           + " not found!");    	
     }
-    List<ISymbol> args = new ArrayList<ISymbol>();
+    List<IValue> args = new ArrayList<IValue>();
     args.add(symbol);
 
     if(getChildCount() == 2) {
       IAstNode argListNode = getChild(1);
       for(int i = 0; i < argListNode.getChildCount(); i++) {
-      	ISymbol s = argListNode.getChild(i).generateSymbol();
+      	IValue s = argListNode.getChild(i).generateSymbol();
       	args.add(s);
       }
     }
     
-    ISymbol result = method.evaluate(args);
+    IValue result = method.evaluate(args);
     return result;
 	}
 }

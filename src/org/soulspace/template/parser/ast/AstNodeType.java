@@ -1,9 +1,8 @@
 /*
  * Created on Mar 10, 2005
  */
-package org.soulspace.template.parser.ast.impl;
+package org.soulspace.template.parser.ast;
 
-import org.soulspace.template.parser.ast.IAstNodeType;
 
 /**
  * @author soulman

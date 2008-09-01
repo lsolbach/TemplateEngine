@@ -8,22 +8,22 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 
+import org.soulspace.template.exception.GenerateException;
+import org.soulspace.template.exception.SyntaxException;
+import org.soulspace.template.exception.UnknownTokenException;
 import org.soulspace.template.impl.TemplateEngineImpl;
-import org.soulspace.template.parser.GenerateException;
-import org.soulspace.template.parser.SyntaxException;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
 import org.soulspace.template.parser.ast.impl.AstGeneratorImpl;
-import org.soulspace.template.parser.ast.impl.AstNodeType;
 import org.soulspace.template.parser.ast.impl.AstParserImpl;
 import org.soulspace.template.parser.ast.impl.RootNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.ISymbolTable;
-import org.soulspace.template.symbols.impl.ListSymbol;
-import org.soulspace.template.symbols.impl.SymbolTable;
-import org.soulspace.template.tokenizer.TokenList;
+import org.soulspace.template.tokenizer.ITokenList;
 import org.soulspace.template.tokenizer.Tokenizer;
-import org.soulspace.template.tokenizer.TokenizerImpl;
-import org.soulspace.template.tokenizer.UnknownTokenException;
+import org.soulspace.template.tokenizer.impl.TokenizerImpl;
+import org.soulspace.template.value.IListValue;
+import org.soulspace.template.value.ISymbolTable;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.SymbolTable;
 
 /**
  * Unit test for TemplateEngine.
@@ -33,7 +33,7 @@ import org.soulspace.template.tokenizer.UnknownTokenException;
 public class TemplateEngineTest extends TestCase {
 
   TemplateEngineImpl te = null;
-  TokenList tl = null;
+  ITokenList tl = null;
   Tokenizer t = null;
   AstParserImpl p = null;
   AstGeneratorImpl g = null;
@@ -316,7 +316,7 @@ public class TemplateEngineTest extends TestCase {
     try {
       IAstNode root = null;
       
-      tl = t.tokenize("<?a >= b?>");
+      tl = t.tokenize("<?(a >= b)?>");
       root = p.parseTerm(tl, null, false);
       assertEquals("AST has one child", 1, root.getChildNodes().size());
       assertEquals("Expecting GREATER_EQUAL", AstNodeType.GREATER_EQUAL, root.getChild(0).getType());
@@ -1023,9 +1023,9 @@ public class TemplateEngineTest extends TestCase {
     st.addNewStringSymbol("a", "Hello World");
     st.addNewMapSymbol("c", map);
     st.addNewStringSymbol("d", "b");
-    st.addNewListSymbol("e", new ArrayList<ISymbol>());
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Ju");
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Hu");
+    st.addNewListSymbol("e", new ArrayList<IValue>());
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
 
     tl = t.tokenize("<?a?>");
     root = p.parse(tl);
@@ -1050,9 +1050,9 @@ public class TemplateEngineTest extends TestCase {
 
   public void testAstGenDecl() {
     String result = "";
-    st.addNewListSymbol("e", new ArrayList<ISymbol>());
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Ju");
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Hu");
+    st.addNewListSymbol("e", new ArrayList<IValue>());
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
 
     tl = t.tokenize("<?string da?><?da = 'Hello'?><?da?>");
     root = p.parse(tl);
@@ -1083,9 +1083,9 @@ public class TemplateEngineTest extends TestCase {
     st.addNewStringSymbol("a", "Hello World");
     st.addNewMapSymbol("c", map);
     st.addNewStringSymbol("d", "b");
-    st.addNewListSymbol("e", new ArrayList<ISymbol>());
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Ju");
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Hu");
+    st.addNewListSymbol("e", new ArrayList<IValue>());
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
 
     tl = t.tokenize("<?if(1) { a } else { b }?>");
     root = p.parse(tl);
@@ -1105,9 +1105,9 @@ public class TemplateEngineTest extends TestCase {
     st.addNewStringSymbol("a", "Hello World");
     st.addNewMapSymbol("c", map);
     st.addNewStringSymbol("d", "b");
-    st.addNewListSymbol("e", new ArrayList<ISymbol>());
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Ju");
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Hu");
+    st.addNewListSymbol("e", new ArrayList<IValue>());
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
 
     tl = t.tokenize("<?if(1) { a } else { b } if(0) { a } else { b }?>");
     root = p.parse(tl);
@@ -1117,10 +1117,10 @@ public class TemplateEngineTest extends TestCase {
 
   public void testAstGenForeach() {
     String result = "";
-    st.addNewListSymbol("e", new ArrayList<ISymbol>());
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Ju");
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Hu");
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Bu");
+    st.addNewListSymbol("e", new ArrayList<IValue>());
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Bu");
 
     tl = t.tokenize("<?foreach x <- e { x }?>");
     root = p.parse(tl);
@@ -1140,10 +1140,10 @@ public class TemplateEngineTest extends TestCase {
 
   public void testAstGenWhile() {
     String result = "";
-    st.addNewListSymbol("e", new ArrayList<ISymbol>());
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Ju");
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Hu");
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Bu");
+    st.addNewListSymbol("e", new ArrayList<IValue>());
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Bu");
     tl = t.tokenize("<?" +
     		"numeric i " +
     		"i = 0 " +
@@ -1161,16 +1161,16 @@ public class TemplateEngineTest extends TestCase {
     String result = "";
     ISymbolTable map = new SymbolTable();
     map.addNewStringSymbol("name", "Test");
-    map.addNewListSymbol("attrs", new ArrayList<ISymbol>());
-    ((ListSymbol) map.getSymbol("attrs")).addNewStringSymbol("attr1");
-    ((ListSymbol) map.getSymbol("attrs")).addNewStringSymbol("attr2");
-    ((ListSymbol) map.getSymbol("attrs")).addNewStringSymbol("attr3");
+    map.addNewListSymbol("attrs", new ArrayList<IValue>());
+    ((IListValue) map.getSymbol("attrs")).addNewStringSymbol("attr1");
+    ((IListValue) map.getSymbol("attrs")).addNewStringSymbol("attr2");
+    ((IListValue) map.getSymbol("attrs")).addNewStringSymbol("attr3");
 
     st.addNewMapSymbol("class", map);
-    st.addNewListSymbol("e", new ArrayList<ISymbol>());
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Ju");
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Hu");
-    ((ListSymbol) st.getSymbol("e")).addNewStringSymbol("Bu");
+    st.addNewListSymbol("e", new ArrayList<IValue>());
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Bu");
     
     tl = t.tokenize("<?numeric i i = 0 while(i < 3) { e[i] i = i + 1 }?>");
     root = p.parse(tl);
@@ -1183,8 +1183,8 @@ public class TemplateEngineTest extends TestCase {
 
     ISymbolTable m;
     ISymbolTable n;
-    st.addNewListSymbol("classes", new ArrayList<ISymbol>());
-    ListSymbol classes = ((ListSymbol) st.getSymbol("classes"));
+    st.addNewListSymbol("classes", new ArrayList<IValue>());
+    IListValue classes = ((IListValue) st.getSymbol("classes"));
     m = new SymbolTable();
     m.addNewStringSymbol("name", "Class1");
     classes.addNewMapSymbol(m);

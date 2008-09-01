@@ -3,12 +3,12 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
-import org.soulspace.template.parser.GenerateException;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.StringSymbol;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.StringValue;
 
-public class RootNode extends AstNode {
+public class RootNode extends AbstractAstNode {
 
   public RootNode() {
     this(null);
@@ -20,10 +20,10 @@ public class RootNode extends AstNode {
     initMethodTable();
   }
 
-	public ISymbol generateSymbol() {
+	public IValue generateSymbol() {
 		if(getChild(0) != null) {
 			return getChild(0).generateSymbol();
 		}		
-		return new StringSymbol("");
+		return new StringValue("");
 	}
 }

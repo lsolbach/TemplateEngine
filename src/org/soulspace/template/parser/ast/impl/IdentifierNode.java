@@ -6,15 +6,15 @@ package org.soulspace.template.parser.ast.impl;
 import java.util.Iterator;
 import java.util.List;
 
-import org.soulspace.template.parser.GenerateException;
+import org.soulspace.template.exception.GenerateException;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.parser.ast.IExpressionNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.ListSymbol;
-import org.soulspace.template.symbols.impl.MapSymbol;
+import org.soulspace.template.value.IListValue;
+import org.soulspace.template.value.IMapValue;
+import org.soulspace.template.value.IValue;
 
 
-public class IdentifierNode extends ExpressionNode implements IExpressionNode {
+public class IdentifierNode extends AbstractAstNode {
 
   public IdentifierNode() {
     this(null);
@@ -25,8 +25,8 @@ public class IdentifierNode extends ExpressionNode implements IExpressionNode {
     setType(AstNodeType.IDENTIFIER);
   }
 
-	public ISymbol generateSymbol() {
-    ISymbol symbol = null;
+	public IValue generateSymbol() {
+    IValue symbol = null;
     
     symbol = lookupSymbol(getData());
     if(symbol == null) {
@@ -44,8 +44,8 @@ public class IdentifierNode extends ExpressionNode implements IExpressionNode {
    * @param symbol
    * @return
    */
-  ISymbol lookup(ISymbol symbol) {
-    ISymbol aSymbol = symbol;
+  IValue lookup(IValue symbol) {
+    IValue aSymbol = symbol;
     IAstNode child = null;
     try {
       Iterator<IAstNode> it = getChildNodes().iterator();
@@ -69,17 +69,17 @@ public class IdentifierNode extends ExpressionNode implements IExpressionNode {
    * @param name
    * @return AbstractSymbol
    */
-  ISymbol derefSymbol(ISymbol symbol, String name) {
-  	ISymbol aSymbol = null;
+  IValue derefSymbol(IValue symbol, String name) {
+  	IValue aSymbol = null;
     if (symbol == null) {
     	aSymbol = lookupSymbol(name);
-    } else if (symbol instanceof MapSymbol) {
-    	aSymbol = ((MapSymbol) symbol).getData().getSymbol(name);
-    } else if (symbol instanceof ListSymbol) {
+    } else if (symbol instanceof IMapValue) {
+    	aSymbol = ((IMapValue) symbol).getData().getSymbol(name);
+    } else if (symbol instanceof IListValue) {
       if(isNumeric(name)) {
       	// TODO necessary?
         // Get entry by index
-        List<ISymbol> list = ((ListSymbol) symbol).getData();
+        List<IValue> list = ((IListValue) symbol).getData();
         int i = Integer.parseInt(roundResult(name));
         if(list.size() > i) {
         	aSymbol = list.get(i);

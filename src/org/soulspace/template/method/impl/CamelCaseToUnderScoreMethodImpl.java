@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.soulspace.template.method.IMethod;
 import org.soulspace.template.method.StringToStringMethod;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.StringSymbol;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.StringValue;
 
 public class CamelCaseToUnderScoreMethodImpl extends StringToStringMethod
 		implements IMethod {
@@ -18,7 +18,7 @@ public class CamelCaseToUnderScoreMethodImpl extends StringToStringMethod
 	}
 	
 	@Override
-	protected ISymbol doEvaluation(List<ISymbol> arguments) {
+	protected IValue doEvaluation(List<IValue> arguments) {
 		String camelCase = arguments.get(0).evaluate();
 		
 		if(camelCase != null && camelCase.length() > 0) {
@@ -26,13 +26,15 @@ public class CamelCaseToUnderScoreMethodImpl extends StringToStringMethod
 			for(int i = 0; i < camelCase.length(); i++) {
 				String ch = camelCase.substring(i, i + 1);
 				if(ch.equals(ch.toUpperCase())) {
-					sb.append("_");
+					if(i != 0) {
+						sb.append("_");
+					}
 					sb.append(ch.toLowerCase());
 				} else {
 					sb.append(ch);
 				}
 			}
-			return new StringSymbol(sb.toString());
+			return new StringValue(sb.toString());
 		} else {
 			return arguments.get(0);			
 		}

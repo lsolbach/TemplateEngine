@@ -5,12 +5,12 @@ package org.soulspace.template.parser.ast.impl;
 
 import java.util.Iterator;
 
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.parser.ast.IExpressionNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.NumericSymbol;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.NumericValue;
 
-public class MultNode extends ExpressionNode implements IExpressionNode {
+public class MultNode extends AbstractAstNode {
 
   /**
    * 
@@ -27,8 +27,8 @@ public class MultNode extends ExpressionNode implements IExpressionNode {
     setType(AstNodeType.MULT);
   }
 
-	public ISymbol generateSymbol() {
-    NumericSymbol result = new NumericSymbol(1.0);
+	public IValue generateSymbol() {
+    NumericValue result = new NumericValue(1.0);
     Iterator<IAstNode> it = getChildNodes().iterator();
     while(it.hasNext()) {
       result = result.mult(asNumeric(it.next().generateSymbol()));

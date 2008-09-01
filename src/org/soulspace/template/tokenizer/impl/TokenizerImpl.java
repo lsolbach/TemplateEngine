@@ -1,7 +1,7 @@
 /*
  * Created on Apr 18, 2005
  */
-package org.soulspace.template.tokenizer;
+package org.soulspace.template.tokenizer.impl;
 
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
@@ -11,15 +11,24 @@ import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.PatternMatcherInput;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+import org.soulspace.template.exception.UnknownTokenException;
+import org.soulspace.template.tokenizer.IToken;
+import org.soulspace.template.tokenizer.ITokenList;
+import org.soulspace.template.tokenizer.TokenType;
+import org.soulspace.template.tokenizer.Tokenizer;
 import org.soulspace.template.util.RegExHelper;
 
 public class TokenizerImpl implements Tokenizer {
 
+	// pattern for section splitting
   private final static String REGEX_1 =
-    "(?:<(?:!--)?\\?(?:!--.*?--)(?:\\?(?:--)?>))" // Code
-      + "|(?:<(?:!--)?\\?(.*?)(?:\\?(?:--)?>))" // Template Text
-      + "|(.*?(?=(?:<(?:!--)?\\?)|(?:$)))"; // Comments
+		"(?:<\\?(!--.*?--)(?:\\?>))" // comments
+    + "|(?:<?\\?(.*?)(?:\\?>))" // code
+    + "|(.*?(?=(?:<\\?|\r\n|\n|$)))" // template text
+  	;
 
+  
+  // pattern for token splitting of code
   private final static String REGEX_2 = 
     "(" + "(?:xml.*)" // XML Declaration
       + "|(?:if)" // IF
@@ -31,7 +40,7 @@ public class TokenizerImpl implements Tokenizer {
       + "|(?:string|numeric|list|map|method)" // DECLARATION
       + "|(?:(?:begin)|(?:\\{))" // BLOCK_BEGIN
       + "|(?:(?:end)|(?:\\}))" // BLOCK_END
-      + "|(?:\\'(\\w|\\s|\\.|\\/)*\\')" // STRING_CONST (TODO: allow punctuation chars and escape of ')
+      + "|(?:\\'((?:\\\\'|[^']))*\\')" // STRING_CONST
       + "|(?:(?:\\+|\\-)?\\d+(?:\\.\\d+){0,1})" // NUMBER_CONST
       + "|(?:\\()" // PAREN_LEFT
       + "|(?:\\))" // PAREN_RIGHT
@@ -39,9 +48,9 @@ public class TokenizerImpl implements Tokenizer {
       + "|(?:\\])" // BRACKET_RIGHT
       + "|(?:<-)"  // FOREACH ASSIGNMENT
       + "|(?:(?:>=)|(?:>)|(?:<=)|(?:<)|(?:==)|(?:!=))" // COMPARISON OPERATORS
-      + "|(?:(?:-)|(?:\\+)|(?:\\*)|(?:\\/\\/)|(?:\\/)|(?:\\%))" // ARITHMETIC
-                                                                // OPERATORS
+      + "|(?:(?:-)|(?:\\+)|(?:\\*)|(?:\\/\\/)|(?:\\/)|(?:\\%))" // ARITHMETIC OPERATORS
       + "|(?:(?:\\&\\&)|(?:\\|\\|)|(?:\\!))" // BOOLEAN OPERATORS
+      + "|(?:\\|)" // FILTER
       + "|(?:(?:eq)|(?:ne))" // STRING OPERATORS
       + "|(?:\\:)" // DEREFERENCE
       + "|(?:\\.)" // TYPE METHOD
@@ -53,13 +62,14 @@ public class TokenizerImpl implements Tokenizer {
   private static Pattern pattern1;
   private static Pattern pattern2;
   
-  // TODO possibility to escape ' with '' in string constants
-  // TODO string const not only for word characters
-  
   public TokenizerImpl() {
     super();
   }
 
+  public ITokenList createTokenList() {
+  	return new TokenList();
+  }
+  
   /**
    * Scan a template and split it into a list of tokens.
    * 
@@ -68,56 +78,81 @@ public class TokenizerImpl implements Tokenizer {
    * @return token list
    * @throws UnknownTokenException
    */
-  public TokenList tokenize(String template) throws UnknownTokenException {
-    TokenList tokenList = new TokenList();
+  public ITokenList tokenize(String template) {
+    ITokenList tokenList = new TokenList();
+    return tokenize(tokenList, template);
+  }
+
+  public ITokenList tokenize(ITokenList tokenList, String template) {
     PatternCompiler compiler = new Perl5Compiler();
     PatternMatcher matcher = new Perl5Matcher();
     PatternMatcherInput input;
     MatchResult result;
-
+    String comment = null;
     String code = null;
-    String html = null;
+    String text = null;
 
     if(pattern1 == null) {
       try {
         pattern1 = compiler.compile(REGEX_1, Perl5Compiler.SINGLELINE_MASK);
       } catch (MalformedPatternException e) {
-        System.out.println("Bad pattern.");
-        System.out.println(e.getMessage());
         throw new UnknownTokenException("Bad pattern: " + e.getMessage());
       }
     }
       
     input = new PatternMatcherInput(template);
-
     while (matcher.contains(input, pattern1)) {
       result = matcher.getMatch();
+      comment = result.group(1);
+      code = result.group(2);
+      text = result.group(3);
 
-      code = result.group(1);
-      html = result.group(2);
-      if (code != null && !code.equalsIgnoreCase("")) {
-        tokenizeCodeInput(tokenList, code);
+      // comment, just count lines
+      if(comment != null) {
+        tokenList.incCurrentLines(comment.split("(\r\n|\n)").length - 1);
       }
-      if (html != null && !html.equalsIgnoreCase("")) {
-        tokenizeText(tokenList, html);
+      
+      if (code != null) {
+      	String[] codeLines = code.split("(\r\n|\n)");
+      	boolean incLine = false;
+      	for(String codeLine : codeLines) {
+        	if(incLine) {
+        		// count line
+        		tokenList.incCurrentLine();
+        	} else {
+        		incLine = true;
+        	}
+        	tokenizeCodeInput(tokenList, codeLine);      		
+      	}
+      }
+      if (text != null) {
+      	// count line
+      	if(text.matches("(?s)^(\r\n|\n)(.)*$")) {
+      		tokenList.incCurrentLine();      		
+      	}
+      	String[] textLines = text.split("(\r\n|\n)");
+      	for(String textLine : textLines) {
+        	tokenizeText(tokenList, textLine);      		
+      	}
       }
     }
 
-    return tokenList;
+    return tokenList;  	
   }
-
+  
   /**
    * Tokenize a piece of code
    * 
    * @param code
    * @throws UnknownTokenException
    */
-  void tokenizeCodeInput(TokenList tokenList, String code) throws UnknownTokenException {
-
+  void tokenizeCodeInput(ITokenList tokenList, String code) throws UnknownTokenException {
     PatternCompiler compiler = new Perl5Compiler();
     PatternMatcher matcher = new Perl5Matcher();
     PatternMatcherInput input;
     MatchResult result;
+
+//		System.out.println("CODE Line " + tokenList.getCurrentLine() + ": '" + code +"'");
 
     if(pattern2 == null) {
       try {
@@ -137,7 +172,6 @@ public class TokenizerImpl implements Tokenizer {
 
       String match = result.group(1);
       if (match != null && !match.equalsIgnoreCase("")) {
-        // System.out.println("tokenize match" + match);
         tokenizeCode(tokenList, match);
       }
     }
@@ -148,20 +182,24 @@ public class TokenizerImpl implements Tokenizer {
    * 
    * @param html
    */
-  void tokenizeText(TokenList tokenList, String html) {
-    Token token = tokenList.lookUpLastToken();
+  void tokenizeText(ITokenList tokenList, String text) {
+//		System.out.println("TEXT Line " + tokenList.getCurrentLine() + ": '" + text + "'");
+  	IToken token = tokenList.lookUpLastToken();
     if (token != null && token.getType().equals(TokenType.TEXT)) {
-      token.setData(token.getData() + html);
+    	// append text to last token
+      token.setData(token.getData() + text);
     } else if (token != null && !token.getType().equals(TokenType.TEXT)
         && !token.getType().equals(TokenType.IDENTIFIER)) {
-      if (RegExHelper.match(html, "^(\\n|\\r\\n)(\\s*)$") != null) {
+      if (RegExHelper.match(text, "^(\\n|\\r\\n)(\\w*)$") != null) {
         // filter blank lines
         tokenList.addToken(TokenType.TEXT, "");
       } else {
-        tokenList.addToken(TokenType.TEXT, html);
+      	// create new token
+        tokenList.addToken(TokenType.TEXT, text);
       }
     } else {
-      tokenList.addToken(TokenType.TEXT, html);
+    	// create new token
+      tokenList.addToken(TokenType.TEXT, text);
     }
   }
 
@@ -171,7 +209,7 @@ public class TokenizerImpl implements Tokenizer {
    * @param code
    * @throws UnknownTokenException
    */
-  void tokenizeCode(TokenList tokenList, String code) throws UnknownTokenException {
+  void tokenizeCode(ITokenList tokenList, String code) throws UnknownTokenException {
     MatchResult result;
 
     if ((result = RegExHelper.match(code, "^(xml.*)$")) != null) {
@@ -195,8 +233,9 @@ public class TokenizerImpl implements Tokenizer {
       tokenList.addToken(TokenType.BLOCK_BEGIN);
     } else if ((result = RegExHelper.match(code, "(end|\\})")) != null) {
       tokenList.addToken(TokenType.BLOCK_END);
-    } else if ((result = RegExHelper.match(code, "\\'((?:\\w|\\s|\\.|\\/)*)\\'")) != null) {
-      tokenList.addToken(TokenType.STRING_CONST, result.group(1));
+    } else if ((result = RegExHelper.match(code, "\\'((?:\\\\'|[^'])*)\\'")) != null) {
+    	// replace "\'" with "'"
+      tokenList.addToken(TokenType.STRING_CONST, result.group(1).replace("\\'", "'"));
     } else if ((result = RegExHelper.match(code, "((?:\\+|\\-)?\\d+(?:\\.\\d+){0,1})")) != null) {
       tokenList.addToken(TokenType.NUMBER_CONST, result.group(0));
 
@@ -245,6 +284,8 @@ public class TokenizerImpl implements Tokenizer {
       tokenList.addToken(TokenType.LOGICAL_OR);
     } else if ((result = RegExHelper.match(code, "!")) != null) {
       tokenList.addToken(TokenType.LOGICAL_NOT);
+    } else if ((result = RegExHelper.match(code, "\\|")) != null) {
+      tokenList.addToken(TokenType.FILTER);
     } else if ((result = RegExHelper.match(code, ":")) != null) {
       tokenList.addToken(TokenType.DEREFERENCE);
     } else if ((result = RegExHelper.match(code, "\\.")) != null) {
@@ -263,5 +304,4 @@ public class TokenizerImpl implements Tokenizer {
       throw ex;
     }
   }
-
 }

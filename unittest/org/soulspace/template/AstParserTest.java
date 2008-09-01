@@ -1,24 +1,24 @@
 package org.soulspace.template;
 
+import org.soulspace.template.exception.SyntaxException;
+import org.soulspace.template.exception.UnknownTokenException;
 import org.soulspace.template.impl.TemplateEngineImpl;
-import org.soulspace.template.parser.SyntaxException;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
 import org.soulspace.template.parser.ast.impl.AstGeneratorImpl;
-import org.soulspace.template.parser.ast.impl.AstNodeType;
 import org.soulspace.template.parser.ast.impl.AstParserImpl;
-import org.soulspace.template.symbols.ISymbolTable;
-import org.soulspace.template.symbols.impl.SymbolTable;
-import org.soulspace.template.tokenizer.TokenList;
+import org.soulspace.template.tokenizer.ITokenList;
 import org.soulspace.template.tokenizer.Tokenizer;
-import org.soulspace.template.tokenizer.TokenizerImpl;
-import org.soulspace.template.tokenizer.UnknownTokenException;
+import org.soulspace.template.tokenizer.impl.TokenizerImpl;
+import org.soulspace.template.value.ISymbolTable;
+import org.soulspace.template.value.impl.SymbolTable;
 
 import junit.framework.TestCase;
 
 public class AstParserTest extends TestCase {
 
   TemplateEngineImpl te = null;
-  TokenList tl = null;
+  ITokenList tl = null;
   Tokenizer t = null;
   AstParserImpl p = null;
   AstGeneratorImpl g = null;
@@ -50,6 +50,34 @@ public class AstParserTest extends TestCase {
     super.tearDown();
 	}
 
+	public void testComments() {
+    tl = t.tokenize("<?!-- just a single comment --?>");
+    root = p.parseTerm(tl, null, false);
+    assertEquals("AST has no childs", 0, root.getChildNodes().size());
+		
+    tl = t.tokenize("template text" +
+    		"<?!-- a comment --?>" +
+    		"more template text");
+    root = p.parseTerm(tl, null, false);
+    assertEquals("AST has one child", 1, root.getChildNodes().size());
+    assertEquals("Expecting TEXT", AstNodeType.TEXT, root.getChild(0).getType());
+
+    tl = t.tokenize("<?numeric templateCode?><?!-- a comment --?><?templateCode = 0?>");
+    root = p.parseTerm(tl, null, false);
+    assertEquals("AST has 2 childs", 2, root.getChildNodes().size());
+    assertEquals("Expecting DECLARATION", AstNodeType.DECLARATION, root.getChild(0).getType());
+    assertEquals("Expecting ASSIGN", AstNodeType.ASSIGN, root.getChild(1).getType());
+
+    tl = t.tokenize("<?numeric templateCode<?!-- a comment --?>templateCode = 0?>");
+    root = p.parseTerm(tl, null, false);
+    // FIXME add assertions
+    
+    tl = t.tokenize("<?!--numeric templateCode templateCode = 0--?>");
+    root = p.parseTerm(tl, null, false);
+    // FIXME add assertions
+    
+	}
+	
   public void testDirectArrayMapAccess() {
     try {
       tl = t.tokenize("<?if(classes[1]:name eq 'Class2') { 'true' }?>");
@@ -122,6 +150,36 @@ public class AstParserTest extends TestCase {
       tl = t.tokenize("<?customer:name.toLower()?>");
       root = p.parseTerm(tl, null, false);
       assertEquals("AST has one child", 1, root.getChildNodes().size());
+  
+    } catch (UnknownTokenException e) {
+      e.printStackTrace();
+    } catch (SyntaxException e) {
+      e.printStackTrace();
+      fail("SyntaxException: " + e.getMessage());
+    }
+  }
+
+  public void testForeach() {
+    try {
+      tl = t.tokenize("<?" +
+      		"foreach x <- xList { " +
+      		"x " +
+      		"} " +
+      		"?>");
+      root = p.parseTerm(tl, null, false);
+      assertEquals("AST has one child", 1, root.getChildNodes().size());
+      assertEquals("Expecting FOREACH", AstNodeType.FOREACH, root.getChild(0).getType());
+      assertEquals("AST has 3 children", 3, root.getChild(0).getChildNodes().size());
+  
+      tl = t.tokenize("<?" +
+      		"foreach x|x:Name <- xList { " +
+      		"x " +
+      		"} " +
+      		"?>");
+      root = p.parseTerm(tl, null, false);
+      assertEquals("AST has one child", 1, root.getChildNodes().size());
+      assertEquals("Expecting FOREACH", AstNodeType.FOREACH, root.getChild(0).getType());
+      assertEquals("AST has 4 children", 4, root.getChild(0).getChildNodes().size());
   
     } catch (UnknownTokenException e) {
       e.printStackTrace();

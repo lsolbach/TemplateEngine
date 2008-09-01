@@ -3,12 +3,13 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.parser.ast.IExpressionNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.NumericSymbol;
+import org.soulspace.template.value.INumericValue;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.NumericValue;
 
-public class MinusNode extends ExpressionNode implements IExpressionNode {
+public class MinusNode extends AbstractAstNode {
 
   /**
    * 
@@ -25,13 +26,13 @@ public class MinusNode extends ExpressionNode implements IExpressionNode {
     setType(AstNodeType.MINUS);
   }
 
-	public ISymbol generateSymbol() {
+	public IValue generateSymbol() {
     if(getChildNodes().size() == 1) {
       // unary minus
-    	NumericSymbol result = asNumeric(getChild(0).generateSymbol());
-      return result.mult(new NumericSymbol(-1.0));
+    	INumericValue result = asNumeric(getChild(0).generateSymbol());
+      return result.mult(new NumericValue(-1.0));
     } else {
-      NumericSymbol result = asNumeric(getChild(0).generateSymbol());
+      NumericValue result = asNumeric(getChild(0).generateSymbol());
       int n = getChildNodes().size();
       for(int i = 1; i < n; i++) {
         // substract further values

@@ -4,7 +4,7 @@
  */
 package org.soulspace.template.datasource;
 
-import org.soulspace.template.symbols.ISymbolTable;
+import org.soulspace.template.value.ISymbolTable;
 
 /**
  * @author soulman

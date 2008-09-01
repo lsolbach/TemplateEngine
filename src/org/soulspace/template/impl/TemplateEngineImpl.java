@@ -10,16 +10,17 @@ import java.io.IOException;
 
 import org.soulspace.template.TemplateEngine;
 import org.soulspace.template.datasource.IDataSource;
-import org.soulspace.template.parser.GenerateException;
-import org.soulspace.template.parser.SyntaxException;
+import org.soulspace.template.exception.GenerateException;
+import org.soulspace.template.exception.SyntaxException;
+import org.soulspace.template.exception.UnknownTokenException;
 import org.soulspace.template.parser.ast.IAstNode;
 import org.soulspace.template.parser.ast.impl.AstParserImpl;
-import org.soulspace.template.symbols.ISymbolTable;
-import org.soulspace.template.tokenizer.TokenList;
+import org.soulspace.template.tokenizer.ITokenList;
 import org.soulspace.template.tokenizer.Tokenizer;
-import org.soulspace.template.tokenizer.TokenizerImpl;
-import org.soulspace.template.tokenizer.UnknownTokenException;
+import org.soulspace.template.tokenizer.impl.TokenList;
+import org.soulspace.template.tokenizer.impl.TokenizerImpl;
 import org.soulspace.template.util.FileUtils;
+import org.soulspace.template.value.ISymbolTable;
 
 /**
  * Implementation of the TemplateEngine interface.
@@ -41,53 +42,50 @@ public class TemplateEngineImpl implements TemplateEngine {
 
 	public void loadTemplate(String template) throws UnknownTokenException,
 			SyntaxException {
-		parse(template);
+		ITokenList tokenList = tokenizer.createTokenList();
+		tokenList = tokenize(tokenList, "Template", template);
+		parse(tokenList);
 	}
 
 	public void loadTemplate(File templateFile) throws UnknownTokenException,
 			SyntaxException, IOException {
-		parse(FileUtils.loadStringFromFile(templateFile));
+		ITokenList tokenList = tokenizer.createTokenList();
+		tokenList = tokenize(tokenList, templateFile.getName(), FileUtils.loadStringFromFile(templateFile));
+		parse(tokenList);
 	}
 
 	public void loadTemplates(String[] templates)
 			throws UnknownTokenException, SyntaxException {
-		StringBuilder sb = new StringBuilder(256);
+		ITokenList tokenList = tokenizer.createTokenList();
 		for(String template : templates) {
-			sb.append(template);
+			tokenList = tokenize(tokenList, "Template", template);
 		}
-		parse(sb.toString());
+		parse(tokenList);
 	}
 
 	public void loadTemplates(File[] templateFiles)
 			throws UnknownTokenException, SyntaxException, IOException {
-		StringBuilder sb = new StringBuilder(256);
+		ITokenList tokenList = tokenizer.createTokenList();
 		for(File templateFile : templateFiles) {
-			sb.append(FileUtils.loadStringFromFile(templateFile));
+			tokenList.setCurrentLine(1);
+			tokenList = tokenize(tokenList, templateFile.getName(), FileUtils.loadStringFromFile(templateFile));
 		}
-		parse(sb.toString());
+		parse(tokenList);
 	}
 
-	/**
-	 * Parse a template and convert it into tokens.
-	 * Sets the token list.
-	 * 
-	 * @param template
-	 *          Template to parse.
-	 * @return false, if token list ist empty, true if token list contains tokens.
-	 * @throws UnknownTokenException
-	 */
-	public boolean parse(String template) throws SyntaxException,
-			UnknownTokenException {
+	private ITokenList tokenize(ITokenList tokenList, String name, String content) {
+		tokenList.setTemplate(name);
+		return tokenizer.tokenize(tokenList, content);
+	}
 
-		TokenList tokenList = tokenizer.tokenize(template);
-		root = parser.parse(tokenList);
-
+	private boolean parse(ITokenList tokenList) {
 		if (tokenList.size() == 0) {
 			return false;
 		}
+		root = parser.parse(tokenList);
 		return true;
 	}
-
+	
 	/**
 	 * Generate output for the given symbol table with the parsed template
 	 * 
@@ -118,4 +116,5 @@ public class TemplateEngineImpl implements TemplateEngine {
 		root.setSymbolTable(dataSource.getSymbolTable());
 		return root.generateSymbol().evaluate();
 	}
+	
 }

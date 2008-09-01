@@ -3,7 +3,7 @@
  *
  * Created on Dec 3, 2002
  */
-package org.soulspace.template.parser;
+package org.soulspace.template.exception;
 
 /**
  * SyntaxException is thrown on syntax errors while parsing templates

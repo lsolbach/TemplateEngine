@@ -5,13 +5,14 @@ package org.soulspace.template.parser.ast.impl;
 
 import java.util.Iterator;
 
-import org.soulspace.template.parser.GenerateException;
+import org.soulspace.template.exception.GenerateException;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.StringSymbol;
-import org.soulspace.template.symbols.impl.SymbolTable;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.StringValue;
+import org.soulspace.template.value.impl.SymbolTable;
 
-public class TermNode extends AstNode {
+public class TermNode extends AbstractAstNode {
 
   /**
    * 
@@ -28,7 +29,7 @@ public class TermNode extends AstNode {
     setType(AstNodeType.TERM);
   }
 
-	public ISymbol generateSymbol() {
+	public IValue generateSymbol() {
     setSymbolTable(new SymbolTable());
     StringBuffer sb = new StringBuffer(128);
     Iterator<IAstNode> it = getChildNodes().iterator();
@@ -36,7 +37,7 @@ public class TermNode extends AstNode {
     while(it.hasNext()) {
       IAstNode child = it.next();
       try {
-    		ISymbol symbol = child.generateSymbol();
+    		IValue symbol = child.generateSymbol();
     		if(symbol != null) {
       		sb.append(symbol.evaluate());      			
     		}
@@ -45,7 +46,7 @@ public class TermNode extends AstNode {
         throw e;
       }
     }
-    return new StringSymbol(sb.toString());
+    return new StringValue(sb.toString());
 	}
 
 }

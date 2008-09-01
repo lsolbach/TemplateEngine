@@ -2,7 +2,7 @@
  * Created on Feb 21, 2003
  *
  */
-package org.soulspace.template.symbols;
+package org.soulspace.template.value;
 
 
 
@@ -11,13 +11,13 @@ package org.soulspace.template.symbols;
  * 
  * @author soulman
  */
-public interface ISymbol {
+public interface IValue {
 
 	/**
 	 * Returns the type of this symbol
 	 * @return Type of the symbol
 	 */
-	ISymbolType getType();
+	IValueType getType();
 
   /**
    * Evaluates the Symbol.

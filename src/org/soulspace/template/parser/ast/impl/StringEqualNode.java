@@ -3,13 +3,13 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.parser.ast.IExpressionNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.NumericSymbol;
-import org.soulspace.template.symbols.impl.StringSymbol;
+import org.soulspace.template.value.IStringValue;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.NumericValue;
 
-public class StringEqualNode extends ExpressionNode implements IExpressionNode {
+public class StringEqualNode extends AbstractAstNode {
 
   /**
    * 
@@ -26,15 +26,15 @@ public class StringEqualNode extends ExpressionNode implements IExpressionNode {
     setType(AstNodeType.STRING_EQUAL);
   }
 
-	public ISymbol generateSymbol() {
-		StringSymbol s0 = asString(getChild(0).generateSymbol());
-		StringSymbol s1 = asString(getChild(1).generateSymbol());
+	public IValue generateSymbol() {
+		IStringValue s0 = asString(getChild(0).generateSymbol());
+		IStringValue s1 = asString(getChild(1).generateSymbol());
 		if(s0 == null && s1 == null) {
-	    return new NumericSymbol(1);						
+	    return new NumericValue(1);						
 		} else if(s0 == null && s1 != null) {
-	    return new NumericSymbol(0);									
+	    return new NumericValue(0);									
 		} else {
-	    return new NumericSymbol((s0.equals(s1)) ? 1 : 0);			
+	    return new NumericValue((s0.equals(s1)) ? 1 : 0);			
 		}
 	}
 

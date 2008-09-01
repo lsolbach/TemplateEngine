@@ -4,21 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.ListSymbol;
-import org.soulspace.template.symbols.impl.MapSymbol;
-import org.soulspace.template.symbols.impl.NumericSymbol;
+import org.soulspace.template.value.IListValue;
+import org.soulspace.template.value.IMapValue;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.ListValue;
+import org.soulspace.template.value.impl.MapValue;
+import org.soulspace.template.value.impl.NumericValue;
 
 public class SizeMethodImpl extends AbstractMethod {
 
 	private static final String NAME = "size";
-	protected static final Class<? extends ISymbol> RETURN_TYPE = NumericSymbol.class;
-	protected static final List<Class<? extends ISymbol>> DEFINED_TYPES = new ArrayList<Class<? extends ISymbol>>();
-	protected static final List<Class<? extends ISymbol>> ARGUMENT_TYPES = new ArrayList<Class<? extends ISymbol>>();
+	protected static final Class<? extends IValue> RETURN_TYPE = NumericValue.class;
+	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
+	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
 
 	static {
-		DEFINED_TYPES.add(ListSymbol.class);
-		DEFINED_TYPES.add(MapSymbol.class);
+		DEFINED_TYPES.add(ListValue.class);
+		DEFINED_TYPES.add(MapValue.class);
 	}
 
 	public SizeMethodImpl() {
@@ -30,12 +32,12 @@ public class SizeMethodImpl extends AbstractMethod {
 	}
 	
 	@Override
-	protected ISymbol doEvaluation(List<ISymbol> arguments) {
-		ISymbol value = arguments.get(0);
-		if(value instanceof ListSymbol) {
-			return new NumericSymbol(((ListSymbol) value).getData().size());
-		} else if(value instanceof MapSymbol) {
-			return new NumericSymbol(((MapSymbol) value).getData().getSymbolCount());
+	protected IValue doEvaluation(List<IValue> arguments) {
+		IValue value = arguments.get(0);
+		if(value instanceof IListValue) {
+			return new NumericValue(((IListValue) value).getData().size());
+		} else if(value instanceof IMapValue) {
+			return new NumericValue(((IMapValue) value).getData().getSymbolCount());
 		}
 		return null;
 	}

@@ -4,9 +4,11 @@
  * To change this generated comment go to 
  * Window>Preferences>Java>Code Generation>Code Template
  */
-package org.soulspace.template.symbols.impl;
+package org.soulspace.template.value.impl;
 
-import org.soulspace.template.symbols.ISymbol;
+import org.soulspace.template.value.INumericValue;
+import org.soulspace.template.value.IStringValue;
+import org.soulspace.template.value.IValue;
 
 
 
@@ -16,14 +18,14 @@ import org.soulspace.template.symbols.ISymbol;
  * @author soulman
  * 
  */
-public class StringSymbol implements ISymbol {
+public class StringValue implements IValue, IStringValue {
 
 	private String data;
 
   /**
    * Constructor
    */
-	public StringSymbol() {
+	public StringValue() {
 		this.data = "";
 	}
 
@@ -31,20 +33,19 @@ public class StringSymbol implements ISymbol {
    * Constructor
    * @param data
    */
-	public StringSymbol(String data) {
+	public StringValue(String data) {
 		this.data = data;
 	}
 	
-	/**
-	 * @return String
+	/* (non-Javadoc)
+	 * @see org.soulspace.template.symbols.impl.StringType#getData()
 	 */
 	public String getData() {
 		return data;
 	}
 
-	/**
-	 * Sets the data.
-	 * @param data The data to set
+	/* (non-Javadoc)
+	 * @see org.soulspace.template.symbols.impl.StringType#setData(java.lang.String)
 	 */
 	public void setData(String data) {
 		this.data = data;
@@ -53,8 +54,8 @@ public class StringSymbol implements ISymbol {
 	/* (non-Javadoc)
 	 * @see org.soulspace.templates.AbstractSymbol#getType()
 	 */
-	public SymbolType getType() {
-		return SymbolType.STRING;
+	public ValueType getType() {
+		return ValueType.STRING;
 	}
 
   /* (non-Javadoc)
@@ -69,10 +70,30 @@ public class StringSymbol implements ISymbol {
     return result;
   }
   
+  /* (non-Javadoc)
+	 * @see org.soulspace.template.symbols.impl.StringType#add(org.soulspace.template.symbols.impl.StringType)
+	 */
+  public StringValue add(IStringValue symbol) {
+  	return new StringValue(getData() + symbol.getData());
+  }
+  
+  /* (non-Javadoc)
+	 * @see org.soulspace.template.symbols.impl.StringType#add(org.soulspace.template.symbols.impl.NumericSymbol)
+	 */
+  public IStringValue add(INumericValue symbol) {
+  	return new StringValue(getData() + symbol.evaluate());
+  }
+  
+  /* (non-Javadoc)
+	 * @see org.soulspace.template.symbols.impl.StringType#isSet()
+	 */
   public boolean isSet() {
   	return data != null;
   }
   
+  /* (non-Javadoc)
+	 * @see org.soulspace.template.symbols.impl.StringType#isEmpty()
+	 */
   public boolean isEmpty() {
   	if(isSet() && data.equals("")) {
   		return true;
@@ -115,7 +136,7 @@ public class StringSymbol implements ISymbol {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final StringSymbol other = (StringSymbol) obj;
+		final StringValue other = (StringValue) obj;
 		if (data == null) {
 			if (other.data != null)
 				return false;

@@ -5,12 +5,11 @@ package org.soulspace.template.parser.ast.impl;
 
 import java.util.Iterator;
 
-import org.soulspace.template.parser.GenerateException;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.parser.ast.IExpressionNode;
-import org.soulspace.template.symbols.ISymbol;
+import org.soulspace.template.value.IValue;
 
-public class DereferenceNode extends ExpressionNode implements IExpressionNode {
+public class DereferenceNode extends AbstractAstNode {
 
   public DereferenceNode() {
     this(null);
@@ -21,10 +20,10 @@ public class DereferenceNode extends ExpressionNode implements IExpressionNode {
     setType(AstNodeType.DEREF_EXPR);
   }
 
-	public ISymbol generateSymbol() {
+	public IValue generateSymbol() {
     Iterator<IAstNode> it = getChildNodes().iterator();
     IAstNode node = null;
-    ISymbol symbol = null;
+    IValue symbol = null;
     while(it.hasNext()) {
     	node = it.next();
     	if(node instanceof IdentifierNode) { 

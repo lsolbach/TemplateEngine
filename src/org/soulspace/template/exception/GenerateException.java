@@ -3,7 +3,7 @@
  *
  * Created on Dec 3, 2002
  */
-package org.soulspace.template.parser;
+package org.soulspace.template.exception;
 
 /**
  * GenerateException is thrown on generation errors in the template engine.

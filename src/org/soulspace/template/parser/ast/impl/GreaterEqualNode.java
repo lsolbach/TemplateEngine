@@ -3,12 +3,12 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.parser.ast.IExpressionNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.NumericSymbol;
+import org.soulspace.template.value.INumericValue;
+import org.soulspace.template.value.IValue;
 
-public class GreaterEqualNode extends ExpressionNode implements IExpressionNode {
+public class GreaterEqualNode extends AbstractAstNode {
 
   /**
    * 
@@ -25,9 +25,9 @@ public class GreaterEqualNode extends ExpressionNode implements IExpressionNode 
     setType(AstNodeType.GREATER_EQUAL);
   }
 
-	public ISymbol generateSymbol() {
-		NumericSymbol op1 = asNumeric(getChild(0).generateSymbol());
-		NumericSymbol op2 = asNumeric(getChild(1).generateSymbol());
+	public IValue generateSymbol() {
+		INumericValue op1 = asNumeric(getChild(0).generateSymbol());
+		INumericValue op2 = asNumeric(getChild(1).generateSymbol());
 		return op1.greaterEqual(op2);
 	}
 

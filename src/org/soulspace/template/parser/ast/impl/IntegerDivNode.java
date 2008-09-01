@@ -3,12 +3,13 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.parser.ast.IExpressionNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.NumericSymbol;
+import org.soulspace.template.value.INumericValue;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.NumericValue;
 
-public class IntegerDivNode extends ExpressionNode implements IExpressionNode {
+public class IntegerDivNode extends AbstractAstNode {
 
   /**
    * 
@@ -25,13 +26,13 @@ public class IntegerDivNode extends ExpressionNode implements IExpressionNode {
     setType(AstNodeType.IDIV);
   }
 
-	public ISymbol generateSymbol() {
-    NumericSymbol result = asNumeric(getChild(0).generateSymbol());
+	public IValue generateSymbol() {
+    NumericValue result = asNumeric(getChild(0).generateSymbol());
 
     int n = getChildNodes().size();
     for(int i = 1; i < n; i++) {
       // divide further values
-    	NumericSymbol divisor = asNumeric(getChild(i).generateSymbol());
+    	INumericValue divisor = asNumeric(getChild(i).generateSymbol());
     	result = result.divideInteger(divisor);
     }
     return result;

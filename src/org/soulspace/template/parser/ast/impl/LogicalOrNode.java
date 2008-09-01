@@ -5,12 +5,12 @@ package org.soulspace.template.parser.ast.impl;
 
 import java.util.Iterator;
 
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.parser.ast.IExpressionNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.NumericSymbol;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.NumericValue;
 
-public class LogicalOrNode extends ExpressionNode implements IExpressionNode {
+public class LogicalOrNode extends AbstractAstNode {
 
   /**
    * 
@@ -27,17 +27,17 @@ public class LogicalOrNode extends ExpressionNode implements IExpressionNode {
     setType(AstNodeType.LOGICAL_OR);
   }
 
-	public ISymbol generateSymbol() {
-    ISymbol result = null;
+	public IValue generateSymbol() {
+    IValue result = null;
     Iterator<IAstNode> it = getChildNodes().iterator();
     while(it.hasNext()) {
     	result = it.next().generateSymbol();
       if(result != null && result.isTrue()) {
         // lazy evaluation, return if result is true
-        return new NumericSymbol(1);
+        return new NumericValue(1);
       }
     }
-    return new NumericSymbol(0);
+    return new NumericValue(0);
 	}
 
 }

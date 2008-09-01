@@ -2,10 +2,11 @@
  * Created on Feb 14, 2003
  *
  */
-package org.soulspace.template.symbols.impl;
+package org.soulspace.template.value.impl;
 
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.ISymbolTable;
+import org.soulspace.template.value.IMapValue;
+import org.soulspace.template.value.ISymbolTable;
+import org.soulspace.template.value.IValue;
 
 
 /**
@@ -13,14 +14,14 @@ import org.soulspace.template.symbols.ISymbolTable;
  * 
  * @author soulman
  */
-public class MapSymbol implements ISymbol {
+public class MapValue implements IValue, IMapValue {
 	
 	private ISymbolTable data; 
 
 	/**
 	 * Constructor
 	 */
-	MapSymbol() {
+	public MapValue() {
 		this.data = new SymbolTable();
 	}
 
@@ -28,28 +29,26 @@ public class MapSymbol implements ISymbol {
    * Constructor
    * @param symbolTable
    */
-	MapSymbol(ISymbolTable symbolTable) {
+	public MapValue(ISymbolTable symbolTable) {
 		this.data = symbolTable;
 	}
 
   /* (non-Javadoc)
    * @see org.soulspace.templates.AbstractSymbol#getType()
    */
-  public SymbolType getType() {
-    return SymbolType.MAP;
+  public ValueType getType() {
+    return ValueType.MAP;
   }
 
-	/**
-   * Returns the symbol table
-	 * @return SymbolTable
+	/* (non-Javadoc)
+	 * @see org.soulspace.template.symbols.impl.IMapType#getData()
 	 */
 	public ISymbolTable getData() {
 		return data;
 	}
 
-	/**
-	 * Sets the data.
-	 * @param data The data to set
+	/* (non-Javadoc)
+	 * @see org.soulspace.template.symbols.impl.IMapType#setData(org.soulspace.template.symbols.ISymbolTable)
 	 */
 	public void setData(ISymbolTable data) {
 		this.data = data;

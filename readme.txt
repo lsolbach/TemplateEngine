@@ -1,6 +1,7 @@
 Template Engine
+===============
 
-presentation language
+presentation language and template engine
 
 Features:
 
@@ -12,13 +13,16 @@ Features:
 * data binding for java beans, use bean objects as input
 * extensible library of type methods (e.g. a.toLower() on strings)
 * defineable methods with recursion support in templates
+* filters for iterations
 * safe by design, no modification of input java objects possible 
-
 
 Runtime Requirements:
 Jakarta ORO >= 2.0.8
 
-Compile time Requirements:
+Version 0.9.15 (01.09.2008)
+---------------------------
 
-JUnit 3.8.1
-JUnitPerf 1.9
+* package refactorings, removed cycles and enhanced the structure of the dependencies
+* method overloading, foreach with filters
+* better error reporting
+* new type methods map.keyList(), list.add(), list.hasNext(), map.put()

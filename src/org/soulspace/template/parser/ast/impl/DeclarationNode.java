@@ -5,13 +5,14 @@ package org.soulspace.template.parser.ast.impl;
 
 import java.util.ArrayList;
 
-import org.soulspace.template.parser.GenerateException;
+import org.soulspace.template.exception.GenerateException;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.StringSymbol;
-import org.soulspace.template.symbols.impl.SymbolTable;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.StringValue;
+import org.soulspace.template.value.impl.SymbolTable;
 
-public class DeclarationNode extends AstNode {
+public class DeclarationNode extends AbstractAstNode {
   
   /**
    * 
@@ -28,9 +29,9 @@ public class DeclarationNode extends AstNode {
     setType(AstNodeType.DECLARATION);
   }
 
-	public ISymbol generateSymbol() {
+	public IValue generateSymbol() {
     IAstNode child = null;
-    ISymbol symbol = null;
+    IValue symbol = null;
     String name = "";
     String type = getData();
     
@@ -54,7 +55,7 @@ public class DeclarationNode extends AstNode {
     } else if (type.equals("numeric")) {
       getSymbolTable().addNewNumericSymbol(name, "0");
     } else if (type.equals("list")) {
-      getSymbolTable().addNewListSymbol(name, new ArrayList<ISymbol>());
+      getSymbolTable().addNewListSymbol(name, new ArrayList<IValue>());
     } else if (type.equals("map")) {
       getSymbolTable().addNewMapSymbol(name, new SymbolTable());
     }
@@ -65,7 +66,7 @@ public class DeclarationNode extends AstNode {
     
     // TODO is returning of the created symbol useful?
     // return symbol = lookupSymbolInBlock(name);
-		return new StringSymbol("");
+		return new StringValue("");
 	}
 
 }

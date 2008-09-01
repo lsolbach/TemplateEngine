@@ -3,7 +3,7 @@
  *
  * Created on Dec 3, 2002
  */
-package org.soulspace.template.tokenizer;
+package org.soulspace.template.exception;
 
 /**
  * UnknownTokenException is thrown on parse errors in the TemplateEngine.

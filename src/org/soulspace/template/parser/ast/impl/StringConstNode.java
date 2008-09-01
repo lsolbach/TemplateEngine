@@ -3,13 +3,12 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
-import org.soulspace.template.parser.GenerateException;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.parser.ast.IExpressionNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.StringSymbol;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.StringValue;
 
-public class StringConstNode extends ExpressionNode implements IExpressionNode {
+public class StringConstNode extends AbstractAstNode {
 
   /**
    * 
@@ -26,8 +25,8 @@ public class StringConstNode extends ExpressionNode implements IExpressionNode {
     setType(AstNodeType.STRING_CONST);
   }
 
-	public ISymbol generateSymbol() {
-		return new StringSymbol(getData());
+	public IValue generateSymbol() {
+		return new StringValue(getData());
 	}
 
 }

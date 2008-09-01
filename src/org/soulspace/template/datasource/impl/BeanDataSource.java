@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.soulspace.template.datasource.IDataSource;
-import org.soulspace.template.symbols.ISymbolTable;
-import org.soulspace.template.symbols.impl.ListSymbol;
-import org.soulspace.template.symbols.impl.SymbolTable;
+import org.soulspace.template.value.IListValue;
+import org.soulspace.template.value.ISymbolTable;
+import org.soulspace.template.value.impl.SymbolTable;
 
 /**
  * @author soulman
@@ -130,7 +130,7 @@ public class BeanDataSource implements IDataSource {
 	 * @param object
 	 * @return
 	 */
-	boolean parse(ListSymbol listSymbol, Object object) {
+	boolean parse(IListValue listSymbol, Object object) {
 		Class<? extends Object> myClass = object.getClass();
 		Method methods[] = myClass.getMethods();
 		
@@ -206,7 +206,7 @@ public class BeanDataSource implements IDataSource {
 			// List
 			List list = new ArrayList();
 			symbolTable.addNewListSymbol(symbolName, list);
-			ListSymbol lSymbol = (ListSymbol) symbolTable.getSymbol(symbolName);
+			IListValue lSymbol = (IListValue) symbolTable.getSymbol(symbolName);
 			Iterator it = ((Collection) result).iterator();
 			while(it.hasNext()) {
 				insert(lSymbol, it.next());
@@ -217,7 +217,7 @@ public class BeanDataSource implements IDataSource {
       Object[] objects = (Object[]) result; 
       List list = new ArrayList();
       symbolTable.addNewListSymbol(symbolName, list);
-      ListSymbol lSymbol = (ListSymbol) symbolTable.getSymbol(symbolName);
+      IListValue lSymbol = (IListValue) symbolTable.getSymbol(symbolName);
       for(int i = 0; i < objects.length; i++) {
         insert(lSymbol, objects[i]);              
       }
@@ -233,7 +233,7 @@ public class BeanDataSource implements IDataSource {
 		}
 	}
 	
-	public void insert(ListSymbol listSymbol, Object result) {
+	public void insert(IListValue listSymbol, Object result) {
 	
 		if(result instanceof String) {
 			// String

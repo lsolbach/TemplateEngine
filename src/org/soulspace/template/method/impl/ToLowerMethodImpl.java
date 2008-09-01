@@ -3,8 +3,9 @@ package org.soulspace.template.method.impl;
 import java.util.List;
 
 import org.soulspace.template.method.StringToStringMethod;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.StringSymbol;
+import org.soulspace.template.value.IStringValue;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.StringValue;
 
 public class ToLowerMethodImpl extends StringToStringMethod {
 
@@ -15,11 +16,11 @@ public class ToLowerMethodImpl extends StringToStringMethod {
 		this.name = NAME;
 	}
 	
-	public ISymbol doEvaluation(List<ISymbol> arguments) {
-		ISymbol result = null;
+	public IValue doEvaluation(List<IValue> arguments) {
+		IValue result = null;
 
-		StringSymbol string = (StringSymbol) arguments.get(0);
-		result = new StringSymbol(string.getData().toLowerCase());
+		IStringValue string = (IStringValue) arguments.get(0);
+		result = new StringValue(string.getData().toLowerCase());
 		
 		return result;
 	}

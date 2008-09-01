@@ -3,11 +3,12 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
-import org.soulspace.template.parser.GenerateException;
+import org.soulspace.template.exception.GenerateException;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.symbols.ISymbol;
+import org.soulspace.template.value.IValue;
 
-public class ArgListNode extends AstNode {
+public class ArgListNode extends AbstractAstNode {
 
   public ArgListNode() {
     this(null);
@@ -18,7 +19,7 @@ public class ArgListNode extends AstNode {
     setType(AstNodeType.ARG_LIST);
   }
 
-	public ISymbol generateSymbol() {
+	public IValue generateSymbol() {
 		throw new GenerateException("Method generateSymbol() must not be called on ArgListNode");
 	}
 

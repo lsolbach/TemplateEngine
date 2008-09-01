@@ -3,9 +3,9 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
-import org.soulspace.template.parser.GenerateException;
+import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.symbols.ISymbolTable;
+import org.soulspace.template.value.ISymbolTable;
 
 public class AstGeneratorImpl {
 

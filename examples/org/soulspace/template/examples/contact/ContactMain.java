@@ -11,9 +11,6 @@ import java.io.InputStreamReader;
 import org.soulspace.template.TemplateEngine;
 import org.soulspace.template.datasource.impl.BeanDataSource;
 import org.soulspace.template.impl.TemplateEngineImpl;
-import org.soulspace.template.parser.GenerateException;
-import org.soulspace.template.parser.SyntaxException;
-import org.soulspace.template.tokenizer.UnknownTokenException;
 
 public class ContactMain {
 

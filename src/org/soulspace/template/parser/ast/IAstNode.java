@@ -6,9 +6,10 @@ package org.soulspace.template.parser.ast;
 import java.util.Collection;
 import java.util.Map;
 
-import org.soulspace.template.parser.GenerateException;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.ISymbolTable;
+import org.soulspace.template.value.INumericValue;
+import org.soulspace.template.value.IStringValue;
+import org.soulspace.template.value.ISymbolTable;
+import org.soulspace.template.value.IValue;
 
 /**
  * @author soulman
@@ -16,6 +17,9 @@ import org.soulspace.template.symbols.ISymbolTable;
  */
 public interface IAstNode {
   IAstNodeType getType();
+  String getTemplate();
+  int getLine();
+  
   IAstNode getParent();
   void setParent(IAstNode parent);
 
@@ -24,18 +28,21 @@ public interface IAstNode {
   IAstNode getChild(int index);
   void addChildNode(IAstNode node);
 
-  ISymbol lookupSymbol(String name);
-  ISymbol getSymbol(IAstNode node);
+  IValue lookupSymbol(String name);
+  IValue getSymbol(IAstNode node);
   ISymbolTable getSymbolTable();
   void setSymbolTable(ISymbolTable symbolTable);
 
   String getData();
   void setData(String data);
 
-  Map<String, IAstNode> getMethodTable();
-  IAstNode getMethodNode(String methodName);
-  void addMethodNode(IAstNode node);
+  Map<String, IMethodNode> getMethodTable();
+  IMethodNode getMethodNode(String methodName);
+  void addMethodNode(IMethodNode node);
 
 //  String generate();
-  ISymbol generateSymbol();
+  IValue generateSymbol();
+	INumericValue asNumeric(IValue symbol);
+	IStringValue asString(IValue symbol);
+
 }

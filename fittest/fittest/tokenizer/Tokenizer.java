@@ -3,16 +3,16 @@
  */
 package fittest.tokenizer;
  
-import org.soulspace.template.tokenizer.TokenList;
-import org.soulspace.template.tokenizer.TokenizerImpl;
-import org.soulspace.template.tokenizer.UnknownTokenException;
+import org.soulspace.template.exception.UnknownTokenException;
+import org.soulspace.template.tokenizer.ITokenList;
+import org.soulspace.template.tokenizer.impl.TokenizerImpl;
 
 import fit.ColumnFixture;
 
 public class Tokenizer extends ColumnFixture {
 
   org.soulspace.template.tokenizer.Tokenizer TOKENIZER = new TokenizerImpl();
-  TokenList TOKEN_LIST = new TokenList();
+  ITokenList TOKEN_LIST = TOKENIZER.createTokenList();
   
   public String input;
   

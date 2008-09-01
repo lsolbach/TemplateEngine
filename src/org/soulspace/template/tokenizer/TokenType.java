@@ -21,7 +21,6 @@ public class TokenType {
 		return name;	
 	}
 
-
 	public final static TokenType IF								= new TokenType("IF");
 	public final static TokenType ELSE							= new TokenType("ELSE");
 	public final static TokenType FOREACH						= new TokenType("FOREACH");
@@ -56,6 +55,7 @@ public class TokenType {
 	public final static TokenType	LOGICAL_AND				= new TokenType("LOGICAL_AND");
 	public final static TokenType	LOGICAL_OR 				= new TokenType("LOGICAL_OR");
 	public final static TokenType	LOGICAL_NOT				= new TokenType("LOGICAL_NOT");
+	public final static TokenType	FILTER				    = new TokenType("FILTER");
 	public final static TokenType	DEREFERENCE 			= new TokenType("DEREFERENCE");
 	public final static TokenType	TYPE_METHOD_CALL	= new TokenType("TYPE_METHOD_CALL");
 	public final static TokenType	ASSIGN 						= new TokenType("ASSIGN");

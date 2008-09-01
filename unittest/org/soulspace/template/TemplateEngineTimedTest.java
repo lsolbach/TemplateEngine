@@ -17,7 +17,7 @@ import com.clarkware.junitperf.TimedTest;
 public class TemplateEngineTimedTest {
 
   public static Test suite() {
-    long maxElapsedTime = 50;
+    long maxElapsedTime = 250;
     
     Test testCase = new TemplateEngineTest("testAstGenMethod3");
     Test timedTest = new TimedTest(testCase, maxElapsedTime);

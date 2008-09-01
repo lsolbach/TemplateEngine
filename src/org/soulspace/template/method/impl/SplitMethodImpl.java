@@ -4,20 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.ListSymbol;
-import org.soulspace.template.symbols.impl.StringSymbol;
+import org.soulspace.template.value.IStringValue;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.ListValue;
+import org.soulspace.template.value.impl.StringValue;
 
 public class SplitMethodImpl extends AbstractMethod {
 
 	private static final String NAME = "split";
-	protected static final Class<? extends ISymbol> RETURN_TYPE = ListSymbol.class;
-	protected static final List<Class<? extends ISymbol>> DEFINED_TYPES = new ArrayList<Class<? extends ISymbol>>();
-	protected static final List<Class<? extends ISymbol>> ARGUMENT_TYPES = new ArrayList<Class<? extends ISymbol>>();
+	protected static final Class<? extends IValue> RETURN_TYPE = ListValue.class;
+	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
+	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
 
 	static {
-		DEFINED_TYPES.add(StringSymbol.class);
-		ARGUMENT_TYPES.add(StringSymbol.class);
+		DEFINED_TYPES.add(StringValue.class);
+		ARGUMENT_TYPES.add(StringValue.class);
 	}
 
 	public SplitMethodImpl() {
@@ -29,11 +30,11 @@ public class SplitMethodImpl extends AbstractMethod {
 	}
 	
 	@Override
-	protected ISymbol doEvaluation(List<ISymbol> arguments) {
-		ListSymbol result = new ListSymbol();
+	protected IValue doEvaluation(List<IValue> arguments) {
+		ListValue result = new ListValue();
 		
-		String string = ((StringSymbol) arguments.get(0)).getData();
-		String pattern = ((StringSymbol) arguments.get(1)).getData();
+		String string = ((IStringValue) arguments.get(0)).getData();
+		String pattern = ((IStringValue) arguments.get(1)).getData();
 		String[] strings = string.split(pattern);
 		
 		for(String part : strings) {

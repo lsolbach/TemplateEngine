@@ -5,15 +5,16 @@ package org.soulspace.template.parser.ast.impl;
 
 import java.util.List;
 
-import org.soulspace.template.parser.GenerateException;
+import org.soulspace.template.exception.GenerateException;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.ListSymbol;
-import org.soulspace.template.symbols.impl.StringSymbol;
-import org.soulspace.template.symbols.impl.SymbolTable;
-import org.soulspace.template.symbols.impl.SymbolType;
+import org.soulspace.template.value.IListValue;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.StringValue;
+import org.soulspace.template.value.impl.SymbolTable;
+import org.soulspace.template.value.impl.ValueType;
 
-public class ForeachNode extends AstNode {
+public class ForeachNode extends AbstractAstNode {
 
   /**
    * 
@@ -30,13 +31,13 @@ public class ForeachNode extends AstNode {
     setType(AstNodeType.FOREACH);
   }
 
-	public ISymbol generateSymbol() {
+	public IValue generateSymbol() {
     StringBuilder sb = new StringBuilder(128);
     setSymbolTable(new SymbolTable());
     
-    List<ISymbol> list;
+    List<IValue> list;
 
-    if(getChildNodes().size() != 3) {
+    if(getChildNodes().size() < 3 || getChildNodes().size() > 4) {
       throw new GenerateException("Syntax error in foreach!");      
     }
     
@@ -46,11 +47,22 @@ public class ForeachNode extends AstNode {
     if(lookupSymbolInBlock(id.getData()) != null) {
       throw new GenerateException("Symbol already exists: " + id.getData());
     }
-    
-    IAstNode loopNode = getChild(1);
 
+    // TODO implement filter
+    IAstNode loopNode = null;
+    IAstNode filterNode = null;
+    IAstNode stmtNode = null;
+    if(getChildNodes().size() == 4) {
+    	filterNode = getChild(1);    	
+    	loopNode = getChild(2);
+    	stmtNode = getChild(3);
+    } else {
+    	loopNode = getChild(1);
+    	stmtNode = getChild(2);
+    }
+    
     // lookup loop variable
-    ISymbol symbol = getSymbol(loopNode);
+    IValue symbol = getSymbol(loopNode);
     if (symbol == null) {
       // Missing Variable
       throw new GenerateException("Variable " + loopNode.getData()
@@ -58,11 +70,11 @@ public class ForeachNode extends AstNode {
     }
 
     // Check type of the variable
-    if (!(symbol.getType() == SymbolType.LIST)) {
+    if (!(symbol.getType() == ValueType.LIST)) {
       // Variable not of type LIST
       throw new GenerateException("Expecting variable of type LIST!");
     }
-    ListSymbol lSymbol = (ListSymbol) symbol;
+    IListValue lSymbol = (IListValue) symbol;
     // Get List to iterate over
     list = lSymbol.getData();
 
@@ -72,14 +84,23 @@ public class ForeachNode extends AstNode {
       lSymbol.setEntry(list.get(i));
       getSymbolTable().addSymbol(elName, list.get(i));
 
-      // Execute block
-      sb.append(getChild(2).generateSymbol().evaluate());
+      // execute block
+      if(filterNode != null) {
+      	// filter present
+      	IValue exSymbol = null;
+      	exSymbol = filterNode.generateSymbol();
+        if(exSymbol != null && exSymbol.isTrue()) {
+          sb.append(stmtNode.generateSymbol().evaluate());      	
+        }
+      } else {
+        sb.append(stmtNode.generateSymbol().evaluate());      	
+      }
     }
 
     // Clear 'ENTRY' reference
     lSymbol.setEntry(null);
-
+    
     //System.out.append(sb.toString());
-    return new StringSymbol(sb.toString());
+    return new StringValue(sb.toString());
 	}
 }

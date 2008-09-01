@@ -3,25 +3,25 @@ package org.soulspace.template.method;
 import java.util.Collections;
 import java.util.List;
 
-import org.soulspace.template.parser.GenerateException;
-import org.soulspace.template.symbols.ISymbol;
+import org.soulspace.template.exception.GenerateException;
+import org.soulspace.template.value.IValue;
 
 public abstract class AbstractMethod implements IMethod {
 
 	protected String name;
-	protected List<Class<? extends ISymbol>> definedTypes;
-	protected List<Class<? extends ISymbol>> argumentTypes;
-	protected Class<? extends ISymbol> returnType;
+	protected List<Class<? extends IValue>> definedTypes;
+	protected List<Class<? extends IValue>> argumentTypes;
+	protected Class<? extends IValue> returnType;
 	
-	public boolean definedFor(ISymbol symbol) {
+	public boolean definedFor(IValue symbol) {
 		return definedTypes.contains(symbol.getClass());
 	}
 
-	public List<Class<? extends ISymbol>> getArgumentTypes() {
+	public List<Class<? extends IValue>> getArgumentTypes() {
 		return Collections.unmodifiableList(argumentTypes);
 	}
 
-	public List<Class<? extends ISymbol>> getDefinedTypes() {
+	public List<Class<? extends IValue>> getDefinedTypes() {
 		return Collections.unmodifiableList(definedTypes);
 	}
 
@@ -29,11 +29,11 @@ public abstract class AbstractMethod implements IMethod {
 		return name;
 	}
 
-	public Class<? extends ISymbol> getReturnType() {
+	public Class<? extends IValue> getReturnType() {
 		return returnType;
 	}
 
-	public boolean validateTypes(List<ISymbol> arguments) {
+	public boolean validateTypes(List<IValue> arguments) {
 		if(arguments.size() != argumentTypes.size() + 1) {
 			throw new GenerateException("Argument count mismatch on method " + getName());			
 		}
@@ -44,10 +44,10 @@ public abstract class AbstractMethod implements IMethod {
 		return true;
 	}
 
-	public ISymbol evaluate(List<ISymbol> arguments) {
+	public IValue evaluate(List<IValue> arguments) {
 		validateTypes(arguments);
 		return doEvaluation(arguments);
 	}
 	
-	protected abstract ISymbol doEvaluation(List<ISymbol> arguments);
+	protected abstract IValue doEvaluation(List<IValue> arguments);
 }

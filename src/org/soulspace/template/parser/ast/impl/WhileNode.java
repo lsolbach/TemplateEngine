@@ -3,11 +3,12 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.StringSymbol;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.StringValue;
 
-public class WhileNode extends AstNode {
+public class WhileNode extends AbstractAstNode {
 
   /**
    * 
@@ -24,15 +25,15 @@ public class WhileNode extends AstNode {
     setType(AstNodeType.WHILE);
   }
 
-	public ISymbol generateSymbol() {
+	public IValue generateSymbol() {
     StringBuffer sb = new StringBuffer(128);
     
- 		ISymbol exSymbol = getChild(0).generateSymbol();
+ 		IValue exSymbol = getChild(0).generateSymbol();
     while(exSymbol != null && exSymbol.isTrue()) {
       sb.append(getChild(1).generateSymbol().evaluate());
       exSymbol = getChild(0).generateSymbol();
     }
-    return new StringSymbol(sb.toString());
+    return new StringValue(sb.toString());
 	}
 
 }

@@ -2,17 +2,18 @@ package org.soulspace.template;
 
 import junit.framework.TestCase;
 
+import org.soulspace.template.exception.UnknownTokenException;
 import org.soulspace.template.impl.TemplateEngineImpl;
-import org.soulspace.template.tokenizer.TokenList;
+import org.soulspace.template.tokenizer.IToken;
+import org.soulspace.template.tokenizer.ITokenList;
 import org.soulspace.template.tokenizer.TokenType;
 import org.soulspace.template.tokenizer.Tokenizer;
-import org.soulspace.template.tokenizer.TokenizerImpl;
-import org.soulspace.template.tokenizer.UnknownTokenException;
+import org.soulspace.template.tokenizer.impl.TokenizerImpl;
 
 public class TokenizerTest extends TestCase {
 
   TemplateEngineImpl te = null;
-  TokenList tl = null;
+  ITokenList tl = null;
   Tokenizer t = null;
 
 
@@ -34,6 +35,21 @@ public class TokenizerTest extends TestCase {
     t = null;
     super.tearDown();
 	}
+
+  public void testTokMultiLine() {
+    try {
+      tl = t.tokenize(
+      		"<html>\n" +
+      		"<head>\n" +
+      		"</head>\n" +
+      		"<body>\n" +
+      		"</body>\n" +
+      		"</html>"
+      		);
+    } catch (Exception e) {
+			// TODO: handle exception
+		}
+  }
 
   public void testTokMethodCall() {
     try {
@@ -61,4 +77,82 @@ public class TokenizerTest extends TestCase {
       e.printStackTrace(); 
     }
   }
+
+  public void testTokStringConst() {
+    try {
+      tl = t.tokenize("<?'\\''?>");
+      assertEquals("Tokenlist has 1 Tokens", 1, tl.size());
+      assertEquals("Token is string constant", TokenType.STRING_CONST, tl.getToken().getType());
+      assertEquals("Token data is '", "'", tl.getToken().getData());
+
+      tl = t.tokenize("<?'begin'?>");
+      assertEquals("Tokenlist has 1 Tokens", 1, tl.size());
+      assertEquals("Token is string constant", TokenType.STRING_CONST, tl.getToken().getType());
+      assertEquals("Token data is 'begin'", "begin", tl.getToken().getData());
+
+    } catch(UnknownTokenException e) {
+      e.printStackTrace(); 
+    }
+  }
+
+  public void testTokenLines() {
+    tl = t.tokenize(
+    		"<html>\n" +
+    		"<head>\n" +
+    		"</head>\n" +
+    		"\n" +
+    		"<body>\n" +
+    		"<?\n" +
+    		"foreach item <- list {\n" +
+    		"\n" +
+    		"  item:Name\n" +
+    		"}\n" +
+    		"?>\n" +
+    		"</body>\n" +
+    		"</html>"
+    		);
+		IToken tk;
+		tk = tl.getToken();
+		assertEquals("Line 1, Token " + tk, 1, tk.getLine());
+		tk = tl.getNextToken();
+		assertEquals("Line 7, Token " + tk, 7, tk.getLine());
+		tk = tl.getNextToken();
+		assertEquals("Line 7, Token " + tk, 7, tk.getLine());
+		tk = tl.getNextToken();
+		assertEquals("Line 7, Token " + tk, 7, tk.getLine());
+		tk = tl.getNextToken();
+		assertEquals("Line 7, Token " + tk, 7, tk.getLine());
+		tk = tl.getNextToken();
+		assertEquals("Line 7, Token " + tk, 7, tk.getLine());
+		tk = tl.getNextToken();
+		assertEquals("Line 8, Token " + tk, 9, tk.getLine());
+		tk = tl.getNextToken();
+		assertEquals("Line 8, Token " + tk, 9, tk.getLine());
+		tk = tl.getNextToken();
+		assertEquals("Line 8, Token " + tk, 9, tk.getLine());
+		tk = tl.getNextToken();
+		assertEquals("Line 9, Token " + tk, 10, tk.getLine());
+		tk = tl.getNextToken();
+		assertEquals("Line 10, Token " + tk, 11, tk.getLine());
+
+    tl = t.tokenize(
+    		"<?!--multiline\n" +
+    		"comment\n" +
+    		"test--?>\n" +
+    		"<html>\n" +
+    		"<head>\n" +
+    		"</head>\n" +
+    		"\n" +
+    		"<body>\n" +
+    		"<?\n" +
+    		"foreach item <- list {?>\n" +
+    		"  <?item:Name?>\n" +
+    		"<?}\n" +
+    		"?>\n" +
+    		"</body>\n" +
+    		"</html>"
+    		);
+
+  }
+  
 }

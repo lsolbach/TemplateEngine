@@ -7,10 +7,10 @@ import java.io.File;
 import java.io.IOException;
 
 import org.soulspace.template.datasource.IDataSource;
-import org.soulspace.template.parser.GenerateException;
-import org.soulspace.template.parser.SyntaxException;
-import org.soulspace.template.symbols.ISymbolTable;
-import org.soulspace.template.tokenizer.UnknownTokenException;
+import org.soulspace.template.exception.GenerateException;
+import org.soulspace.template.exception.SyntaxException;
+import org.soulspace.template.exception.UnknownTokenException;
+import org.soulspace.template.value.ISymbolTable;
 
 /**
  * 

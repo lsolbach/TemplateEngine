@@ -13,8 +13,8 @@ import org.apache.oro.text.regex.PatternMatcherInput;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.soulspace.template.datasource.IDataSource;
-import org.soulspace.template.symbols.ISymbolTable;
-import org.soulspace.template.symbols.impl.SymbolTable;
+import org.soulspace.template.value.ISymbolTable;
+import org.soulspace.template.value.impl.SymbolTable;
 
 /**
  * @author soulman

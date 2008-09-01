@@ -3,12 +3,13 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.impl.StringSymbol;
+import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.impl.StringValue;
 
 
-public class IfNode extends AstNode {
+public class IfNode extends AbstractAstNode {
 
   /**
    * 
@@ -25,15 +26,15 @@ public class IfNode extends AstNode {
     setType(AstNodeType.IF);
   }
 
-	public ISymbol generateSymbol() {
-		ISymbol exSymbol = getChild(0).generateSymbol();
+	public IValue generateSymbol() {
+		IValue exSymbol = getChild(0).generateSymbol();
 
     if(exSymbol != null && exSymbol.isTrue()) {
       return getChild(1).generateSymbol();      
     } else if(getChild(2) != null) {
       return getChild(2).generateSymbol();
     }
-  	return new StringSymbol("");
+  	return new StringValue("");
 	}
   
 }

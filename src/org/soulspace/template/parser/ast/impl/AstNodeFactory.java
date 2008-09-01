@@ -3,11 +3,12 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
-import org.soulspace.template.parser.SyntaxException;
+import org.soulspace.template.exception.SyntaxException;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
 import org.soulspace.template.parser.ast.IAstNodeFactory;
 import org.soulspace.template.parser.ast.IAstNodeType;
-import org.soulspace.template.tokenizer.Token;
+import org.soulspace.template.tokenizer.IToken;
 import org.soulspace.template.tokenizer.TokenType;
 
 /**
@@ -26,8 +27,8 @@ public class AstNodeFactory implements IAstNodeFactory {
   /**
    * 
    */
-  public IAstNode create(IAstNodeType type, IAstNode parent) {
-    IAstNode node = null;
+  public IAstNode create(IAstNodeType type, IToken token, IAstNode parent) {
+    AbstractAstNode node = null;
     if(type.equals(AstNodeType.TERM)) {
       node = new TermNode();
     } else if(type.equals(AstNodeType.ROOT)) {
@@ -46,14 +47,19 @@ public class AstNodeFactory implements IAstNodeFactory {
     	throw new SyntaxException("Unknown node type: " + type.getName());
     }
     node.setParent(parent);
+    if(token != null) {
+      node.setLine(token.getLine());
+      node.setTemplate(token.getTemplate());    	
+    }
+
     return node;
   }
   
   /**
    * 
    */
-  public IAstNode create(Token token, IAstNode parent) {
-    AstNode node = null;
+  public IAstNode create(IToken token, IAstNode parent) {
+    AbstractAstNode node = null;
 
     if(token.getType().equals(TokenType.IDENTIFIER)) {
       node = new IdentifierNode();
@@ -122,6 +128,8 @@ public class AstNodeFactory implements IAstNodeFactory {
     } else {
     	throw new SyntaxException("Unknown token type: " + token.getType());
     }
+    node.setLine(token.getLine());
+    node.setTemplate(token.getTemplate());
     
     if(parent != null) {
     	node.setParent(parent);
@@ -132,7 +140,7 @@ public class AstNodeFactory implements IAstNodeFactory {
   /**
    * 
    */
-  public IAstNode create(Token token) {
+  public IAstNode create(IToken token) {
     return create(token, null);
   }
 
@@ -141,8 +149,8 @@ public class AstNodeFactory implements IAstNodeFactory {
    * @param type
    * @return
    */
-  public IAstNode create(IAstNodeType type) {
-  	return create(type, null);
+  public IAstNode create(IAstNodeType type, IToken token) {
+  	return create(type, token, null);
   }
   
 }

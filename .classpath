@@ -9,6 +9,6 @@
 	<classpathentry kind="var" path="COMMON_BUILD/lib/fitnesse/fitnesse.jar"/>
 	<classpathentry kind="var" path="COMMON_BUILD/lib/junit3/junit.jar"/>
 	<classpathentry kind="var" path="COMMON_BUILD/lib/junitperf/lib/junitperf-1.9.1.jar"/>
-	<classpathentry kind="lib" path="lib/runtime/jakarta-oro-2.0.8.jar"/>
+	<classpathentry kind="lib" path="lib/runtime/jakarta-oro.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

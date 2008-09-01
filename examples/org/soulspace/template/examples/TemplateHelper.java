@@ -9,12 +9,12 @@ import java.io.IOException;
 import org.soulspace.template.TemplateEngine;
 import org.soulspace.template.datasource.IDataSource;
 import org.soulspace.template.datasource.impl.BeanDataSource;
+import org.soulspace.template.exception.GenerateException;
+import org.soulspace.template.exception.SyntaxException;
+import org.soulspace.template.exception.UnknownTokenException;
 import org.soulspace.template.impl.TemplateEngineImpl;
-import org.soulspace.template.parser.GenerateException;
-import org.soulspace.template.parser.SyntaxException;
-import org.soulspace.template.symbols.ISymbolTable;
-import org.soulspace.template.symbols.impl.SymbolTable;
-import org.soulspace.template.tokenizer.UnknownTokenException;
+import org.soulspace.template.value.ISymbolTable;
+import org.soulspace.template.value.impl.SymbolTable;
 
 public class TemplateHelper {
 

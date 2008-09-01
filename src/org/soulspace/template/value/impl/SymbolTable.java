@@ -3,14 +3,15 @@
  *
  * Created on Feb 14, 2003
  */
-package org.soulspace.template.symbols.impl;
+package org.soulspace.template.value.impl;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import org.soulspace.template.symbols.ISymbol;
-import org.soulspace.template.symbols.ISymbolTable;
+import org.soulspace.template.value.ISymbolTable;
+import org.soulspace.template.value.IValue;
 
 /**
  * SymbolTable is a Map based implementation of ISymbolTable.
@@ -20,13 +21,13 @@ import org.soulspace.template.symbols.ISymbolTable;
  */
 public class SymbolTable implements ISymbolTable {
 
-	private Map<String, ISymbol> symbolTable;
+	private Map<String, IValue> symbolTable;
 
 	/**
 	 * Constructor
 	 */
 	public SymbolTable() {
-		symbolTable = new HashMap<String, ISymbol>();
+		symbolTable = new HashMap<String, IValue>();
 	}
 
 	/**
@@ -35,7 +36,7 @@ public class SymbolTable implements ISymbolTable {
 	 * @param data the value of the symbol
 	 */
 	public void addNewStringSymbol(String name, String data) {
-		StringSymbol stringSymbol = new StringSymbol(data);
+		StringValue stringSymbol = new StringValue(data);
 		addSymbol(name, stringSymbol);
 	}
 
@@ -45,7 +46,7 @@ public class SymbolTable implements ISymbolTable {
 	 * @param data the value of the symbol
 	 */
 	public void addNewNumericSymbol(String name, String data) {
-		NumericSymbol numericSymbol = new NumericSymbol(data);
+		NumericValue numericSymbol = new NumericValue(data);
 		addSymbol(name, numericSymbol);
 	}
 
@@ -54,8 +55,8 @@ public class SymbolTable implements ISymbolTable {
 	 * @param name the name of the symbol
 	 * @param data the value of the symbol
 	 */
-	public void addNewListSymbol(String name, List<ISymbol> data) {
-		ListSymbol listSymbol = new ListSymbol(data);
+	public void addNewListSymbol(String name, List<IValue> data) {
+		ListValue listSymbol = new ListValue(data);
 		addSymbol(name, listSymbol);
 	}
 
@@ -65,7 +66,7 @@ public class SymbolTable implements ISymbolTable {
 	 * @param data the value of the symbol
 	 */
 	public void addNewMapSymbol(String name, ISymbolTable data) {
-		MapSymbol mapSymbol = new MapSymbol(data);
+		MapValue mapSymbol = new MapValue(data);
 		addSymbol(name, mapSymbol);
 	}
 
@@ -74,19 +75,22 @@ public class SymbolTable implements ISymbolTable {
 	 * @param name the name of the symbol
 	 * @param symbol the symbol to add
 	 */
-	public void addSymbol(String name, ISymbol symbol) {
+	public void addSymbol(String name, IValue symbol) {
 		this.symbolTable.put(name, symbol);
 	}
 	
+	public void addSymbolTable(ISymbolTable symbolTable) {
+		this.symbolTable.putAll(((SymbolTable) symbolTable).symbolTable);
+	}
 
 	/**
 	 * Retrieves a symbol by name
 	 * @param name the name of the symbol to retrieve
 	 * @return ISymbol - symbol, if symbol is found - null if symbol could not be found
 	 */
-	public ISymbol getSymbol(String name) {
+	public IValue getSymbol(String name) {
     if(name != null && !name.equals("")) {
-      return (ISymbol) symbolTable.get(name);      
+      return (IValue) symbolTable.get(name);      
     }
     return null;
 	}
@@ -97,5 +101,8 @@ public class SymbolTable implements ISymbolTable {
 	public int getSymbolCount() {
 		return symbolTable.size();	
 	}
-
+	
+	public Set<String> getKeySet() {
+		return symbolTable.keySet();
+	}
 }
