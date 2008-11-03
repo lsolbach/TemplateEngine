@@ -109,11 +109,11 @@ public class TokenizerImpl implements Tokenizer {
 
       // comment, just count lines
       if(comment != null) {
-        tokenList.incCurrentLines(comment.split("(\r\n|\n)").length - 1);
+        tokenList.incCurrentLines(comment.split("(\\r\\n|\\n)").length - 1);
       }
       
       if (code != null) {
-      	String[] codeLines = code.split("(\r\n|\n)");
+      	String[] codeLines = code.split("(\\r\\n|\\n)");
       	boolean incLine = false;
       	for(String codeLine : codeLines) {
         	if(incLine) {
@@ -127,12 +127,16 @@ public class TokenizerImpl implements Tokenizer {
       }
       if (text != null) {
       	// count line
-      	if(text.matches("(?s)^(\r\n|\n)(.)*$")) {
+      	if(text.matches("(?s)^(\\r\\n|\\n)(.)*$")) {
       		tokenList.incCurrentLine();      		
       	}
-      	String[] textLines = text.split("(\r\n|\n)");
-      	for(String textLine : textLines) {
-        	tokenizeText(tokenList, textLine);      		
+      	String[] textLines = text.split("(\\r\\n|\\n)");
+      	for(int i = 0; i < textLines.length; i++) {
+      		String textLine = textLines[i];
+        	tokenizeText(tokenList, textLine);		
+        	if(i < textLines.length - 1) {
+          	tokenizeText(tokenList, "\n");
+        	}
       	}
       }
     }
@@ -192,7 +196,7 @@ public class TokenizerImpl implements Tokenizer {
         && !token.getType().equals(TokenType.IDENTIFIER)) {
       if (RegExHelper.match(text, "^(\\n|\\r\\n)(\\w*)$") != null) {
         // filter blank lines
-        tokenList.addToken(TokenType.TEXT, "");
+//        tokenList.addToken(TokenType.TEXT, "");
       } else {
       	// create new token
         tokenList.addToken(TokenType.TEXT, text);
