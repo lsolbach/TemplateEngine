@@ -54,6 +54,23 @@ public class AstGeneratorTest extends TestCase {
     super.tearDown();
 	}
 
+	public void testLineFeeds() {
+    String result = "";
+
+		StringBuilder sb = new StringBuilder(128);
+		sb.append("Wer reitet so spät\n");
+		sb.append(" durch Nacht und Wind?\n");
+		sb.append("Es ist der Vater\n");
+		sb.append(" mit seinem Kind");
+		
+    tl = t.tokenize(sb.toString());
+    root = p.parse(tl);
+    result = g.generate(root, st);
+    System.out.println(result);
+    assertEquals("Result correct", sb.toString(), result);    
+
+	}
+	
 	public void testGenAssign() {
     String result = "";
     st.addNewStringSymbol("a", "Hello World");
