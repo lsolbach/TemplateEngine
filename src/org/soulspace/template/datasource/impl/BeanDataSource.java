@@ -52,7 +52,11 @@ public class BeanDataSource implements IDataSource {
 	}	
 	
 	public void add(String name, Object bean) {
-    if(bean instanceof Map) {
+		if(bean instanceof String) {
+			symbolTable.addNewStringSymbol(name, (String) bean);
+		} else if(bean instanceof Number) {
+			symbolTable.addNewNumericSymbol(name, String.valueOf(bean));
+		} else if(bean instanceof Map) {
     	insert(symbolTable, name, bean);
     } else if(bean instanceof Collection) {
     	insert(symbolTable, name, bean);
