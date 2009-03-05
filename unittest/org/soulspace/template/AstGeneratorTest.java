@@ -70,6 +70,28 @@ public class AstGeneratorTest extends TestCase {
     assertEquals("Result correct", sb.toString(), result);    
 
 	}
+
+	public void testLineFeeds2() {
+    String result = "";
+
+    st.addNewListSymbol("e", new ArrayList<IValue>());
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
+
+    StringBuilder sb = new StringBuilder(128);
+		sb.append("<?foreach s <- e {?>");
+		sb.append("get<?s?>();\n");
+		sb.append("<?}?>");
+		
+		String expected = "getJu();\ngetHu();\n";
+		
+    tl = t.tokenize(sb.toString());
+    root = p.parse(tl);
+    result = g.generate(root, st);
+    System.out.println(result);
+    assertEquals("Result correct", expected, result);    
+
+	}	
 	
 	public void testGenAssign() {
     String result = "";
