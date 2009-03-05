@@ -16,6 +16,7 @@ public class StaticMethodRegistryImpl implements IMethodRegistry {
 		methodClassList.add("org.soulspace.template.method.impl.ToLowerMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.ToUpperMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.StartsWithMethodImpl");
+		methodClassList.add("org.soulspace.template.method.impl.MatchesMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.SplitMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.CamelCaseToUnderScoreMethodImpl");
 
