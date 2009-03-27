@@ -93,6 +93,30 @@ public class AstGeneratorTest extends TestCase {
 
 	}	
 	
+	public void testLineFeeds3() {
+    String result = "";
+
+    st.addNewListSymbol("e", new ArrayList<IValue>());
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
+    ((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
+
+    StringBuilder sb = new StringBuilder(128);
+		sb.append("<?xml version=\"1.0\"?>\n");
+		sb.append("<root>\n");
+		sb.append("<\\root>");
+		
+		String expected = "<?xml version=\"1.0\"?>\n" +
+				"<root>\n" +
+				"<\\root>";
+		
+    tl = t.tokenize(sb.toString());
+    root = p.parse(tl);
+    result = g.generate(root, st);
+    System.out.println(result);
+    assertEquals("Result correct", expected, result);    
+
+	}	
+	
 	public void testGenAssign() {
     String result = "";
     st.addNewStringSymbol("a", "Hello World");
