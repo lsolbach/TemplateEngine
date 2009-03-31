@@ -5,10 +5,10 @@
 	<classpathentry kind="src" path="fittest"/>
 	<classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
 	<classpathentry kind="src" path="unittest"/>
-	<classpathentry kind="var" path="COMMON_BUILD/lib/fitnesse/fitlibrary.jar"/>
-	<classpathentry kind="var" path="COMMON_BUILD/lib/fitnesse/fitnesse.jar"/>
-	<classpathentry kind="var" path="COMMON_BUILD/lib/junit3/junit.jar"/>
-	<classpathentry kind="var" path="COMMON_BUILD/lib/junitperf/lib/junitperf-1.9.1.jar"/>
+	<classpathentry kind="lib" path="lib/dev/fitlibrary.jar"/>
+	<classpathentry kind="lib" path="lib/dev/fitnesse.jar"/>
+	<classpathentry kind="lib" path="lib/dev/junit.jar"/>
+	<classpathentry kind="lib" path="lib/dev/junitperf.jar"/>
 	<classpathentry kind="lib" path="lib/runtime/jakarta-oro.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
