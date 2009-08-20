@@ -44,8 +44,14 @@ public class FileUtils {
     String line = null;
 
     BufferedReader in = new BufferedReader(new FileReader(file));
+    boolean first = true;
     while((line = in.readLine()) != null) {
-      buffer.append(line + "\n");
+      if(first) {
+    	  first = false;
+      } else {
+    	  buffer.append("\n");
+      }
+      buffer.append(line);
     }
 		in.close();
 		return buffer.toString();	

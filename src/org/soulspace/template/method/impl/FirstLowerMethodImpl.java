@@ -22,7 +22,13 @@ public class FirstLowerMethodImpl extends StringToStringMethod {
 
 		IStringValue value = (IStringValue) arguments.get(0);
 		String string = value.getData();
-		result = new StringValue(string.substring(0, 1).toLowerCase() + string.substring(1));
+		if(string.length() == 0) {
+			result = new StringValue(string);
+		} else if(string.length() == 1) {
+			result = new StringValue(string.toLowerCase());
+		} else {
+			result = new StringValue(string.substring(0, 1).toLowerCase() + string.substring(1));
+		}
 		
 		return result;
 	}
