@@ -19,6 +19,14 @@ Features:
 Runtime Requirements:
 Jakarta ORO >= 2.0.8
 
+
+Version 0.9.17 (--.--.2009)
+---------------------------
+
+* aded method string.matches()
+* fixed string.firstUpper() and string.firstLower() for empty strings
+* fixed newline handling
+
 Version 0.9.15 (01.09.2008)
 ---------------------------
 
