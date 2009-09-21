@@ -20,12 +20,14 @@ Runtime Requirements:
 Jakarta ORO >= 2.0.8
 
 
-Version 0.9.17 (--.--.2009)
+Version 0.9.17 (21.09.2009)
 ---------------------------
 
-* aded method string.matches()
+* aded methods string.matches(), string.substring(), string.indexOf() and string.size()
 * fixed string.firstUpper() and string.firstLower() for empty strings
+* added TemplateEngine.generate() without parameters
 * fixed newline handling
+* refactored AstParserImpl
 
 Version 0.9.15 (01.09.2008)
 ---------------------------
