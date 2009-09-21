@@ -40,6 +40,12 @@ public class TemplateEngineImpl implements TemplateEngine {
 
 	}
 
+	/**
+	 * Load and parse the given template
+	 * 
+	 * @throws UnknownTokenException
+	 * @throws SyntaxException
+	 */
 	public void loadTemplate(String template) throws UnknownTokenException,
 			SyntaxException {
 		ITokenList tokenList = tokenizer.createTokenList();
@@ -47,6 +53,13 @@ public class TemplateEngineImpl implements TemplateEngine {
 		parse(tokenList);
 	}
 
+	/**
+	 * Load and parse the given template file
+	 * 
+	 * @throws UnknownTokenException
+	 * @throws SyntaxException
+	 * @throws IOException
+	 */
 	public void loadTemplate(File templateFile) throws UnknownTokenException,
 			SyntaxException, IOException {
 		ITokenList tokenList = tokenizer.createTokenList();
@@ -54,6 +67,12 @@ public class TemplateEngineImpl implements TemplateEngine {
 		parse(tokenList);
 	}
 
+	/**
+	 * Load and parse the given templates
+	 * 
+	 * @throws UnknownTokenException
+	 * @throws SyntaxException
+	 */
 	public void loadTemplates(String[] templates)
 			throws UnknownTokenException, SyntaxException {
 		ITokenList tokenList = tokenizer.createTokenList();
@@ -63,6 +82,13 @@ public class TemplateEngineImpl implements TemplateEngine {
 		parse(tokenList);
 	}
 
+	/**
+	 * Load and parse the given template files
+	 * 
+	 * @throws UnknownTokenException
+	 * @throws SyntaxException
+	 * @throws IOException
+	 */
 	public void loadTemplates(File[] templateFiles)
 			throws UnknownTokenException, SyntaxException, IOException {
 		ITokenList tokenList = tokenizer.createTokenList();
@@ -73,17 +99,16 @@ public class TemplateEngineImpl implements TemplateEngine {
 		parse(tokenList);
 	}
 
-	private ITokenList tokenize(ITokenList tokenList, String name, String content) {
-		tokenList.setTemplate(name);
-		return tokenizer.tokenize(tokenList, content);
-	}
-
-	private boolean parse(ITokenList tokenList) {
-		if (tokenList.size() == 0) {
-			return false;
-		}
-		root = parser.parse(tokenList);
-		return true;
+	/**
+	 * Generate output with the parsed template
+	 * 
+	 * @return generated output
+	 * @throws SyntaxException
+	 * @throws GenerateException
+	 */
+	public String generate() throws SyntaxException,
+			GenerateException {
+		return root.generateSymbol().evaluate();		
 	}
 	
 	/**
@@ -117,4 +142,18 @@ public class TemplateEngineImpl implements TemplateEngine {
 		return root.generateSymbol().evaluate();
 	}
 	
+	private ITokenList tokenize(ITokenList tokenList, String name, String content) {
+		tokenList.setTemplate(name);
+		return tokenizer.tokenize(tokenList, content);
+	}
+
+	private boolean parse(ITokenList tokenList) {
+		if (tokenList.size() == 0) {
+			return false;
+		}
+		root = parser.parse(tokenList);
+		return true;
+	}
+	
+
 }

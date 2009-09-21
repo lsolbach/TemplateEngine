@@ -26,13 +26,13 @@ public interface TemplateEngine {
    * @throws UnknownTokenException
    * @throws SyntaxException
    */
-  public void loadTemplate(String template) throws UnknownTokenException, SyntaxException;
+  void loadTemplate(String template) throws UnknownTokenException, SyntaxException;
 
-  public void loadTemplate(File templateFile) throws UnknownTokenException, SyntaxException, IOException;
+  void loadTemplate(File templateFile) throws UnknownTokenException, SyntaxException, IOException;
 
-  public void loadTemplates(String[] templates) throws UnknownTokenException, SyntaxException;
+  void loadTemplates(String[] templates) throws UnknownTokenException, SyntaxException;
   
-  public void loadTemplates(File[] templateFiles) throws UnknownTokenException, SyntaxException, IOException;
+  void loadTemplates(File[] templateFiles) throws UnknownTokenException, SyntaxException, IOException;
   
   /**
    * 

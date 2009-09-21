@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook EBNF Module V1.2CR1//EN"
-"http://www.oasis-open.org/docbook/xml/ebnf/1.2CR1/dbebnf.dtd">
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook EBNF Module V1.2CR1//EN" "http://www.oasis-open.org/docbook/xml/ebnf/1.2CR1/dbebnf.dtd">
 <book>
   <bookinfo>
     <title>Soulspace Template Engine Manual</title>
@@ -19,6 +18,14 @@
       <year>2004</year>
 
       <year>2005</year>
+
+      <year>2006</year>
+
+      <year>2007</year>
+
+      <year>2008</year>
+
+      <year>2009</year>
 
       <holder>Ludger Solbach</holder>
     </copyright>
@@ -55,9 +62,9 @@
     </sect1>
 
     <sect1>
-      <title>Possible Usages</title>
+      <title>What is it used for?</title>
 
-      <para>The Template Engin can be used for various tasks including the
+      <para>The Template Engine can be used for various tasks including the
       dynamic generation of HTML pages, the generation of business reports,
       code generation for model driven architecture (MDA). It is even possible
       to use the Template Engine as a rule engine.</para>
@@ -88,11 +95,15 @@
           </listitem>
 
           <listitem>
-            <para>Method calls</para>
+            <para>Method definitions</para>
           </listitem>
 
           <listitem>
             <para>Java data binding</para>
+          </listitem>
+
+          <listitem>
+            <para>Extensible through Java</para>
           </listitem>
         </itemizedlist></para>
     </sect1>
@@ -183,7 +194,7 @@ System.out.println(output);</programlisting></para>
   <chapter>
     <title>The Template Language</title>
 
-    <para>A template consists of template text and template code.</para>
+    <para>A template can consist of 3 types of text blocks, text, code and comments.</para>
 
     <sect1>
       <title>Template text</title>
@@ -207,6 +218,12 @@ System.out.println(output);</programlisting></para>
       expressions. Statements control the behaviour of the generation process
       and expressions are used to print data, calculate values or as
       conditions in statements.</para>
+    </sect1>
+
+    <sect1>
+      <title>Template Comments</title>
+
+      <para></para>
     </sect1>
   </chapter>
 
@@ -679,72 +696,275 @@ while(i &lt; OrderItems) {?&gt;
     shown.</para>
 
     <productionset>
-      <production id="ebnf.TERM">
-        <lhs>TEMPLATE_CONTENT</lhs>
-
-        <rhs>{( <nonterminal>XML_DECL</nonterminal> |
-        <nonterminal>CODE</nonterminal> | <nonterminal>TEXT</nonterminal>
-        )}</rhs>
+      <production id="template.START">
+        <lhs>START</lhs>
+        <rhs>
+        	{( <nonterminal def="template.XML_DECL">XML_DECL</nonterminal> |
+        	<nonterminal def="template.CODE">CODE</nonterminal> | <nonterminal def="template.TEXT">TEXT</nonterminal>
+        	)}
+        </rhs>
       </production>
 
-      <production id="ebnf.CODE">
+      <production id="template.CODE">
         <lhs>CODE</lhs>
-
-        <rhs><nonterminal>CODE</nonterminal></rhs>
-      </production>
-
-      <production id="ebnf.TERM">
+        <rhs>
+          <nonterminal def="template.TERM">TERM</nonterminal>
+		</rhs>
+	  </production>
+	  
+      <production id="template.TERM">
         <lhs>TERM</lhs>
-
-        <rhs><nonterminal>CODE</nonterminal></rhs>
+        <rhs>
+        	<nonterminal def="template.TEXT">TEXT</nonterminal> | 
+        	<nonterminal def="template.STMT">STMT</nonterminal> |
+            <nonterminal def="template.EXPR">EXPR</nonterminal>
+        </rhs>
       </production>
 
-      <production id="ebnf.TERM">
-        <lhs>TERM</lhs>
-
-        <rhs><nonterminal>CODE</nonterminal></rhs>
+      <production id="template.XML_DECL">
+        <lhs>XML_DECL</lhs>
+        <rhs>
+        	xml_declaration
+        </rhs>
       </production>
 
-      <production id="ebnf.TERM">
-        <lhs>TERM</lhs>
-
-        <rhs><nonterminal>CODE</nonterminal></rhs>
+      <production id="template.TEXT">
+        <lhs>TEXT</lhs>
+        <rhs>
+        	text
+        </rhs>
       </production>
 
-      <production id="ebnf.ADD_EXPR">
+      <production id="template.STMT">
+        <lhs>STMT</lhs>
+        <rhs>
+        	<nonterminal def="template.IF_STMT">IF_STMT</nonterminal> |
+        	<nonterminal def="template.WHILE_STMT">WHILE_STMT</nonterminal> |
+        	<nonterminal def="template.FOREACH_STMT">FOREACH_STMT</nonterminal> | 
+        	<nonterminal def="template.DECL_STMT">DECL_STMT</nonterminal> | 
+        	<nonterminal def="template.BLOCK_STMT">BLOCK_STMT</nonterminal>
+        </rhs>
+      </production>
+
+      <production id="template.IF_STMT">
+        <lhs>IF_STMT</lhs>
+		<rhs>
+			'if', <nonterminal def="template.EXPR">EXPR</nonterminal>,
+			 <nonterminal def="template.BLOCK_STMT">STMT</nonterminal>
+			 'else', <nonterminal def="template.BLOCK_STMT">STMT</nonterminal>
+		</rhs>
+      </production>
+
+      <production id="template.WHILE_STMT">
+        <lhs>WHILE_STMT</lhs>
+		<rhs>
+			'while', <nonterminal def="template.EXPR">EXPR</nonterminal>, <nonterminal def="template.BLOCK_STMT">STMT</nonterminal>
+		</rhs>
+      </production>
+
+      <production id="template.FOREACH_STMT">
+        <lhs>FOREACH_STMT</lhs>
+		<rhs>
+			'foreach' <nonterminal def="template.id">identifier</nonterminal>,
+			 '|', <nonterminal def="template.EXPR">EXPR</nonterminal>,
+			 '&lt;-', <nonterminal def="template.EXPR">EXPR</nonterminal>
+			 <nonterminal def="template.STMT">STMT</nonterminal>
+		</rhs>
+      </production>
+
+      <production id="template.DECL_STMT">
+        <lhs>DECL_STMT</lhs>
+		<rhs>
+		  <nonterminal def="template.METHOD_DECL">METHOD_DECL</nonterminal> |
+		  <nonterminal def="template.SYMBOL_DECL">SYMBOL_DECL</nonterminal>
+		</rhs>
+      </production>
+
+      <production id="template.METHOD_DECL">
+        <lhs>METHOD_DECL</lhs>
+		<rhs>
+		  <nonterminal def="template.type">type</nonterminal>, <nonterminal def="template.id">id</nonterminal>, '(', <nonterminal def="template.PARAM_DECL">PARAM_DECL</nonterminal> ')' <nonterminal>BLOCK_STMT</nonterminal>
+		</rhs>
+      </production>
+
+      <production id="template.PARAM_DECL">
+        <lhs>PARAM_DECL</lhs>
+		<rhs>
+		  <nonterminal def="template.SYMBOL_DECL">SYMBOL_DECL</nonterminal>
+		  <nonterminal def="template.SEPARATOR">separator</nonterminal> <nonterminal def="template.SYMBOL_DECL">SYMBOL_DECL</nonterminal>
+		</rhs>
+      </production>
+
+      <production id="template.SYMBOL_DECL">
+        <lhs>SYMBOL_DECL</lhs>
+		<rhs>
+		  <nonterminal def="template.type">type</nonterminal>, <nonterminal def="template.id">id</nonterminal>, (=, <nonterminal def="template.EXPR">EXPR</nonterminal>)?
+		</rhs>
+      </production>
+
+      <production id="template.BLOCK_STMT">
+        <lhs>BLOCK_STMT</lhs>
+		<rhs>
+			'{' (<nonterminal def="template.STMT">STMT</nonterminal>) '}'
+		</rhs>
+      </production>
+
+      <production id="template.EXPR">
+        <lhs>EXPR</lhs>
+        <rhs>
+        	<nonterminal def="template.ASSIGN_EXPR">ASSIGN_EXPR</nonterminal>
+        </rhs>
+      </production>
+
+      <production id="template.ASSIGN_EXPR">
+        <lhs>ASSIGN_EXPR</lhs>
+        <rhs>
+        	<nonterminal def="template.LOGICAL_OR_EXPR">LOGICAL_OR_EXPR</nonterminal>, '=', <nonterminal def="template.LOGICAL_OR_EXPR">LOGICAL_OR_EXPR</nonterminal>
+        </rhs>
+      </production>
+
+      <production id="template.LOGICAL_OR_EXPR">
+        <lhs>LOGICAL_OR_EXPR</lhs>
+        <rhs>
+        	<nonterminal def="template.LOGICAL_AND_EXPR">LOGICAL_AND_EXPR</nonterminal>, '||', <nonterminal def="template.LOGICAL_AND_EXPR">LOGICAL_AND_EXPR</nonterminal>
+        </rhs>
+      </production>
+
+      <production id="template.LOGICAL_AND_EXPR">
+        <lhs>LOGICAL_AND_EXPR</lhs>
+        <rhs>
+        	<nonterminal def="template.EQUAL_EXPR">EQUAL_EXPR</nonterminal>, '&amp;&amp;', <nonterminal def="template.EQUAL_EXPR">EQUAL_EXPR</nonterminal>
+        </rhs>
+      </production>
+
+      <production id="template.EQUAL_EXPR">
+        <lhs>EQUAL_EXPR</lhs>
+        <rhs>
+        	<nonterminal def="template.RELATIONAL_EXPR">RELATIONAL_EXPR</nonterminal>, '==', <nonterminal def="template.EQUAL_EXPR">EQUAL_EXPR</nonterminal>
+        	<nonterminal def="template.RELATIONAL_EXPR">RELATIONAL_EXPR</nonterminal>, '!=', <nonterminal def="template.EQUAL_EXPR">EQUAL_EXPR</nonterminal>
+        	<nonterminal def="template.RELATIONAL_EXPR">RELATIONAL_EXPR</nonterminal>, 'eq', <nonterminal def="template.EQUAL_EXPR">EQUAL_EXPR</nonterminal>
+        	<nonterminal def="template.RELATIONAL_EXPR">RELATIONAL_EXPR</nonterminal>, 'ne', <nonterminal def="template.EQUAL_EXPR">EQUAL_EXPR</nonterminal>
+        </rhs>
+      </production>
+
+      <production id="template.RELATIONAL_EXPR">
+        <lhs>RELATIONAL_EXPR</lhs>
+        <rhs>
+        	<nonterminal def="template.ADD_EXPR">ADD_EXPR</nonterminal>, '&lt;', <nonterminal def="template.ADD_EXPR">ADD_EXPR</nonterminal> |
+        	<nonterminal def="template.ADD_EXPR">ADD_EXPR</nonterminal>, '&lt;=', <nonterminal def="template.ADD_EXPR">ADD_EXPR</nonterminal> |
+        	<nonterminal def="template.ADD_EXPR">ADD_EXPR</nonterminal>, '&gt;', <nonterminal def="template.ADD_EXPR">ADD_EXPR</nonterminal> |
+        	<nonterminal def="template.ADD_EXPR">ADD_EXPR</nonterminal>, '&gt;=', <nonterminal def="template.ADD_EXPR">ADD_EXPR</nonterminal>
+        </rhs>
+      </production>
+
+      <production id="template.ADD_EXPR">
         <lhs>ADD_EXPR</lhs>
-
-        <rhs><nonterminal>MULT_EXPR</nonterminal>, '+',
-        <nonterminal>MULT_EXPR</nonterminal> |
-        <nonterminal>MULT_EXPR</nonterminal>, '-',
-        <nonterminal>MULT_EXPR</nonterminal></rhs>
+        <rhs>
+        	<nonterminal def="template.MULT_EXPR">MULT_EXPR</nonterminal>, '+', <nonterminal def="template.MULT_EXPR">MULT_EXPR</nonterminal> |
+        	<nonterminal def="template.MULT_EXPR">MULT_EXPR</nonterminal>, '-', <nonterminal def="template.MULT_EXPR">MULT_EXPR</nonterminal>
+        </rhs>
       </production>
 
-      <production id="ebnf.MULT_EXPR">
+      <production id="template.MULT_EXPR">
         <lhs>MULT_EXPR</lhs>
-
-        <rhs><nonterminal>UNARY_EXPR</nonterminal>, '*',
-        <nonterminal>MULT_EXPR</nonterminal> |
-        <nonterminal>UNARY_EXPR</nonterminal>, '/',
-        <nonterminal>MULT_EXPR</nonterminal>
-        <nonterminal>UNARY_EXPR</nonterminal>, '//',
-        <nonterminal>MULT_EXPR</nonterminal>
-        <nonterminal>UNARY_EXPR</nonterminal>, '%',
-        <nonterminal>MULT_EXPR</nonterminal></rhs>
+        <rhs>
+        	<nonterminal def="template.UNARY_EXPR">UNARY_EXPR</nonterminal>, '*', <nonterminal def="template.MULT_EXPR">MULT_EXPR</nonterminal> |
+        	<nonterminal def="template.UNARY_EXPR">UNARY_EXPR</nonterminal>, '/', <nonterminal def="template.MULT_EXPR">MULT_EXPR</nonterminal> |
+        	<nonterminal def="template.UNARY_EXPR">UNARY_EXPR</nonterminal>, '//', <nonterminal def="template.MULT_EXPR">MULT_EXPR</nonterminal> |
+        	<nonterminal def="template.UNARY_EXPR">UNARY_EXPR</nonterminal>, '%', <nonterminal def="template.MULT_EXPR">MULT_EXPR</nonterminal>
+        </rhs>
       </production>
 
-      <production id="ebnf.digit">
-        <lhs>digit</lhs>
+      <production id="template.UNARY_EXPR">
+        <lhs>UNARY_EXPR</lhs>
+        <rhs>
+        	'-', <nonterminal def="template.PRIMARY_EXPR">PRIMARY_EXPR</nonterminal> |
+        	'!', <nonterminal def="template.PRIMARY_EXPR">PRIMARY_EXPR</nonterminal>
+        </rhs>
+      </production>
 
-        <rhs>[0-9]</rhs>
+      <production id="template.PRIMARY_EXPR">
+        <lhs>PRIMARY_EXPR</lhs>
+        <rhs>
+        	'(', <nonterminal def="template.EXPR">EXPR</nonterminal>, ')' |
+        	<nonterminal def="template.number_const">number_const</nonterminal> |
+        	<nonterminal def="template.string_const">string_const</nonterminal> |
+        	<nonterminal def="template.DEREF_EXPR">DEREF_EXPR</nonterminal>      	
+        </rhs>
+      </production>
 
+      <production id="template.DEREF_EXPR">
+        <lhs>DEREF_EXPR</lhs>
+        <rhs>
+        	<nonterminal def="template.ID_EXPR">ID_EXPR</nonterminal> ':' <nonterminal def="template.PRIMARY_EXPR">PRIMARY_EXPR</nonterminal>
+        	'.' <nonterminal def="template.TYPE_METHOD_CALL">TYPE_METHOD_CALL</nonterminal> <nonterminal def="template.ARG_LIST">ARG_LIST</nonterminal>
+        </rhs>
+      </production>
+
+      <production id="template.ID_EXPR">
+        <lhs>ID_EXPR</lhs>
+        <rhs>
+        	<nonterminal def="template.id">id</nonterminal> |
+        	'[', <nonterminal def="template.EXPR">EXPR</nonterminal>, ']' |
+        	'(', <nonterminal def="template.ARG_LIST">ARG_LIST</nonterminal>, ')'
+        </rhs>
+      </production>
+
+      <production id="template.ARG_LIST">
+        <lhs>ARG_LIST</lhs>
+        <rhs>
+        	<nonterminal def="template.EXPR">EXPR</nonterminal>, <nonterminal def="template.separator">separator</nonterminal>
+        </rhs>
+      </production>
+
+      <production id="template.ARG_LIST">
+        <lhs>ARG_LIST</lhs>
+        <rhs>
+        	<nonterminal def="template.EXPR">EXPR</nonterminal>, <nonterminal def="template.separator">separator</nonterminal>
+        </rhs>
+      </production>
+
+      <production id="template.TEXT">
+        <lhs>TEXT</lhs>
+        <rhs>
+        	<nonterminal def="template.text">text</nonterminal>
+        </rhs>
+      </production>
+
+      <production id="template.char">
+        <lhs>char</lhs>
+        <rhs>
+        	[a-zA-Z]
+        </rhs>
         <constraint linkend="test" />
+      </production>      
+
+      <production id="template.digit">
+        <lhs>digit</lhs>
+        <rhs>
+        	[0-9]
+        </rhs>
+        <constraint linkend="test" />
+      </production>
+
+      <production id="template.char">
+        <lhs>char</lhs>
+        <rhs>
+        	[a-zA-Z]
+        </rhs>
+        <constraint linkend="test" />
+      </production>      
+
+      <production id="template.separator">
+        <lhs>separator</lhs>
+        <rhs>
+        	','
+        </rhs>
       </production>
     </productionset>
 
     <constraintdef id="test">
       <title>Test constraint</title>
-
       <para>Constraint for a production</para>
     </constraintdef>
   </chapter>
@@ -759,14 +979,6 @@ while(i &lt; OrderItems) {?&gt;
     <title>Todo's</title>
 
     <para><itemizedlist>
-        <listitem>
-          <para>Method calls</para>
-        </listitem>
-
-        <listitem>
-          <para>Method definitions in the template</para>
-        </listitem>
-
         <listitem>
           <para>Date variables</para>
         </listitem>

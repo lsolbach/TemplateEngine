@@ -4,22 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.value.IStringValue;
+import org.soulspace.template.method.IMethod;
+import org.soulspace.template.value.IMapValue;
+import org.soulspace.template.value.INumericValue;
 import org.soulspace.template.value.IValue;
 import org.soulspace.template.value.impl.StringValue;
 
-public class FirstUpperMethodImpl extends AbstractMethod {
+public class SubstringMethodImpl extends AbstractMethod {
 
-	private static final String NAME = "firstUpper";
+	private static final String NAME = "substring";
 	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
 	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
 	protected static final Class<? extends IValue> RETURN_TYPE = StringValue.class;
 
 	static {
 		DEFINED_TYPES.add(StringValue.class);
+		ARGUMENT_TYPES.add(INumericValue.class);
+		ARGUMENT_TYPES.add(INumericValue.class);
 	}
-
-	public FirstUpperMethodImpl() {
+	
+	public SubstringMethodImpl() {
 		super();
 		this.name = NAME;
 		this.returnType = RETURN_TYPE;
@@ -29,18 +33,17 @@ public class FirstUpperMethodImpl extends AbstractMethod {
 	
 	@Override
 	protected IValue doEvaluation(List<IValue> arguments) {
-		IValue result = null;
-
-		IStringValue value = (IStringValue) arguments.get(0);
-		String string = value.getData();
-		if(string.length() == 0) {
-			result = new StringValue(string);
-		} else if(string.length() == 1) {
-			result = new StringValue(string.toUpperCase());
+		String value = arguments.get(0).evaluate();
+		Long indexLow = ((INumericValue) arguments.get(1)).asLong();
+		if(arguments.size() == 3) {
+			Long indexHigh = ((INumericValue) arguments.get(2)).asLong();
+			if(indexLow > indexHigh) {
+				return new StringValue("");
+			}			
+			return new StringValue(value.substring(indexLow.intValue(), indexHigh.intValue()));
 		} else {
-			result = new StringValue(string.substring(0, 1).toUpperCase() + string.substring(1));
+			return new StringValue(value.substring(indexLow.intValue()));			
 		}
-		return result;
 	}
 
 }
