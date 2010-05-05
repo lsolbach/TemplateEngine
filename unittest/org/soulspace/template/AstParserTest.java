@@ -78,7 +78,34 @@ public class AstParserTest extends TestCase {
     
 	}
 	
-  public void testDirectArrayMapAccess() {
+	public void testCodeComments() {
+		// code comment in code
+	    tl = t.tokenize("<?/* just a single comment */?>");
+	    root = p.parseTerm(tl, null, false);
+	    assertEquals("AST has no childs", 0, root.getChildNodes().size());
+	    
+	    // code comment in text
+	    tl = t.tokenize("template text " +
+	    		"/* a code comment */" +
+	    		" more template text");
+	    root = p.parseTerm(tl, null, false);
+	    assertEquals("AST has one child", 1, root.getChildNodes().size());
+	    assertEquals("Expecting TEXT", AstNodeType.TEXT, root.getChild(0).getType());
+
+	    // 
+	    tl = t.tokenize("<?" +
+	    		"numeric templateCode" +
+	    		"/* a comment */" +
+	    		"templateCode = 0" +
+	    		"?>");
+	    root = p.parseTerm(tl, null, false);
+	    assertEquals("AST has 2 childs", 2, root.getChildNodes().size());
+	    assertEquals("Expecting DECLARATION", AstNodeType.DECLARATION, root.getChild(0).getType());
+	    assertEquals("Expecting ASSIGN", AstNodeType.ASSIGN, root.getChild(1).getType());
+
+	}
+
+	public void testDirectArrayMapAccess() {
     try {
       tl = t.tokenize("<?if(classes[1]:name eq 'Class2') { 'true' }?>");
       root = p.parseTerm(tl, null, false);

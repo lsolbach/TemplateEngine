@@ -20,57 +20,57 @@ import org.soulspace.template.value.impl.StringValue;
 
 public class PlusNode extends AbstractAstNode {
 
-  /**
+	/**
    * 
    */
-  public PlusNode() {
-    this(null);
-  }
+	public PlusNode() {
+		this(null);
+	}
 
-  /**
-   * @param parent
-   */
-  public PlusNode(IAstNode parent) {
-    super(parent);
-    setType(AstNodeType.PLUS);
-  }
+	/**
+	 * @param parent
+	 */
+	public PlusNode(IAstNode parent) {
+		super(parent);
+		setType(AstNodeType.PLUS);
+	}
 
 	public IValue generateSymbol() {
 		IValue symbol = getChild(0).generateSymbol();
-		if(symbol instanceof IStringValue) {
+		if (symbol instanceof IStringValue) {
 			StringValue string = new StringValue("");
-	    Iterator<IAstNode> it = getChildNodes().iterator();
-	    while(it.hasNext()) {
-	    	IStringValue next = asString(it.next().generateSymbol());
-	    	string = string.add(next);
-	    }
-	    return string;
-		} else if(symbol instanceof INumericValue) {
+			Iterator<IAstNode> it = getChildNodes().iterator();
+			while (it.hasNext()) {
+				IStringValue next = asString(it.next().generateSymbol());
+				string = string.add(next);
+			}
+			return string;
+		} else if (symbol instanceof INumericValue) {
 			NumericValue numeric = new NumericValue(0.0);
-	    Iterator<IAstNode> it = getChildNodes().iterator();
-	    while(it.hasNext()) {
-	    	numeric = numeric.add(asNumeric(it.next().generateSymbol()));
-	    }
+			Iterator<IAstNode> it = getChildNodes().iterator();
+			while (it.hasNext()) {
+				numeric = numeric.add(asNumeric(it.next().generateSymbol()));
+			}
 			return numeric;
-		} else if(symbol instanceof IListValue) {
+		} else if (symbol instanceof IListValue) {
 			ListValue list = new ListValue();
-	    Iterator<IAstNode> it = getChildNodes().iterator();
-	    while(it.hasNext()) {
-	    	IValue s = it.next().generateSymbol();
-	    	if(s instanceof IListValue) {
-		    	list.getData().addAll(((IListValue) s).getData());	    		
-	    	}
-	    }			
+			Iterator<IAstNode> it = getChildNodes().iterator();
+			while (it.hasNext()) {
+				IValue s = it.next().generateSymbol();
+				if (s instanceof IListValue) {
+					list.getData().addAll(((IListValue) s).getData());
+				}
+			}
 			return list;
-		} else if(symbol instanceof IMapValue) {
+		} else if (symbol instanceof IMapValue) {
 			MapValue map = new MapValue();
-	    Iterator<IAstNode> it = getChildNodes().iterator();
-	    while(it.hasNext()) {
-	    	IValue s = it.next().generateSymbol();
-	    	if(s instanceof IMapValue) {
-		    	map.getData().addSymbolTable(((IMapValue) s).getData());	    		
-	    	}
-	    }
+			Iterator<IAstNode> it = getChildNodes().iterator();
+			while (it.hasNext()) {
+				IValue s = it.next().generateSymbol();
+				if (s instanceof IMapValue) {
+					map.getData().addSymbolTable(((IMapValue) s).getData());
+				}
+			}
 			return map;
 		} else {
 			throw new GenerateException("Unknown type!");

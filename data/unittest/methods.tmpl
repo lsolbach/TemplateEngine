@@ -1,0 +1,30 @@
+<?
+
+list aList
+aList = aList.add('hello')
+aList = aList.add('world!')
+
+map aMap
+aMap = aMap.put('hello', 'hello')
+aMap = aMap.put('world!', 'world')
+
+list bList = reflectList(aList)
+map bMap = reflectMap(bMap)
+
+foreach s <- bList {
+	s + ' '
+}
+
+foreach s <- bMap.keyList() {
+	s + ' '
+}
+
+list reflectList(list myList) {
+  myList
+}
+
+map reflectMap(map myMap) {
+  myMap
+}
+
+?>

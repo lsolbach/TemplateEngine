@@ -32,7 +32,7 @@ public class AssignNode extends AbstractAstNode {
   }
 
 
-	public IValue generateSymbol() {
+  public IValue generateSymbol() {
     IAstNode child = null;
     IValue symbol = null;
     String name = "";
@@ -47,38 +47,40 @@ public class AssignNode extends AbstractAstNode {
     if(symbol == null) {
       throw new GenerateException("Symbol not found: " + name);
     }
-    
-    if((child = getChild(1)) != null) {
-      if (symbol.getType().equals(ValueType.STRING)) {
-      	// assign to string symbol
-      	IValue rSymbol = child.generateSymbol();
-        ((IStringValue) symbol).setData(((IStringValue) rSymbol).getData());
-      } else if (symbol.getType().equals(ValueType.NUMERIC)) {
-      	// assign to numeric symbol
-      	IValue rSymbol = child.generateSymbol();
-        ((INumericValue) symbol).setData(((INumericValue) rSymbol).getData());
-      } else if (symbol.getType().equals(ValueType.LIST)) {
-      	// assign to list symbol
-      	IValue aSymbol = child.generateSymbol();
-        if (!(aSymbol instanceof IListValue)) {
-          throw new GenerateException("Symbol not of type list "
-              + child.getData());
-        }
-        ((IListValue) symbol).setData(((IListValue) aSymbol).getData());
-      } else if (symbol.getType().equals(ValueType.MAP)) {
-      	// assign to map symbol
-      	IValue aSymbol = child.generateSymbol();
-        if (!(aSymbol instanceof IMapValue)) {
-          throw new GenerateException("Symbol not of type map: "
-              + child.getData());
-        }
-        ((IMapValue) symbol).setData(((IMapValue) aSymbol).getData());
-      }
-    } else {
-      throw new GenerateException("Expecting something to assign");
-    }    
-    		
-		return new StringValue("");
-	}
+    try {
+		if((child = getChild(1)) != null) {
+		  if (symbol.getType().equals(ValueType.STRING)) {
+		  	// assign to string symbol
+		  	IValue rSymbol = child.generateSymbol();
+		    ((IStringValue) symbol).setData(((IStringValue) rSymbol).getData());
+		  } else if (symbol.getType().equals(ValueType.NUMERIC)) {
+		  	// assign to numeric symbol
+		  	IValue rSymbol = child.generateSymbol();
+		    ((INumericValue) symbol).setData(((INumericValue) rSymbol).getData());
+		  } else if (symbol.getType().equals(ValueType.LIST)) {
+		  	// assign to list symbol
+		  	IValue aSymbol = child.generateSymbol();
+		    if (!(aSymbol instanceof IListValue)) {
+		      throw new GenerateException("Symbol not of type list "
+		          + child.getData());
+		    }
+		    ((IListValue) symbol).setData(((IListValue) aSymbol).getData());
+		  } else if (symbol.getType().equals(ValueType.MAP)) {
+		  	// assign to map symbol
+		  	IValue aSymbol = child.generateSymbol();
+		    if (!(aSymbol instanceof IMapValue)) {
+		      throw new GenerateException("Symbol not of type map: "
+		          + child.getData());
+		    }
+		    ((IMapValue) symbol).setData(((IMapValue) aSymbol).getData());
+		  }
+		} else {
+		  throw new GenerateException("Expecting something to assign");
+		}    
+    } catch (ClassCastException e) {
+    	throw new GenerateException("ClassCastException in template " + this.getTemplate() + ", line "+ this.getLine(), e);
+    }
+	return new StringValue("");
+  }
   
 }

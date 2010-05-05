@@ -29,13 +29,8 @@ public class StringNotEqualNode extends AbstractAstNode {
 	public IValue generateSymbol() {
 		IStringValue s0 = asString(getChild(0).generateSymbol());
 		IStringValue s1 = asString(getChild(1).generateSymbol());
-		if(s0 == null && s1 == null) {
-	    return new NumericValue(0);						
-		} else if(s0 == null && s1 != null) {
-	    return new NumericValue(1);									
-		} else {
-	    return new NumericValue((!s0.equals(s1)) ? 1 : 0);			
-		}
+
+		return new NumericValue((!s0.equals(s1)) ? 1 : 0);			
 	}
 
 }

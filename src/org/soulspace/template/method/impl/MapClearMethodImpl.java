@@ -9,20 +9,19 @@ import org.soulspace.template.value.IValue;
 import org.soulspace.template.value.impl.MapValue;
 import org.soulspace.template.value.impl.StringValue;
 
-public class MapPutMethodImpl extends AbstractMethod {
+public class MapClearMethodImpl extends AbstractMethod {
 
-	private static final String NAME = "put";
+	private static final String NAME = "clearMap";
 	protected static final Class<? extends IValue> RETURN_TYPE = MapValue.class;
 	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
 	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
 
 	static {
 		DEFINED_TYPES.add(MapValue.class);
-		ARGUMENT_TYPES.add(StringValue.class);
-		ARGUMENT_TYPES.add(IValue.class);
 	}
 
-	public MapPutMethodImpl() {
+
+	public MapClearMethodImpl() {
 		super();
 		this.returnType = RETURN_TYPE;
 		this.argumentTypes = ARGUMENT_TYPES;
@@ -33,12 +32,13 @@ public class MapPutMethodImpl extends AbstractMethod {
 	@Override
 	protected IValue doEvaluation(List<IValue> arguments) {
 		MapValue mapSymbol = (MapValue) arguments.get(0);
-		IStringValue key = (IStringValue) arguments.get(1);
-		IValue value = arguments.get(2);
-		
-		mapSymbol.getData().addSymbol(key.getData(), value);
+
+		if(mapSymbol.getData().getSymbolCount() > 0) {
+			mapSymbol = new MapValue();
+		}
 
 		return mapSymbol;
 	}
+
 
 }

@@ -10,30 +10,30 @@ import org.soulspace.template.value.impl.StringValue;
 
 public class WhileNode extends AbstractAstNode {
 
-  /**
+	/**
    * 
    */
-  public WhileNode() {
-    this(null);
-  }
+	public WhileNode() {
+		this(null);
+	}
 
-  /**
-   * @param parent
-   */
-  public WhileNode(IAstNode parent) {
-    super(parent);
-    setType(AstNodeType.WHILE);
-  }
+	/**
+	 * @param parent
+	 */
+	public WhileNode(IAstNode parent) {
+		super(parent);
+		setType(AstNodeType.WHILE);
+	}
 
 	public IValue generateSymbol() {
-    StringBuffer sb = new StringBuffer(128);
-    
- 		IValue exSymbol = getChild(0).generateSymbol();
-    while(exSymbol != null && exSymbol.isTrue()) {
-      sb.append(getChild(1).generateSymbol().evaluate());
-      exSymbol = getChild(0).generateSymbol();
-    }
-    return new StringValue(sb.toString());
+		StringBuffer sb = new StringBuffer(128);
+
+		IValue exSymbol = getChild(0).generateSymbol();
+		while (exSymbol != null && exSymbol.isTrue()) {
+			sb.append(getChild(1).generateSymbol().evaluate());
+			exSymbol = getChild(0).generateSymbol();
+		}
+		return new StringValue(sb.toString());
 	}
 
 }

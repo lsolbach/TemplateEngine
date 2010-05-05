@@ -16,7 +16,7 @@ import org.soulspace.template.value.impl.ValueType;
 
 public class MethodNode extends AbstractAstNode implements IMethodNode {
 
-//	private String methodName;
+	// private String methodName;
 	private ValueType returnType;
 	private IMethodNode superMethod = null;
 	private ISignature signature = null;
@@ -40,26 +40,27 @@ public class MethodNode extends AbstractAstNode implements IMethodNode {
 	public ValueType getReturnType() {
 		return returnType;
 	}
-	
+
 	public IMethodNode getSuperMethod() {
 		return superMethod;
 	}
-	
+
 	public void setSuperMethod(IMethodNode superMethod) {
 		this.superMethod = superMethod;
 	}
-	
+
 	public String getMethodName() {
 		return getData();
 	}
-	
+
 	public ISignature getSignature() {
-		if(signature == null) {
-			signature = new SignatureImpl(getMethodName(), getReturnType(), getParameterTypes());
+		if (signature == null) {
+			signature = new SignatureImpl(getMethodName(), getReturnType(),
+					getParameterTypes());
 		}
 		return signature;
 	}
-	
+
 	public String getSignatureString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getMethodName());
@@ -69,25 +70,25 @@ public class MethodNode extends AbstractAstNode implements IMethodNode {
 		sb.append(")");
 		return sb.toString();
 	}
-	
+
 	public List<ValueType> getParameterTypes() {
 		List<ValueType> list = new ArrayList<ValueType>();
 
 		ParamListNode paramList = (ParamListNode) getChild(0);
-		for(IAstNode node : paramList.getChildNodes()) {
+		for (IAstNode node : paramList.getChildNodes()) {
 			DeclarationNode param = (DeclarationNode) node;
 			list.add(ValueType.valueOf(param.getData()));
 		}
 		return list;
 	}
-	
+
 	public String getParameterTypeString() {
 		StringBuilder sb = new StringBuilder();
 		boolean firstParam = true;
 		ParamListNode paramList = (ParamListNode) getChild(0);
-		for(IAstNode node : paramList.getChildNodes()) {
+		for (IAstNode node : paramList.getChildNodes()) {
 			DeclarationNode param = (DeclarationNode) node;
-			if(!firstParam) {
+			if (!firstParam) {
 				sb.append(",");
 			} else {
 				firstParam = false;
@@ -96,84 +97,98 @@ public class MethodNode extends AbstractAstNode implements IMethodNode {
 		}
 		return sb.toString();
 	}
-	
+
 	public IValue callSuperMethod() {
 		return getSuperMethod().generateSymbol(this, getSymbolTable());
 	}
-	
-	public IValue generateSymbol(IAstNode returnNode, ISymbolTable symbolTable) throws GenerateException {
-		IValue result = new StringValue("");
-		if(context != null) {
-	    callStack.push(context);
-		}
-    context = new MethodContext(returnNode, symbolTable);
-    setSymbolTable(symbolTable);
 
-    IAstNode node = null;
-		if((node = getChild(1)) != null && node.getType().equals(AstNodeType.TERM)) {
-			result = node.generateSymbol();
+	public IValue generateSymbol(IAstNode returnNode, ISymbolTable symbolTable)
+			throws GenerateException {
+		IValue result = null;
+		if (context != null) {
+			callStack.push(context);
+		}
+		context = new MethodContext(returnNode, symbolTable);
+		setSymbolTable(symbolTable);
+
+		IAstNode node = null;
+		if ((node = getChild(1)) != null
+				&& node.getType().equals(AstNodeType.TERM)) {
+			// FIXME here always a string value is returned because the term node
+			// FIXME doesn't know about the return type of the method.
+			// FIXME add a generateSymbol(ValueType) to term node so that the correct
+			// FIXME type of symbol can be returned
+			result = ((TermNode) node).generateSymbol(returnType);
 		}
 
-		if(!callStack.empty()) {
-			context = callStack.pop();			
-	    //setParent(context.getReturnNode());
-	    setSymbolTable(context.getSymbolTable());
+		if (!callStack.empty()) {
+			context = callStack.pop();
+			// setParent(context.getReturnNode());
+			setSymbolTable(context.getSymbolTable());
 		}
-		
-		if(result != null && !result.getType().equals(returnType)) {
-			if(returnType.equals(ValueType.STRING)) {
+
+		if (result != null && !result.getType().equals(returnType)) {
+			if (returnType.equals(ValueType.STRING)) {
 				result = asString(result);
 			} else if (returnType.equals(ValueType.NUMERIC)) {
 				result = asNumeric(result);
 			} else {
-				throw new GenerateException("Return type of method " + getData()
-						+ " is " + returnType + ", but the result is of type "
-						+ result.getType().getName() + ". The value of the result: " + result.evaluate());
+				throw new GenerateException("Return type of method "
+						+ getData() + " is " + returnType
+						+ ", but the result is of type "
+						+ result.getType().getName()
+						+ ". The value of the result: " + result.evaluate());
 			}
 		}
 		return result;
 	}
-		
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.soulspace.template.parser.ast.impl.AstNode#getParent()
 	 */
 	@Override
 	public IAstNode getParent() {
 		// FIXME endless loop in getMethodTable()
-		if(context.getReturnNode() != null) {
-			return context.getReturnNode();			
+		if (context.getReturnNode() != null) {
+			return context.getReturnNode();
 		} else {
 			return super.getParent();
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.soulspace.template.parser.ast.impl.AstNode#getSymbolTable()
 	 */
 	@Override
 	public ISymbolTable getSymbolTable() {
-		if(context.getSymbolTable() != null) {
-			return context.getSymbolTable();			
+		if (context.getSymbolTable() != null) {
+			return context.getSymbolTable();
 		} else {
 			return super.getSymbolTable();
 		}
 	}
 
 	public IValue generateSymbol() {
-		throw new GenerateException("Method generateSymbol() must not be called on MethodNode");
+		throw new GenerateException(
+				"Method generateSymbol() must not be called on MethodNode");
 	}
 
 	/**
 	 * Method Context for recursive method calls.
+	 * 
 	 * @author soulman
 	 */
 	private class MethodContext {
 		ISymbolTable symbolTable;
 		IAstNode returnNode;
-		
+
 		public MethodContext() {
 		}
-		
+
 		public MethodContext(IAstNode returnNode, ISymbolTable symbolTable) {
 			this.returnNode = returnNode;
 			this.symbolTable = symbolTable;
@@ -193,9 +208,10 @@ public class MethodNode extends AbstractAstNode implements IMethodNode {
 			return returnNode;
 		}
 	}
-	
+
 	private ISignature buildSignature() {
-		ISignature sig = new SignatureImpl(getMethodName(), getReturnType(), getParameterTypes());
+		ISignature sig = new SignatureImpl(getMethodName(), getReturnType(),
+				getParameterTypes());
 		return sig;
 	}
 }

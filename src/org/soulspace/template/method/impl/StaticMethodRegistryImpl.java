@@ -15,6 +15,7 @@ public class StaticMethodRegistryImpl implements IMethodRegistry {
 		methodClassList.add("org.soulspace.template.method.impl.FirstUpperMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.ToLowerMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.ToUpperMethodImpl");
+		methodClassList.add("org.soulspace.template.method.impl.EndsWithMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.StartsWithMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.MatchesMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.SplitMethodImpl");
@@ -22,13 +23,16 @@ public class StaticMethodRegistryImpl implements IMethodRegistry {
 		methodClassList.add("org.soulspace.template.method.impl.SubstringMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.CamelCaseToUnderScoreMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.Utf8ToIsoLatinMethodImpl");
+		methodClassList.add("org.soulspace.template.method.impl.IsoLatinToUtf8MethodImpl");
 
 		methodClassList.add("org.soulspace.template.method.impl.SizeMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.HasNextElementMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.GetElementMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.ElementIndexMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.ListAddMethodImpl");
+		methodClassList.add("org.soulspace.template.method.impl.ListClearMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.MapPutMethodImpl");
+		methodClassList.add("org.soulspace.template.method.impl.MapClearMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.KeyListMethodImpl");
 	}
 	

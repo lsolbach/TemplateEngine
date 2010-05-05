@@ -12,7 +12,7 @@ import org.soulspace.template.value.impl.StringValue;
 
 public class StartsWithMethodImpl extends AbstractMethod implements IMethod {
 
-	private static final String NAME = "startsWith";
+	private static final String NAME = "endsWith";
 	protected static final Class<? extends IValue> RETURN_TYPE = NumericValue.class;
 	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
 	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
@@ -36,7 +36,7 @@ public class StartsWithMethodImpl extends AbstractMethod implements IMethod {
 
 		IStringValue string = (IStringValue) arguments.get(0);
 		IStringValue prefix = (IStringValue) arguments.get(1);
-		if(string.getData().startsWith(prefix.getData())) {
+		if(string.getData().endsWith(prefix.getData())) {
 			result = new NumericValue(1);
 		} else {
 			result = new NumericValue(0);			

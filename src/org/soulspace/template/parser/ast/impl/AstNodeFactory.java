@@ -74,8 +74,6 @@ public class AstNodeFactory implements IAstNodeFactory {
       node = new ForeachNode();
     } else if(token.getType().equals(TokenType.IF)) {
       node = new IfNode();
-    } else if(token.getType().equals(TokenType.ELSE)) {
-      //node = new AstNode(AstNodeType.);
     } else if(token.getType().equals(TokenType.WHILE)) {
       node = new WhileNode();
     } else if(token.getType().equals(TokenType.DECLARATION)) {

@@ -27,16 +27,18 @@ public class TokenizerImpl implements Tokenizer {
 	;
 
 	// pattern for token splitting of code
-	private final static String REGEX_2 = "(" + "(?:xml.*)" // XML Declaration
-			+ "|(?:if)" // IF
-			+ "|(?:else)" // ELSE
-			+ "|(?:foreach)" // FOREACH
-			+ "|(?:while)" // WHILE
-			+ "|(?:break)" // BREAK
-			+ "|(?:continue)" // CONTINUE
-			+ "|(?:string|numeric|list|map|method)" // DECLARATION
-			+ "|(?:(?:begin)|(?:\\{))" // BLOCK_BEGIN
-			+ "|(?:(?:end)|(?:\\}))" // BLOCK_END
+	private final static String REGEX_2 = "("
+		    + "(?:\\/\\*(.*?)(?:\\*\\/))" // Code Comments
+		    + "|(?:xml.*)" // XML Declaration
+			+ "|(?:if)(?!\\w)" // IF // FIXME add lookahead of 1 whitespace
+			+ "|(?:else)(?!\\w)" // ELSE // FIXME add lookahead of 1 whitespace
+			+ "|(?:foreach)(?!\\w)" // FOREACH // FIXME add lookahead of 1 whitespace
+			+ "|(?:while)(?!\\w)" // WHILE // FIXME add lookahead of 1 whitespace
+			+ "|(?:break)(?!\\w)" // BREAK // FIXME add lookahead of 1 whitespace
+			+ "|(?:continue)(?!\\w)" // CONTINUE // FIXME add lookahead of 1 whitespace
+			+ "|(?:string|numeric|list|map|method)(?!\\w)" // DECLARATION // FIXME add lookahead of 1 whitespace
+			+ "|(?:(?:begin)(?!\\w)|(?:\\{))" // BLOCK_BEGIN // FIXME add lookahead of 1 whitespace
+			+ "|(?:(?:end(?!\\w))|(?:\\}))" // BLOCK_END // FIXME add lookahead of 1 whitespace
 			+ "|(?:\\'((?:\\\\'|[^']))*\\')" // STRING_CONST
 			+ "|(?:(?:\\+|\\-)?\\d+(?:\\.\\d+){0,1})" // NUMBER_CONST
 			+ "|(?:\\()" // PAREN_LEFT
@@ -48,7 +50,7 @@ public class TokenizerImpl implements Tokenizer {
 			+ "|(?:(?:-)|(?:\\+)|(?:\\*)|(?:\\/\\/)|(?:\\/)|(?:\\%))" // ARITHMETIC OPERATORS
 			+ "|(?:(?:\\&\\&)|(?:\\|\\|)|(?:\\!))" // BOOLEAN OPERATORS
 			+ "|(?:\\|)" // FILTER
-			+ "|(?:(?:eq)|(?:ne))" // STRING OPERATORS
+			+ "|(?:(?:eq)|(?:ne))(?!\\w)" // STRING OPERATORS // FIXME add lookahead of 1 whitespace
 			+ "|(?:\\:)" // DEREFERENCE
 			+ "|(?:\\.)" // TYPE METHOD
 			+ "|(?:\\=)" // ASSIGN
@@ -237,7 +239,9 @@ public class TokenizerImpl implements Tokenizer {
 			throws UnknownTokenException {
 		MatchResult result;
 
-		if ((result = RegExHelper.match(code, "^(xml.*)$")) != null) {
+		if ((result = RegExHelper.match(code, "(?:/\\*(.*?)(?:\\*/))")) != null) {
+			// Code comment, just for documentation. Do nothing.
+		} else if ((result = RegExHelper.match(code, "^(xml.*)$")) != null) {
 			tokenList.addToken(TokenType.TEXT, "<?" + result.group(0) + "?>");
 		} else if ((result = RegExHelper.match(code, "if")) != null) {
 			tokenList.addToken(TokenType.IF);

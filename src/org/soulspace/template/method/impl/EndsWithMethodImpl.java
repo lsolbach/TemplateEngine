@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
+import org.soulspace.template.method.IMethod;
 import org.soulspace.template.value.IStringValue;
 import org.soulspace.template.value.IValue;
-import org.soulspace.template.value.impl.MapValue;
+import org.soulspace.template.value.impl.NumericValue;
 import org.soulspace.template.value.impl.StringValue;
 
-public class MapPutMethodImpl extends AbstractMethod {
+public class EndsWithMethodImpl extends AbstractMethod implements IMethod {
 
-	private static final String NAME = "put";
-	protected static final Class<? extends IValue> RETURN_TYPE = MapValue.class;
+	private static final String NAME = "startsWith";
+	protected static final Class<? extends IValue> RETURN_TYPE = NumericValue.class;
 	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
 	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
 
 	static {
-		DEFINED_TYPES.add(MapValue.class);
+		DEFINED_TYPES.add(StringValue.class);
 		ARGUMENT_TYPES.add(StringValue.class);
-		ARGUMENT_TYPES.add(IValue.class);
 	}
 
-	public MapPutMethodImpl() {
+	public EndsWithMethodImpl() {
 		super();
 		this.returnType = RETURN_TYPE;
 		this.argumentTypes = ARGUMENT_TYPES;
@@ -32,13 +32,15 @@ public class MapPutMethodImpl extends AbstractMethod {
 	
 	@Override
 	protected IValue doEvaluation(List<IValue> arguments) {
-		MapValue mapSymbol = (MapValue) arguments.get(0);
-		IStringValue key = (IStringValue) arguments.get(1);
-		IValue value = arguments.get(2);
-		
-		mapSymbol.getData().addSymbol(key.getData(), value);
+		IValue result = null;
 
-		return mapSymbol;
+		IStringValue string = (IStringValue) arguments.get(0);
+		IStringValue prefix = (IStringValue) arguments.get(1);
+		if(string.getData().startsWith(prefix.getData())) {
+			result = new NumericValue(1);
+		} else {
+			result = new NumericValue(0);			
+		}
+		return result;
 	}
-
 }

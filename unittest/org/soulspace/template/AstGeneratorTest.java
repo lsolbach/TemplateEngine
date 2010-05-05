@@ -12,10 +12,13 @@ import org.soulspace.template.parser.ast.impl.AstParserImpl;
 import org.soulspace.template.tokenizer.ITokenList;
 import org.soulspace.template.tokenizer.Tokenizer;
 import org.soulspace.template.tokenizer.impl.TokenizerImpl;
+import org.soulspace.template.util.FileUtils;
 import org.soulspace.template.value.IListValue;
 import org.soulspace.template.value.ISymbolTable;
 import org.soulspace.template.value.IValue;
 import org.soulspace.template.value.impl.SymbolTable;
+
+import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 
 import junit.framework.TestCase;
 
@@ -259,8 +262,10 @@ public class AstGeneratorTest extends TestCase {
 			result = g.generate(root, st);
 			fail("call to nonexisting super method");
 		} catch (GenerateException e) {
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail("unexpected exception");
 		}
 
 	}
@@ -408,7 +413,7 @@ public class AstGeneratorTest extends TestCase {
 			result = g.generate(root, st);
 			assertEquals("Result", "PhoneNumber phoneNumber;", result);
 
-			tl = t.tokenize("<?path.split('/')?>");
+			tl = t.tokenize("<?list parts = path.split('/') parts.size()?>");
 			root = p.parse(tl);
 			result = g.generate(root, st);
 			assertEquals("Result", "4", result);
@@ -444,5 +449,93 @@ public class AstGeneratorTest extends TestCase {
 			e.printStackTrace();
 		}
 	}
+
+	public void testGenStringConversionCalls() {
+		String result = "";
+		st.addNewListSymbol("e", new ArrayList<IValue>());
+		((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
+		((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
+		try {
+			tl = t.tokenize("<?" +
+					"list f = reflect(e)" +
+					"foreach s <- f {" +
+					"  s" +
+					"}" +
+					"" +
+					"list reflect(list myList) {" +
+					"  myList " +
+					"}" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			assertEquals("Result", "JuHu", result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+	
+	public void testCodeComments() {
+		String result = "";
+		try {
+			tl = t.tokenize("<?" +
+					"/* this is a code comment */" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, null);
+			assertEquals("Result", "", result);
+
+			tl = t.tokenize("<?" +
+					"helloWorld() " +
+					"/* this is a code comment for a nice little method */" +
+					"string helloWorld() {" +
+					"'Hello World!'" +
+					"}" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, null);
+			assertEquals("Result", "Hello World!", result);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		
+	}
+	
+//	public void testMethodReturnTypes() {
+//		String result = "";
+//		try {
+//			String template = FileUtils.loadStringFromFile("data/unittest/methods.tmpl");
+//			tl = t.tokenize(template);
+//			root = p.parse(tl);
+//			result = g.generate(root, null);
+//			System.out.println(result);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			fail();
+//		}
+//	}
+	
+	
+//	public void testGenStringConversionCalls() {
+//		String result = "";
+//		st.addNewStringSymbol("test", new String("ÄÖÜßäöü"));
+//		try {
+//			tl = t.tokenize("<?" +
+//					"test.utf8ToLatin1() +" +
+//					"test.latin1ToUtf8()" +
+//					"?>");
+//			root = p.parse(tl);
+//			result = g.generate(root, st);
+//			assertEquals("Result", "14", result);
+//		} catch (UnknownTokenException e) {
+//			e.printStackTrace();
+//		} catch (SyntaxException e) {
+//			e.printStackTrace();
+//		} catch (GenerateException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 }

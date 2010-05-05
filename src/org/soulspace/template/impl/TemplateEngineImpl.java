@@ -63,7 +63,7 @@ public class TemplateEngineImpl implements TemplateEngine {
 	public void loadTemplate(File templateFile) throws UnknownTokenException,
 			SyntaxException, IOException {
 		ITokenList tokenList = tokenizer.createTokenList();
-		tokenList = tokenize(tokenList, templateFile.getName(), FileUtils.loadStringFromFile(templateFile));
+		tokenList = tokenize(tokenList, templateFile.getPath(), FileUtils.loadStringFromFile(templateFile));
 		parse(tokenList);
 	}
 
@@ -94,11 +94,36 @@ public class TemplateEngineImpl implements TemplateEngine {
 		ITokenList tokenList = tokenizer.createTokenList();
 		for(File templateFile : templateFiles) {
 			tokenList.setCurrentLine(1);
-			tokenList = tokenize(tokenList, templateFile.getName(), FileUtils.loadStringFromFile(templateFile));
+			tokenList = tokenize(tokenList, templateFile.getPath(), FileUtils.loadStringFromFile(templateFile));
 		}
 		parse(tokenList);
 	}
 
+	/**
+	 * Lookup and the template files from the given search dirs and parse them.
+	 * @param searchDirs
+	 * @param templateFiles
+	 * @throws UnknownTokenException
+	 * @throws SyntaxException
+	 * @throws IOException
+	 */
+	public void loadTemplates(File[] searchDirs, File[] templateFiles)
+			throws UnknownTokenException, SyntaxException, IOException {
+
+		ITokenList tokenList = tokenizer.createTokenList();
+		// validate search dirs
+		for(File searchDir : searchDirs) {
+			if(!searchDir.exists() || !searchDir.isDirectory()) {
+				throw new IOException("Search directory " + searchDir.getName() + " is invalid!");
+			}
+		}
+		
+		for(File templateFile : templateFiles) {
+			
+		}		
+	}
+	
+	
 	/**
 	 * Generate output with the parsed template
 	 * 
