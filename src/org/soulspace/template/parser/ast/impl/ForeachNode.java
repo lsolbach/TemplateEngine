@@ -38,14 +38,14 @@ public class ForeachNode extends AbstractAstNode {
     List<IValue> list;
 
     if(getChildNodes().size() < 3 || getChildNodes().size() > 4) {
-      throw new GenerateException("Syntax error in foreach!");      
+      throw new GenerateException("Syntax error in foreach! Template " + getTemplate() + ", line " + getLine());      
     }
     
     IdentifierNode id = (IdentifierNode) getChild(0);
     String elName = id.getData();
     
     if(lookupSymbolInBlock(id.getData()) != null) {
-      throw new GenerateException("Symbol already exists: " + id.getData());
+      throw new GenerateException("Symbol already exists: " + id.getData() + "! Template " + getTemplate() + ", line " + getLine());
     }
 
     // TODO implement filter
@@ -66,13 +66,13 @@ public class ForeachNode extends AbstractAstNode {
     if (symbol == null) {
       // Missing Variable
       throw new GenerateException("Variable " + loopNode.getData()
-          + " is not initialized!");
+          + " is not initialized! Template " + getTemplate() + ", line " + getLine());
     }
 
     // Check type of the variable
     if (!(symbol.getType() == ValueType.LIST)) {
       // Variable not of type LIST
-      throw new GenerateException("Expecting variable of type LIST!");
+      throw new GenerateException("Expecting variable of type LIST! Template " + getTemplate() + ", line " + getLine());
     }
     IListValue lSymbol = (IListValue) symbol;
     // Get List to iterate over

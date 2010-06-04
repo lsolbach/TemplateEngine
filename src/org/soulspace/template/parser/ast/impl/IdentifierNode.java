@@ -30,7 +30,7 @@ public class IdentifierNode extends AbstractAstNode {
     
     symbol = lookupSymbol(getData());
     if(symbol == null) {
-    	throw new GenerateException("Variable " + getData() + " not found");
+    	throw new GenerateException("Variable " + getData() + " not found! Template " + getTemplate() + ", line " + getLine());
     }
 
     // evaluate indexed access (a[b])

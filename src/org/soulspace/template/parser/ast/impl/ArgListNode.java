@@ -20,7 +20,7 @@ public class ArgListNode extends AbstractAstNode {
   }
 
 	public IValue generateSymbol() {
-		throw new GenerateException("Method generateSymbol() must not be called on ArgListNode");
+		throw new GenerateException("Method generateSymbol() must not be called on ArgListNode! Template " + getTemplate() + ", line " + getLine());
 	}
 
 }

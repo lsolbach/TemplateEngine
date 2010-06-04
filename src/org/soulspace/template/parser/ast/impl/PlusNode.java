@@ -73,7 +73,7 @@ public class PlusNode extends AbstractAstNode {
 			}
 			return map;
 		} else {
-			throw new GenerateException("Unknown type!");
+			throw new GenerateException("Unknown type! Template " + getTemplate() + ", line " + getLine());
 		}
 	}
 }

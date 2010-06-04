@@ -36,7 +36,7 @@ public class DeclarationNode extends AbstractAstNode {
     String type = getData();
     
     if((child = getChild(0)) == null) {
-    	throw new GenerateException("No identifier given for declaration");
+    	throw new GenerateException("No identifier given for declaration! Template " + getTemplate() + ", line " + getLine());
     }
   	if(child instanceof IdentifierNode) {
     	name = child.getData();
@@ -47,7 +47,7 @@ public class DeclarationNode extends AbstractAstNode {
   	}
     
     if(symbol != null) {
-      throw new GenerateException("Symbol already exists: " + name);
+      throw new GenerateException("Symbol already exists: " + name + "! Template " + getTemplate() + ", line " + getLine());
     }
     
     if (type.equals("string")) {

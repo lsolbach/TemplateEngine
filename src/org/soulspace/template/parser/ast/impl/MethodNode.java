@@ -137,7 +137,8 @@ public class MethodNode extends AbstractAstNode implements IMethodNode {
 						+ getData() + " is " + returnType
 						+ ", but the result is of type "
 						+ result.getType().getName()
-						+ ". The value of the result: " + result.evaluate());
+						+ ". The value of the result: " + result.evaluate()
+						+ "! Template " + getTemplate() + ", line " + getLine());
 			}
 		}
 		return result;
@@ -174,7 +175,8 @@ public class MethodNode extends AbstractAstNode implements IMethodNode {
 
 	public IValue generateSymbol() {
 		throw new GenerateException(
-				"Method generateSymbol() must not be called on MethodNode");
+				"Method generateSymbol() must not be called on MethodNode! Template "
+				+ getTemplate() + ", line " + getLine());
 	}
 
 	/**

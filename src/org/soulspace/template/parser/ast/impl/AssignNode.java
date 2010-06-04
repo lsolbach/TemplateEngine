@@ -41,7 +41,7 @@ public class AssignNode extends AbstractAstNode {
       name = child.getData();
       symbol = lookupSymbol(name);
     } else {
-      throw new GenerateException("Expecting Identifier");
+      throw new GenerateException("Expecting Identifier! Template " + getTemplate() + ", line " + getLine());
     }
     
     if(symbol == null) {

@@ -23,8 +23,8 @@ import org.soulspace.template.value.IValue;
 public class ListValue implements IValue, IListValue {
 
 	private List<IValue> data;
-	private IValue        entry;
-	private int            index;
+	private IValue       entry;
+	private int          index;
 
   /**
    * Constructor

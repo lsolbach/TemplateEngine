@@ -63,7 +63,7 @@ public class TermNode extends AbstractAstNode {
 		if(returnType.equals(ValueType.STRING)) {
 			return new StringValue(sb.toString());
 		} else if(returnType.equals(ValueType.NUMERIC)) {
-			return result;			
+			return asNumeric(result);
 		} else if(returnType.equals(ValueType.LIST)) {
 			return result;
 		} else if(returnType.equals(ValueType.MAP)) {

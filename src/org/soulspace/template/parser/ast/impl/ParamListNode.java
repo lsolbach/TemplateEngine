@@ -12,7 +12,8 @@ public class ParamListNode extends AbstractAstNode {
 
 	// just a container for the parameters (types and names) of a method call 
 	public IValue generateSymbol() {
-		throw new GenerateException("Method generateSymbol() must not be called on ParamListNode");
+		throw new GenerateException("Method generateSymbol() must not be called on ParamListNode! Template "
+				+ getTemplate() + ", line " + getLine());
 	}
 
 }

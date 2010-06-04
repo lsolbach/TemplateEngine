@@ -51,14 +51,14 @@ public class MethodCallNode extends AbstractAstNode {
 						// mNode.getMethodName());
 						if (mNode.getSuperMethod() == null) {
 							throw new GenerateException(
-									"super() call, but there is no super method");
+									"super() call, but there is no super method! Template " + getTemplate() + ", line " + getLine());
 						}
 						return mNode.callSuperMethod();
 					}
 					node = node.getParent();
 				} else {
 					throw new GenerateException(
-							"super() call outside a method body");
+							"super() call outside a method body! Template " + getTemplate() + ", line " + getLine());
 				}
 			}
 		} else {
@@ -73,7 +73,7 @@ public class MethodCallNode extends AbstractAstNode {
 			} else {
 				throw new GenerateException(
 						"No method node found for signature "
-								+ getSignatureString());
+								+ getSignatureString() + "! Template " + getTemplate() + ", line " + getLine());
 			}
 		}
 		return new StringValue("");
@@ -89,7 +89,7 @@ public class MethodCallNode extends AbstractAstNode {
 		ISymbolTable symbolTable = new SymbolTable();
 
 		if (!(node instanceof MethodNode)) {
-			throw new GenerateException("Wrong node type");
+			throw new GenerateException("Wrong node type " + node.getType() + "! Template " + getTemplate() + ", line " + getLine());
 		}
 
 		IAstNode paramList = node.getChild(0);
@@ -101,7 +101,7 @@ public class MethodCallNode extends AbstractAstNode {
 		String argData;
 
 		if (paramList == null) {
-			throw new GenerateException("Missing parameter list");
+			throw new GenerateException("Missing parameter list! Template " + getTemplate() + ", line " + getLine());
 		}
 
 		if (!(paramList instanceof ParamListNode)) {
@@ -111,7 +111,7 @@ public class MethodCallNode extends AbstractAstNode {
 
 		if (paramList.getChildCount() != argList.getChildCount()) {
 			throw new GenerateException("Wrong argument count in method "
-					+ getData());
+					+ getData() + "! Template " + getTemplate() + ", line " + getLine());
 		}
 
 		for (int i = 0; i < paramList.getChildCount(); i++) {
