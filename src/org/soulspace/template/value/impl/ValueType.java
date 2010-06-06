@@ -16,10 +16,12 @@ import org.soulspace.template.value.IValueType;
  */
 public class ValueType implements IValueType {
 
-  public final static ValueType STRING   = new ValueType("string");
-  public final static ValueType NUMERIC  = new ValueType("numeric");
-  public final static ValueType LIST     = new ValueType("list");
-  public final static ValueType MAP      = new ValueType("map");
+  public final static ValueType STRING     = new ValueType("string");
+  public final static ValueType NUMERIC    = new ValueType("numeric");
+  public final static ValueType LIST       = new ValueType("list");
+  public final static ValueType MAP        = new ValueType("map");
+//  public final static ValueType METHOD     = new ValueType("method");
+//  public final static ValueType EXPRESSION = new ValueType("expression");
 
 	private final String name;
 	

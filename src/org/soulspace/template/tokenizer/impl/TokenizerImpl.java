@@ -30,15 +30,15 @@ public class TokenizerImpl implements Tokenizer {
 	private final static String REGEX_2 = "("
 		    + "(?:\\/\\*(.*?)(?:\\*\\/))" // Code Comments
 		    + "|(?:xml.*)" // XML Declaration
-			+ "|(?:if)(?!\\w)" // IF // FIXME add lookahead of 1 whitespace
-			+ "|(?:else)(?!\\w)" // ELSE // FIXME add lookahead of 1 whitespace
-			+ "|(?:foreach)(?!\\w)" // FOREACH // FIXME add lookahead of 1 whitespace
-			+ "|(?:while)(?!\\w)" // WHILE // FIXME add lookahead of 1 whitespace
-			+ "|(?:break)(?!\\w)" // BREAK // FIXME add lookahead of 1 whitespace
-			+ "|(?:continue)(?!\\w)" // CONTINUE // FIXME add lookahead of 1 whitespace
-			+ "|(?:string|numeric|list|map|method)(?!\\w)" // DECLARATION // FIXME add lookahead of 1 whitespace
-			+ "|(?:(?:begin)(?!\\w)|(?:\\{))" // BLOCK_BEGIN // FIXME add lookahead of 1 whitespace
-			+ "|(?:(?:end(?!\\w))|(?:\\}))" // BLOCK_END // FIXME add lookahead of 1 whitespace
+			+ "|(?:if)(?!\\w)" // IF
+			+ "|(?:else)(?!\\w)" // ELSE
+			+ "|(?:foreach)(?!\\w)" // FOREACH
+			+ "|(?:while)(?!\\w)" // WHILE
+			+ "|(?:break)(?!\\w)" // BREAK
+			+ "|(?:continue)(?!\\w)" // CONTINUE
+			+ "|(?:string|numeric|list|map|method)(?!\\w)" // DECLARATION
+			+ "|(?:(?:begin)(?!\\w)|(?:\\{))" // BLOCK_BEGIN
+			+ "|(?:(?:end(?!\\w))|(?:\\}))" // BLOCK_END
 			+ "|(?:\\'((?:\\\\'|[^']))*\\')" // STRING_CONST
 			+ "|(?:(?:\\+|\\-)?\\d+(?:\\.\\d+){0,1})" // NUMBER_CONST
 			+ "|(?:\\()" // PAREN_LEFT
@@ -50,7 +50,7 @@ public class TokenizerImpl implements Tokenizer {
 			+ "|(?:(?:-)|(?:\\+)|(?:\\*)|(?:\\/\\/)|(?:\\/)|(?:\\%))" // ARITHMETIC OPERATORS
 			+ "|(?:(?:\\&\\&)|(?:\\|\\|)|(?:\\!))" // BOOLEAN OPERATORS
 			+ "|(?:\\|)" // FILTER
-			+ "|(?:(?:eq)|(?:ne))(?!\\w)" // STRING OPERATORS // FIXME add lookahead of 1 whitespace
+			+ "|(?:(?:eq)|(?:ne))(?!\\w)" // STRING OPERATORS
 			+ "|(?:\\:)" // DEREFERENCE
 			+ "|(?:\\.)" // TYPE METHOD
 			+ "|(?:\\=)" // ASSIGN

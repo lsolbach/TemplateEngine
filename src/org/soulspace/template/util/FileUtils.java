@@ -12,62 +12,64 @@ import java.io.PrintWriter;
 
 public class FileUtils {
 
-  public static void writeStringToFile(String filename, String content) throws FileNotFoundException {
-    File file = new File(filename);
-    PrintWriter pw = new PrintWriter(new FileOutputStream(file));
-    pw.print(content);
-    pw.close();
-  }
+	public static void writeStringToFile(String filename, String content)
+			throws FileNotFoundException {
+		File file = new File(filename);
+		PrintWriter pw = new PrintWriter(new FileOutputStream(file));
+		pw.print(content);
+		pw.close();
+	}
 
-  public static void writeStringToFile(File file, String content) throws FileNotFoundException {
-    PrintWriter pw = new PrintWriter(new FileOutputStream(file));
-    pw.print(content);
-    pw.close();
-  }
-	
+	public static void writeStringToFile(File file, String content)
+			throws FileNotFoundException {
+		PrintWriter pw = new PrintWriter(new FileOutputStream(file));
+		pw.print(content);
+		pw.close();
+	}
+
 	public static String loadStringFromFile(String fileName) throws IOException {
 		StringBuilder buffer = new StringBuilder(128);
-    String line = null;
+		String line = null;
 
 		File file = new File(fileName);
 
-    BufferedReader in = new BufferedReader(new FileReader(file));
-    while((line = in.readLine()) != null) {
-      buffer.append(line + "\n");
-    }
+		BufferedReader in = new BufferedReader(new FileReader(file));
+		while ((line = in.readLine()) != null) {
+			buffer.append(line + "\n");
+		}
 		in.close();
-		return buffer.toString();	
+		return buffer.toString();
 	}
 
 	public static String loadStringFromFile(File file) throws IOException {
 		StringBuilder buffer = new StringBuilder(128);
-    String line = null;
+		String line = null;
 
-    BufferedReader in = new BufferedReader(new FileReader(file));
-    boolean first = true;
-    while((line = in.readLine()) != null) {
-      if(first) {
-    	  first = false;
-      } else {
-    	  buffer.append("\n");
-      }
-      buffer.append(line);
-    }
+		BufferedReader in = new BufferedReader(new FileReader(file));
+		boolean first = true;
+		while ((line = in.readLine()) != null) {
+			if (first) {
+				first = false;
+			} else {
+				buffer.append("\n");
+			}
+			buffer.append(line);
+		}
 		in.close();
-		return buffer.toString();	
+		return buffer.toString();
 	}
 
-	public static String loadStringFromStream(InputStream is) throws IOException {
+	public static String loadStringFromStream(InputStream is)
+			throws IOException {
 		StringBuilder buffer = new StringBuilder(128);
-    String line = null;
+		String line = null;
 
-    BufferedReader in = new BufferedReader(new InputStreamReader(is));
-    while((line = in.readLine()) != null) {
-      buffer.append(line + "\n");
-    }
+		BufferedReader in = new BufferedReader(new InputStreamReader(is));
+		while ((line = in.readLine()) != null) {
+			buffer.append(line + "\n");
+		}
 		in.close();
-		return buffer.toString();	
+		return buffer.toString();
 	}
-
 
 }

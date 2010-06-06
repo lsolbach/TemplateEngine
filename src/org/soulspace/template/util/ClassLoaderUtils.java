@@ -17,7 +17,7 @@ public class ClassLoaderUtils {
 	
 	public static List<Class> getClassesForPackage(String pkgName)
 			throws ClassNotFoundException {
-		// This will hold a list of directories matching the pckgname.
+		// This will hold a list of directories matching the package name.
 		// There may be more than one if a package is split over multiple jars/paths
 		List<Class> classes = new ArrayList<Class>();
 		ArrayList<File> directories = new ArrayList<File>();
@@ -89,10 +89,7 @@ public class ClassLoaderUtils {
 			}
 		} catch (ClassNotFoundException ex) {
 			System.out.println(ex);
-//			Logger.getLogger(ClassLoaderUtils.class.getName()).log(Level.SEVERE, null,
-//					ex);
 		}
-
 		return classList;
 	}
 
