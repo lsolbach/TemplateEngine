@@ -13,6 +13,9 @@ import org.soulspace.template.datasource.IDataSource;
 import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.exception.SyntaxException;
 import org.soulspace.template.exception.UnknownTokenException;
+import org.soulspace.template.method.impl.DynamicMethodRegistryImpl;
+import org.soulspace.template.method.impl.MethodRegistryImpl;
+import org.soulspace.template.method.impl.StaticMethodRegistryImpl;
 import org.soulspace.template.parser.ast.IAstNode;
 import org.soulspace.template.parser.ast.impl.AstParserImpl;
 import org.soulspace.template.tokenizer.ITokenList;
@@ -37,9 +40,30 @@ public class TemplateEngineImpl implements TemplateEngine {
 	 * Constructor
 	 */
 	public TemplateEngineImpl() {
-
+		MethodRegistryImpl.setMethodRegisty(new StaticMethodRegistryImpl());
 	}
 
+	public TemplateEngineImpl(String registryType, String[] packages) {
+		if(registryType != null && registryType.equals("dynamicRegistry")) {
+			try {
+				DynamicMethodRegistryImpl registry = new DynamicMethodRegistryImpl();
+				if(packages != null) {
+					for(String packageName : packages) {
+						if(packageName != null) {
+							registry.registerPackage(packageName);
+						}
+					}
+				}
+				MethodRegistryImpl.setMethodRegisty(registry);
+			} catch (Exception e) {
+				System.out.println("Error initializing dynamic method registry, using static registry");
+				MethodRegistryImpl.setMethodRegisty(new StaticMethodRegistryImpl());
+			}
+		} else {
+			MethodRegistryImpl.setMethodRegisty(new StaticMethodRegistryImpl());
+		}
+	}
+	
 	/**
 	 * Load and parse the given template
 	 * 

@@ -34,6 +34,7 @@ Version 1.0.0 (--.--.2010)
 * added string.utf8tolatin1() and string.latin1ToUtf8() methods (TODO validate)
 * added list.clearList() and map.clearMap() methods
 * added IMethodRegistry.register() and DynamicMethodRegistry.registerPackage()
+* made method registries configurable
 * refactored code for robustness, removed review issues
 * fixed tokenizer bug for identifiers starting with keywords
 * suppressed string evaluation of numerics, lists and maps when not in string context

@@ -5,8 +5,7 @@ import java.util.List;
 
 import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.method.IMethod;
-import org.soulspace.template.method.IMethodRegistry;
-import org.soulspace.template.method.impl.StaticMethodRegistryImpl;
+import org.soulspace.template.method.impl.MethodRegistryImpl;
 import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.IAstNode;
 import org.soulspace.template.value.IValue;
@@ -14,8 +13,6 @@ import org.soulspace.template.value.IValue;
 public class TypeMethodCallNode extends AbstractAstNode {
 
 	// FIXME make configurable
-	private static IMethodRegistry methodRegistry = new StaticMethodRegistryImpl();
-
 	public TypeMethodCallNode() {
 		super();
 		setType(AstNodeType.TYPE_METHOD_CALL);
@@ -31,7 +28,7 @@ public class TypeMethodCallNode extends AbstractAstNode {
 					+ ", line " + getLine());
 		}
 
-		IMethod method = methodRegistry.lookup(getData());
+		IMethod method = MethodRegistryImpl.lookup(getData());
 		if (method == null) {
 			throw new GenerateException("Method " + getData()
 					+ " not found! Template " + getTemplate() + ", line "
