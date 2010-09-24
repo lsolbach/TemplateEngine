@@ -1,5 +1,6 @@
 package org.soulspace.template.method;
 
 public interface IMethodRegistry {
-	IMethod lookup(String name);
+	IMethod lookup(String methodClassName);
+	void register(String methodClassName);
 }

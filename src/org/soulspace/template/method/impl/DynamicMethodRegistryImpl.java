@@ -14,24 +14,41 @@ public class DynamicMethodRegistryImpl implements IMethodRegistry {
 
 	public DynamicMethodRegistryImpl() {
 		System.out.println("registering Methods...");
-		List<Class> classList = ClassLoaderUtils.getImplementationsInPackage("org.soulspace.template.method.impl", IMethod.class);
+		registerPackage("org.soulspace.template.method.impl");
+	}
+
+	public final void registerPackage(String packageName) {
+		List<Class> classList = ClassLoaderUtils.getImplementationsInPackage(
+				packageName, IMethod.class);
 		IMethod method;
-		for(Class methodClass : classList) {
-				try {
-					method = (IMethod) methodClass.newInstance();
-					registry.put(method.getName(), method);
-					System.out.println("registered method " + method.getName());
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		for (Class methodClass : classList) {
+			try {
+				method = (IMethod) methodClass.newInstance();
+				registry.put(method.getName(), method);
+				System.out.println("registered method " + method.getName());
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
-	}	
-	
+	}
+
+	public void register(String methodClassName) {
+		try {
+			IMethod method = (IMethod) Class.forName(methodClassName).newInstance();
+			registry.put(method.getName(), method);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public IMethod lookup(String name) {
 		return registry.get(name);
 	}

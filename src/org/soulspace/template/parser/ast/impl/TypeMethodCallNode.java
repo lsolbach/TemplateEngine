@@ -13,7 +13,7 @@ import org.soulspace.template.value.IValue;
 
 public class TypeMethodCallNode extends AbstractAstNode {
 
-	// TODO make configurable
+	// FIXME make configurable
 	private static IMethodRegistry methodRegistry = new StaticMethodRegistryImpl();
 
 	public TypeMethodCallNode() {

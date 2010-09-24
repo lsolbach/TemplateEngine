@@ -21,6 +21,7 @@ public class StaticMethodRegistryImpl implements IMethodRegistry {
 		methodClassList.add("org.soulspace.template.method.impl.SplitMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.IndexOfMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.SubstringMethodImpl");
+		methodClassList.add("org.soulspace.template.method.impl.ReplaceMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.CamelCaseToUnderScoreMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.Utf8ToIsoLatinMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.IsoLatinToUtf8MethodImpl");
@@ -63,4 +64,17 @@ public class StaticMethodRegistryImpl implements IMethodRegistry {
 		return registry.get(name);
 	}
 
+	public void register(String methodClassName) {
+		try {
+			IMethod method = (IMethod) Class.forName(methodClassName).newInstance();
+			registry.put(method.getName(), method);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

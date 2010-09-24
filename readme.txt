@@ -29,10 +29,12 @@ Version 1.0.0 (--.--.2010)
 ---------------------------
 
 * made method return types list and map possible
+* added string.replace() method
 * added string.endsWith() method
 * added string.utf8tolatin1() and string.latin1ToUtf8() methods (TODO validate)
 * added list.clearList() and map.clearMap() methods
-* refactored code for more robustness, removed review issues
+* added IMethodRegistry.register() and DynamicMethodRegistry.registerPackage()
+* refactored code for robustness, removed review issues
 * fixed tokenizer bug for identifiers starting with keywords
 * suppressed string evaluation of numerics, lists and maps when not in string context
 * enhanced diagnosis output on GenerateExceptions
