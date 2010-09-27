@@ -49,7 +49,6 @@ Version 0.9.17 (21.09.2009)
 * fixed newline handling
 * refactored AstParserImpl
 
-
 Version 0.9.15 (01.09.2008)
 ---------------------------
 
