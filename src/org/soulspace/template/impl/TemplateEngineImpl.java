@@ -43,23 +43,19 @@ public class TemplateEngineImpl implements TemplateEngine {
 		MethodRegistryImpl.setMethodRegisty(new StaticMethodRegistryImpl());
 	}
 
-	public TemplateEngineImpl(String registryType, String[] packages) {
-		if(registryType != null && registryType.equals("dynamicRegistry")) {
-			try {
-				DynamicMethodRegistryImpl registry = new DynamicMethodRegistryImpl();
-				if(packages != null) {
-					for(String packageName : packages) {
-						if(packageName != null) {
-							registry.registerPackage(packageName);
-						}
+	public TemplateEngineImpl(String[] methodPackages) {
+		try {
+			DynamicMethodRegistryImpl registry = new DynamicMethodRegistryImpl();
+			if(methodPackages != null) {
+				for(String packageName : methodPackages) {
+					if(packageName != null) {
+						registry.registerPackage(packageName);
 					}
 				}
-				MethodRegistryImpl.setMethodRegisty(registry);
-			} catch (Exception e) {
-				System.out.println("Error initializing dynamic method registry, using static registry");
-				MethodRegistryImpl.setMethodRegisty(new StaticMethodRegistryImpl());
 			}
-		} else {
+			MethodRegistryImpl.setMethodRegisty(registry);
+		} catch (Exception e) {
+			System.out.println("Error initializing dynamic method registry, using static registry");
 			MethodRegistryImpl.setMethodRegisty(new StaticMethodRegistryImpl());
 		}
 	}

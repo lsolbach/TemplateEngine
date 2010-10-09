@@ -35,13 +35,13 @@ public class ReplaceMethodImpl extends AbstractMethod {
 
 		IStringValue value = (IStringValue) arguments.get(0);
 		IStringValue charValue = (IStringValue) arguments.get(1);
-		IStringValue replacementValue = (IStringValue) arguments.get(1);
+		IStringValue replacementValue = (IStringValue) arguments.get(2);
 		String string = value.getData();
 		if(string.length() == 0) {
 			result = new StringValue(string);
 		} else {
 			result = new StringValue(string.replace(charValue.getData(), replacementValue.getData()));
-		}		
+		}
 		return result;
 	}
 

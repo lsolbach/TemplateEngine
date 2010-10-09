@@ -44,7 +44,7 @@ public class SizeMethodImpl extends AbstractMethod {
 		} else if(value instanceof IStringValue) {
 			return new NumericValue(((IStringValue) value).getData().length());
 		}
-		return null;
+		return new NumericValue(0);
 	}
 
 }

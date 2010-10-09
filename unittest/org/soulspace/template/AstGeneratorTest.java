@@ -392,6 +392,16 @@ public class AstGeneratorTest extends TestCase {
 			result = g.generate(root, st);
 			assertEquals("Result", "1", result);
 
+			tl = t.tokenize("<?name.replace('u', 'o')?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			assertEquals("Result", "Lodger Solbach", result);
+
+			tl = t.tokenize("<?name.replace('Lud', 'Ro')?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			assertEquals("Result", "Roger Solbach", result);
+
 			tl = t.tokenize("<?" + "if(myMap:Greetings.startsWith('Gr')) { "
 					+ " myMap:Greetings.toUpper() " + "} " + "?>");
 			root = p.parse(tl);

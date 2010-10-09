@@ -1,3 +1,6 @@
 Todo's TemplateEngine:
 
-None at the moment
+English documentation
+License
+Source code publication
+
