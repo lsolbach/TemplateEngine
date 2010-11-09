@@ -60,10 +60,6 @@ public class StaticMethodRegistryImpl implements IMethodRegistry {
 		}
 	}	
 	
-	public IMethod lookup(String name) {
-		return registry.get(name);
-	}
-
 	public void register(String methodClassName) {
 		try {
 			IMethod method = (IMethod) Class.forName(methodClassName).newInstance();
@@ -77,4 +73,8 @@ public class StaticMethodRegistryImpl implements IMethodRegistry {
 		}
 	}
 	
+	public IMethod lookup(String name) {
+		return registry.get(name);
+	}
+
 }

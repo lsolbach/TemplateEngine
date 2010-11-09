@@ -46,12 +46,11 @@ public class ForeachNode extends AbstractAstNode {
 		String elName = id.getData();
 
 		if (lookupSymbolInBlock(id.getData()) != null) {
-			throw new GenerateException("Symbol already exists: "
-					+ id.getData() + "! Template " + getTemplate() + ", line "
+			throw new GenerateException("Symbol already exists in foreach " + id.getData()
+					+ " loop! Template " + getTemplate() + ", line "
 					+ getLine());
 		}
 
-		// TODO implement filter
 		IAstNode loopNode = null;
 		IAstNode filterNode = null;
 		IAstNode stmtNode = null;
@@ -69,7 +68,7 @@ public class ForeachNode extends AbstractAstNode {
 		if (symbol == null) {
 			// Missing Variable
 			throw new GenerateException("Variable " + loopNode.getData()
-					+ " is not initialized! Template " + getTemplate()
+					+ " in foreach " + id.getData() + " loop is not initialized! Template " + getTemplate()
 					+ ", line " + getLine());
 		}
 
@@ -77,7 +76,7 @@ public class ForeachNode extends AbstractAstNode {
 		if (!(symbol.getType() == ValueType.LIST)) {
 			// Variable not of type LIST
 			throw new GenerateException(
-					"Expecting variable of type LIST! Template "
+					"Expecting variable of type list in foreach " + id.getData() + " loop! Template "
 							+ getTemplate() + ", line " + getLine());
 		}
 		IListValue lSymbol = (IListValue) symbol;
@@ -106,7 +105,6 @@ public class ForeachNode extends AbstractAstNode {
 		// Clear 'ENTRY' reference
 		lSymbol.setEntry(null);
 
-		// System.out.append(sb.toString());
 		return new StringValue(sb.toString());
 	}
 }
