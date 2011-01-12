@@ -41,6 +41,7 @@ then there would be no external dependencies anymore. Volunteers?)
 Version 1.0.0 (--.--.2010)
 --------------------------
 
+* added XmlDataSource for generic XML data binding
 * added method datatype as first class citizen to enable functional programming
 * added list and map as method return types
 * added *.type() method
