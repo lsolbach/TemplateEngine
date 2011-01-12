@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.soulspace.template.method.IMethod;
-import org.soulspace.template.method.IMethodRegistry;
+import org.soulspace.template.method.Method;
+import org.soulspace.template.method.MethodRegistry;
 
-public class StaticMethodRegistryImpl implements IMethodRegistry {
+public class StaticMethodRegistryImpl implements MethodRegistry {
 	static List<String> methodClassList = new ArrayList<String>();
 	static {
 		methodClassList.add("org.soulspace.template.method.impl.FirstLowerMethodImpl");
@@ -19,6 +19,7 @@ public class StaticMethodRegistryImpl implements IMethodRegistry {
 		methodClassList.add("org.soulspace.template.method.impl.StartsWithMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.MatchesMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.SplitMethodImpl");
+		methodClassList.add("org.soulspace.template.method.impl.CompareMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.IndexOfMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.SubstringMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.ReplaceMethodImpl");
@@ -32,14 +33,17 @@ public class StaticMethodRegistryImpl implements IMethodRegistry {
 		methodClassList.add("org.soulspace.template.method.impl.ElementIndexMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.ListAddMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.ListClearMethodImpl");
+		methodClassList.add("org.soulspace.template.method.impl.ReverseListMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.MapPutMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.MapClearMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.KeyListMethodImpl");
+
+		methodClassList.add("org.soulspace.template.method.impl.TypeMethodImpl");
 	}
 	
 	String name = "";
 	String className = "";
-	Map<String, IMethod> registry = new HashMap<String, IMethod>();
+	Map<String, Method> registry = new HashMap<String, Method>();
 
 	public StaticMethodRegistryImpl() {
 		this(methodClassList);
@@ -48,7 +52,7 @@ public class StaticMethodRegistryImpl implements IMethodRegistry {
 	public StaticMethodRegistryImpl(List<String> methodClassList) {
 		for(String methodClassName : methodClassList) {
 			try {
-				IMethod method = (IMethod) Class.forName(methodClassName).newInstance();
+				Method method = (Method) Class.forName(methodClassName).newInstance();
 				registry.put(method.getName(), method);
 			} catch (InstantiationException e) {
 				e.printStackTrace();
@@ -62,7 +66,7 @@ public class StaticMethodRegistryImpl implements IMethodRegistry {
 	
 	public void register(String methodClassName) {
 		try {
-			IMethod method = (IMethod) Class.forName(methodClassName).newInstance();
+			Method method = (Method) Class.forName(methodClassName).newInstance();
 			registry.put(method.getName(), method);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -73,7 +77,7 @@ public class StaticMethodRegistryImpl implements IMethodRegistry {
 		}
 	}
 	
-	public IMethod lookup(String name) {
+	public Method lookup(String name) {
 		return registry.get(name);
 	}
 

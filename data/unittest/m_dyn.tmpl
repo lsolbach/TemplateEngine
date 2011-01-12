@@ -1,0 +1,23 @@
+<?
+string separator
+string format(list elements) {
+	fold(join, elements)
+}
+
+separator = ', '
+string join(string a, string b) {
+	if(a && b) {
+		a + separator + b
+	} else if(a) {
+		a
+	} else if(b) {
+		b
+	}
+}
+
+separator = ':'
+list myList
+myList = cons('1', cons('1', cons('2', cons('3', myList))))
+format(myList)
+
+?>

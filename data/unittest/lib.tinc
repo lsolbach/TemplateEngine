@@ -1,0 +1,81 @@
+<?
+list filter(method m, list elements) {
+	list result
+	foreach element | m(element) <- elements {
+		result.add(element)
+	}
+	result
+}
+
+string fold(method m, list elements) {
+	if(elements) {
+		fold(m, head(elements), last(elements))
+	}
+}
+
+numeric fold(method m, list elements, numeric initial) {
+	if(elements) {
+		m(first(elements), fold(m, tail(elements), initial))
+	} else {
+		initial
+	}
+}
+
+string fold(method m, list elements, string initial) {
+	if(elements) {
+		m(first(elements), fold(m, tail(elements), initial))
+	} else {
+		initial
+	}
+}
+
+list cons(string e, list elements) {
+	list result
+	result.add(e)
+	result + elements
+}
+
+list cons(numeric e, list elements) {
+	list result
+	result.add(e)
+	result + elements
+}
+
+any first(list elements) {
+	if(elements) {
+		elements[0]
+	}
+}
+
+any last(list elements) {
+	if(elements) {
+		elements[elements.size() - 1]
+	}
+}
+
+list tail(list elements) {
+	list result
+	if(elements) {
+		numeric s = elements.size()
+		numeric i = 1
+		while(i < s) {
+			result.add(elements[i])
+			i = i + 1
+		}
+	}
+	result
+}
+
+list head(list elements) {
+	list result
+	if(elements) {
+		numeric s = elements.size()
+		numeric i = 0
+		while(i < s - 1) {
+			result.add(elements[i])
+			i = i + 1
+		}
+	}
+	result
+}
+?>

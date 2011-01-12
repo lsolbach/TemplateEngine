@@ -2,50 +2,69 @@ package org.soulspace.template.value.impl;
 
 import java.util.List;
 
-import org.soulspace.template.value.IListValue;
-import org.soulspace.template.value.IMapValue;
-import org.soulspace.template.value.INumericValue;
-import org.soulspace.template.value.IStringValue;
-import org.soulspace.template.value.ISymbolTable;
-import org.soulspace.template.value.IValue;
+import org.soulspace.template.value.ListValue;
+import org.soulspace.template.value.MapValue;
+import org.soulspace.template.value.NumericValue;
+import org.soulspace.template.value.StringValue;
+import org.soulspace.template.value.SymbolTable;
+import org.soulspace.template.value.Value;
+import org.soulspace.template.value.ValueType;
 
 public class ValueFactoryImpl {
 
-	IStringValue createStringValue() {
-		return new StringValue();
+	public Value createValue(ValueType type) {
+		Value value = null;
+		
+		if(type.equals(ValueType.STRING)) {
+			value = createStringValue();
+		} else if(type.equals(ValueType.NUMERIC)) {
+			value = createNumericValue();
+		} else if(type.equals(ValueType.LIST)) {
+			value = createListValue();
+		} else if(type.equals(ValueType.MAP)) {
+			value = createMapValue();
+		} else if(type.equals(ValueType.METHOD)) {
+//			value = createMethodVelue();
+		} else if(type.equals(ValueType.ANY)) {
+			value = createStringValue();
+		}
+		return value;
+	}
+	
+	public StringValue createStringValue() {
+		return new StringValueImpl();
 	}
 
-	IStringValue createStringValue(String data) {
-		return new StringValue(data);
+	public StringValue createStringValue(String data) {
+		return new StringValueImpl(data);
 	}
 
-	INumericValue createNumericValue() {
-		return new NumericValue();
+	public NumericValue createNumericValue() {
+		return new NumericValueImpl();
 	}
 	
-	INumericValue createNumericValue(String data) {
-		return new NumericValue(data);
+	public NumericValue createNumericValue(String data) {
+		return new NumericValueImpl(data);
 	}
 	
-	INumericValue createNumericValue(double data) {
-		return new NumericValue(data);
+	public NumericValue createNumericValue(double data) {
+		return new NumericValueImpl(data);
 	}
 	
-	IListValue createListValue() {
-		return new ListValue();
+	public ListValue createListValue() {
+		return new ListValueImpl();
 	}
 
-	IListValue createListValue(List<IValue> data) {
-		return new ListValue(data);
+	public ListValue createListValue(List<Value> data) {
+		return new ListValueImpl(data);
 	}
 	
-	IMapValue createMapValue() {
-		return new MapValue();
+	public MapValue createMapValue() {
+		return new MapValueImpl();
 	}
 	
-	IMapValue createMapValue(ISymbolTable data) {
-		return new MapValue(data);
+	public MapValue createMapValue(SymbolTable data) {
+		return new MapValueImpl(data);
 	}
-	
 	
 }

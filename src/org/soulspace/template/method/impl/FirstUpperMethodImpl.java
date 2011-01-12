@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.value.IStringValue;
-import org.soulspace.template.value.IValue;
-import org.soulspace.template.value.impl.StringValue;
+import org.soulspace.template.value.StringValue;
+import org.soulspace.template.value.Value;
+import org.soulspace.template.value.impl.StringValueImpl;
 
 public class FirstUpperMethodImpl extends AbstractMethod {
 
 	private static final String NAME = "firstUpper";
-	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
-	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
-	protected static final Class<? extends IValue> RETURN_TYPE = StringValue.class;
+	protected static final List<Class<? extends Value>> DEFINED_TYPES = new ArrayList<Class<? extends Value>>();
+	protected static final List<Class<? extends Value>> ARGUMENT_TYPES = new ArrayList<Class<? extends Value>>();
+	protected static final Class<? extends Value> RETURN_TYPE = StringValueImpl.class;
 
 	static {
-		DEFINED_TYPES.add(StringValue.class);
+		DEFINED_TYPES.add(StringValueImpl.class);
 	}
 
 	public FirstUpperMethodImpl() {
@@ -28,17 +28,17 @@ public class FirstUpperMethodImpl extends AbstractMethod {
 	}
 	
 	@Override
-	protected IValue doEvaluation(List<IValue> arguments) {
-		IValue result = null;
+	protected Value doEvaluation(List<Value> arguments) {
+		Value result = null;
 
-		IStringValue value = (IStringValue) arguments.get(0);
+		StringValue value = (StringValue) arguments.get(0);
 		String string = value.getData();
 		if(string.length() == 0) {
-			result = new StringValue(string);
+			result = new StringValueImpl(string);
 		} else if(string.length() == 1) {
-			result = new StringValue(string.toUpperCase());
+			result = new StringValueImpl(string.toUpperCase());
 		} else {
-			result = new StringValue(string.substring(0, 1).toUpperCase() + string.substring(1));
+			result = new StringValueImpl(string.substring(0, 1).toUpperCase() + string.substring(1));
 		}
 		return result;
 	}

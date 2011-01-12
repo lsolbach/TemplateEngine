@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.soulspace.template.method.IMethod;
-import org.soulspace.template.method.IMethodRegistry;
+import org.soulspace.template.method.Method;
+import org.soulspace.template.method.MethodRegistry;
 import org.soulspace.template.util.ClassLoaderUtils;
 
-public class DynamicMethodRegistryImpl implements IMethodRegistry {
+public class DynamicMethodRegistryImpl implements MethodRegistry {
 
-	Map<String, IMethod> registry = new HashMap<String, IMethod>();
+	Map<String, Method> registry = new HashMap<String, Method>();
 
 	public DynamicMethodRegistryImpl() {
 		System.out.println("registering Methods...");
@@ -19,11 +19,11 @@ public class DynamicMethodRegistryImpl implements IMethodRegistry {
 
 	public final void registerPackage(String packageName) {
 		List<Class> classList = ClassLoaderUtils.getImplementationsInPackage(
-				packageName, IMethod.class);
-		IMethod method;
+				packageName, Method.class);
+		Method method;
 		for (Class methodClass : classList) {
 			try {
-				method = (IMethod) methodClass.newInstance();
+				method = (Method) methodClass.newInstance();
 				registry.put(method.getName(), method);
 				System.out.println("registered method " + method.getName());
 			} catch (InstantiationException e) {
@@ -38,7 +38,7 @@ public class DynamicMethodRegistryImpl implements IMethodRegistry {
 
 	public void register(String methodClassName) {
 		try {
-			IMethod method = (IMethod) Class.forName(methodClassName).newInstance();
+			Method method = (Method) Class.forName(methodClassName).newInstance();
 			registry.put(method.getName(), method);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -49,7 +49,7 @@ public class DynamicMethodRegistryImpl implements IMethodRegistry {
 		}
 	}
 
-	public IMethod lookup(String name) {
+	public Method lookup(String name) {
 		return registry.get(name);
 	}
 }

@@ -4,7 +4,7 @@
 package fittest.tokenizer;
  
 import org.soulspace.template.exception.UnknownTokenException;
-import org.soulspace.template.tokenizer.ITokenList;
+import org.soulspace.template.tokenizer.TokenList;
 import org.soulspace.template.tokenizer.impl.TokenizerImpl;
 
 import fit.ColumnFixture;
@@ -12,7 +12,7 @@ import fit.ColumnFixture;
 public class Tokenizer extends ColumnFixture {
 
   org.soulspace.template.tokenizer.Tokenizer TOKENIZER = new TokenizerImpl();
-  ITokenList TOKEN_LIST = TOKENIZER.createTokenList();
+  TokenList TOKEN_LIST = TOKENIZER.createTokenList();
   
   public String input;
   

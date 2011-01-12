@@ -1,6 +1,12 @@
 Todo's TemplateEngine:
 
-English documentation
-License
-Source code publication
+Version 1.0
+* Document abstract and rationale
+* Document method values and functional programming
+* English documentation (WIP Michael)
+* Source code publication
+* License reference in source files
 
+Version 1.1
+range operator '..', cons operator '&' or '->'?
+switch from dynamic to lexical typing to enable closures

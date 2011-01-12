@@ -5,20 +5,20 @@ import java.util.List;
 import java.util.Set;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.value.IMapValue;
-import org.soulspace.template.value.IValue;
-import org.soulspace.template.value.impl.ListValue;
-import org.soulspace.template.value.impl.MapValue;
+import org.soulspace.template.value.MapValue;
+import org.soulspace.template.value.Value;
+import org.soulspace.template.value.impl.ListValueImpl;
+import org.soulspace.template.value.impl.MapValueImpl;
 
 public class KeyListMethodImpl extends AbstractMethod {
 
 	private static final String NAME = "keyList";
-	protected static final Class<? extends IValue> RETURN_TYPE = ListValue.class;
-	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
-	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
+	protected static final Class<? extends Value> RETURN_TYPE = ListValueImpl.class;
+	protected static final List<Class<? extends Value>> DEFINED_TYPES = new ArrayList<Class<? extends Value>>();
+	protected static final List<Class<? extends Value>> ARGUMENT_TYPES = new ArrayList<Class<? extends Value>>();
 
 	static {
-		DEFINED_TYPES.add(MapValue.class);
+		DEFINED_TYPES.add(MapValueImpl.class);
 	}
 
 	public KeyListMethodImpl() {
@@ -30,12 +30,12 @@ public class KeyListMethodImpl extends AbstractMethod {
 	}
 	
 	@Override
-	protected IValue doEvaluation(List<IValue> arguments) {
-		ListValue keyList = new ListValue();
-		IMapValue mapSymbol = (IMapValue) arguments.get(0);
+	protected Value doEvaluation(List<Value> arguments) {
+		ListValueImpl keyList = new ListValueImpl();
+		MapValue mapSymbol = (MapValue) arguments.get(0);
 		Set<String> keySet = mapSymbol.getData().getKeySet();
 		for(String key : keySet) {
-			keyList.addNewStringSymbol(key);
+			keyList.addNewStringValue(key);
 		}
 		return keyList;
 	}

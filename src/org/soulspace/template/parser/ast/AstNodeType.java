@@ -8,7 +8,7 @@ package org.soulspace.template.parser.ast;
  * @author soulman
  *
  */
-public class AstNodeType implements IAstNodeType {
+public class AstNodeType {
 
   public static final AstNodeType ROOT          = new AstNodeType("ROOT");
   public static final AstNodeType TERM          = new AstNodeType("TERM");

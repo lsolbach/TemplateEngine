@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.value.IStringValue;
-import org.soulspace.template.value.IValue;
-import org.soulspace.template.value.impl.MapValue;
-import org.soulspace.template.value.impl.StringValue;
+import org.soulspace.template.value.StringValue;
+import org.soulspace.template.value.Value;
+import org.soulspace.template.value.impl.MapValueImpl;
+import org.soulspace.template.value.impl.StringValueImpl;
 
 public class MapClearMethodImpl extends AbstractMethod {
 
 	private static final String NAME = "clearMap";
-	protected static final Class<? extends IValue> RETURN_TYPE = MapValue.class;
-	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
-	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
+	protected static final Class<? extends Value> RETURN_TYPE = MapValueImpl.class;
+	protected static final List<Class<? extends Value>> DEFINED_TYPES = new ArrayList<Class<? extends Value>>();
+	protected static final List<Class<? extends Value>> ARGUMENT_TYPES = new ArrayList<Class<? extends Value>>();
 
 	static {
-		DEFINED_TYPES.add(MapValue.class);
+		DEFINED_TYPES.add(MapValueImpl.class);
 	}
 
 
@@ -30,11 +30,11 @@ public class MapClearMethodImpl extends AbstractMethod {
 	}
 	
 	@Override
-	protected IValue doEvaluation(List<IValue> arguments) {
-		MapValue mapSymbol = (MapValue) arguments.get(0);
+	protected Value doEvaluation(List<Value> arguments) {
+		MapValueImpl mapSymbol = (MapValueImpl) arguments.get(0);
 
 		if(mapSymbol.getData().getSymbolCount() > 0) {
-			mapSymbol = new MapValue();
+			mapSymbol = new MapValueImpl();
 		}
 
 		return mapSymbol;

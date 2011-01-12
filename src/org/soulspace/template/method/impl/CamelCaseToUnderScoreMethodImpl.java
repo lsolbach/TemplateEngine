@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.method.IMethod;
-import org.soulspace.template.value.IValue;
-import org.soulspace.template.value.impl.StringValue;
+import org.soulspace.template.method.Method;
+import org.soulspace.template.value.Value;
+import org.soulspace.template.value.impl.StringValueImpl;
 
 public class CamelCaseToUnderScoreMethodImpl extends AbstractMethod
-		implements IMethod {
+		implements Method {
 
 	private static final String NAME = "camelCaseToUnderScore";
-	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
-	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
-	protected static final Class<? extends IValue> RETURN_TYPE = StringValue.class;
+	protected static final List<Class<? extends Value>> DEFINED_TYPES = new ArrayList<Class<? extends Value>>();
+	protected static final List<Class<? extends Value>> ARGUMENT_TYPES = new ArrayList<Class<? extends Value>>();
+	protected static final Class<? extends Value> RETURN_TYPE = StringValueImpl.class;
 
 	static {
-		DEFINED_TYPES.add(StringValue.class);
+		DEFINED_TYPES.add(StringValueImpl.class);
 	}
 	
 	public CamelCaseToUnderScoreMethodImpl() {
@@ -29,7 +29,7 @@ public class CamelCaseToUnderScoreMethodImpl extends AbstractMethod
 	}
 	
 	@Override
-	protected IValue doEvaluation(List<IValue> arguments) {
+	protected Value doEvaluation(List<Value> arguments) {
 		String camelCase = arguments.get(0).evaluate();
 		
 		if(camelCase != null && camelCase.length() > 0) {
@@ -45,7 +45,7 @@ public class CamelCaseToUnderScoreMethodImpl extends AbstractMethod
 					sb.append(ch);
 				}
 			}
-			return new StringValue(sb.toString());
+			return new StringValueImpl(sb.toString());
 		} else {
 			return arguments.get(0);			
 		}

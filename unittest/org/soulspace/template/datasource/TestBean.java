@@ -13,31 +13,31 @@ import java.util.List;
  */
 public class TestBean {
 
-	public static final String STRING_VALUE  = "StringValue";
-  public static final String INTEGER_VALUE = "IntegerValue";
-  public static final String LONG_VALUE    = "LongValue";
-  public static final String SHORT_VALUE   = "ShortValue";
-  public static final String BYTE_VALUE    = "ByteValue";
-  public static final String FLOAT_VALUE   = "FloatValue";
-  public static final String DOUBLE_VALUE  = "DoubleValue";
-  public static final String CHAR_VALUE    = "CharValue";
-  public static final String BOOLEAN_GET_VALUE = "BooleanGetValue";
-  public static final String BOOLEAN_IS_VALUE  = "BooleanIsValue";
+	public static final String STRING_VALUE = "StringValue";
+	public static final String INTEGER_VALUE = "IntegerValue";
+	public static final String LONG_VALUE = "LongValue";
+	public static final String SHORT_VALUE = "ShortValue";
+	public static final String BYTE_VALUE = "ByteValue";
+	public static final String FLOAT_VALUE = "FloatValue";
+	public static final String DOUBLE_VALUE = "DoubleValue";
+	public static final String CHAR_VALUE = "CharValue";
+	public static final String BOOLEAN_GET_VALUE = "BooleanGetValue";
+	public static final String BOOLEAN_IS_VALUE = "BooleanIsValue";
 
-  private String  stringValue;
-  private int     integerValue;
-  private long    longValue;
-  private short   shortValue;
-  private byte    byteValue;
-  private float   floatValue;
-  private double  doubleValue;
-  private char    charValue;
-  private boolean booleanGetValue;
-  private boolean booleanIsValue;
-  
-  private List       testList = new ArrayList();
-  private TestBean[] testArray;
-  private TestBean   testObject;
+	private String stringValue;
+	private int integerValue;
+	private long longValue;
+	private short shortValue;
+	private byte byteValue;
+	private float floatValue;
+	private double doubleValue;
+	private char charValue;
+	private boolean booleanGetValue;
+	private boolean booleanIsValue;
+
+	private List<Object> testList = new ArrayList<Object>();
+	private TestBean[] testArray;
+	private TestBean testObject;
 
 	/**
 	 * 
@@ -46,45 +46,45 @@ public class TestBean {
 		super();
 	}
 
-  public TestBean(String stringValue) {
-    this.stringValue = stringValue;
-  }
+	public TestBean(String stringValue) {
+		this.stringValue = stringValue;
+	}
 
-  public TestBean(int integerValue) {
-    this.integerValue = integerValue;
-  }
+	public TestBean(int integerValue) {
+		this.integerValue = integerValue;
+	}
 
-  public TestBean(long longValue) {
-    this.longValue = longValue;
-  }
+	public TestBean(long longValue) {
+		this.longValue = longValue;
+	}
 
-  public TestBean(short shortValue) {
-    this.shortValue = shortValue;
-  }
+	public TestBean(short shortValue) {
+		this.shortValue = shortValue;
+	}
 
-  public TestBean(byte byteValue) {
-    this.byteValue = byteValue;
-  }
+	public TestBean(byte byteValue) {
+		this.byteValue = byteValue;
+	}
 
-  public TestBean(float floatValue) {
-    this.floatValue = floatValue;
-  }
+	public TestBean(float floatValue) {
+		this.floatValue = floatValue;
+	}
 
-  public TestBean(double doubleValue) {
-    this.doubleValue = doubleValue;
-  }
+	public TestBean(double doubleValue) {
+		this.doubleValue = doubleValue;
+	}
 
-  public TestBean(char charValue) {
-    this.charValue = charValue;
-  }
+	public TestBean(char charValue) {
+		this.charValue = charValue;
+	}
 
-  /**
-   * @param value
-   */
-  public TestBean(boolean value) {
-    this.booleanGetValue = value;
-    this.booleanIsValue = value;    
-  }
+	/**
+	 * @param value
+	 */
+	public TestBean(boolean value) {
+		this.booleanGetValue = value;
+		this.booleanIsValue = value;
+	}
 
 	/**
 	 * @return

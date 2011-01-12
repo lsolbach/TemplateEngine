@@ -4,22 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.method.IMethod;
-import org.soulspace.template.value.IStringValue;
-import org.soulspace.template.value.IValue;
-import org.soulspace.template.value.impl.NumericValue;
-import org.soulspace.template.value.impl.StringValue;
+import org.soulspace.template.method.Method;
+import org.soulspace.template.value.StringValue;
+import org.soulspace.template.value.Value;
+import org.soulspace.template.value.impl.NumericValueImpl;
+import org.soulspace.template.value.impl.StringValueImpl;
 
-public class StartsWithMethodImpl extends AbstractMethod implements IMethod {
+public class StartsWithMethodImpl extends AbstractMethod implements Method {
 
-	private static final String NAME = "endsWith";
-	protected static final Class<? extends IValue> RETURN_TYPE = NumericValue.class;
-	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
-	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
+	private static final String NAME = "startsWith";
+	protected static final Class<? extends Value> RETURN_TYPE = NumericValueImpl.class;
+	protected static final List<Class<? extends Value>> DEFINED_TYPES = new ArrayList<Class<? extends Value>>();
+	protected static final List<Class<? extends Value>> ARGUMENT_TYPES = new ArrayList<Class<? extends Value>>();
 
 	static {
-		DEFINED_TYPES.add(StringValue.class);
-		ARGUMENT_TYPES.add(StringValue.class);
+		DEFINED_TYPES.add(StringValueImpl.class);
+		ARGUMENT_TYPES.add(StringValueImpl.class);
 	}
 
 	public StartsWithMethodImpl() {
@@ -31,15 +31,15 @@ public class StartsWithMethodImpl extends AbstractMethod implements IMethod {
 	}
 	
 	@Override
-	protected IValue doEvaluation(List<IValue> arguments) {
-		IValue result = null;
+	protected Value doEvaluation(List<Value> arguments) {
+		Value result = null;
 
-		IStringValue string = (IStringValue) arguments.get(0);
-		IStringValue prefix = (IStringValue) arguments.get(1);
-		if(string.getData().endsWith(prefix.getData())) {
-			result = new NumericValue(1);
+		StringValue string = (StringValue) arguments.get(0);
+		StringValue prefix = (StringValue) arguments.get(1);
+		if(string.getData().startsWith(prefix.getData())) {
+			result = new NumericValueImpl(1);
 		} else {
-			result = new NumericValue(0);			
+			result = new NumericValueImpl(0);			
 		}
 		return result;
 	}

@@ -3,14 +3,17 @@ package org.soulspace.template.parser.ast.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.soulspace.template.parser.ast.ISignature;
-import org.soulspace.template.value.impl.ValueType;
+import org.soulspace.template.parser.ast.Signature;
+import org.soulspace.template.value.Value;
+import org.soulspace.template.value.ValueType;
 
-public class SignatureImpl implements ISignature {
+public class SignatureImpl implements Signature {
 
 	private String methodName;
 	private ValueType returnType;
 	private List<ValueType> parameterTypes = new ArrayList<ValueType>();
+	
+	public enum MatchType {NONE, COMPATIBLE, EXACT};
 	
 	public SignatureImpl(String methodName, ValueType returnType, List<ValueType> parameterTypes) {
 		this.methodName = methodName;
@@ -39,6 +42,25 @@ public class SignatureImpl implements ISignature {
 	 */
 	public List<ValueType> getParameterTypes() {
 		return parameterTypes;
+	}
+	
+	public MatchType matches(List<Value> paramList) {
+		if(paramList.size() != parameterTypes.size()) {
+			// can't be any other match type
+			return MatchType.NONE;
+		}
+		MatchType match = MatchType.EXACT;
+		for(int i = 0; i < parameterTypes.size(); i++) {
+			ValueType t1 = paramList.get(i).getType();
+			ValueType t2 = parameterTypes.get(i);
+			if(t1 != t2 && (t2.equals(ValueType.STRING) || t2.equals(ValueType.NUMERIC))) {
+				match = MatchType.COMPATIBLE;
+			} else {
+				// can't be any other match type
+				return MatchType.NONE;
+			}
+		}
+		return match;
 	}
 	
 	public String toString() {

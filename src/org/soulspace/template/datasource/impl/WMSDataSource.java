@@ -12,21 +12,21 @@ import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.PatternMatcherInput;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.soulspace.template.datasource.IDataSource;
-import org.soulspace.template.value.ISymbolTable;
-import org.soulspace.template.value.impl.SymbolTable;
+import org.soulspace.template.datasource.DataSource;
+import org.soulspace.template.value.SymbolTable;
+import org.soulspace.template.value.impl.SymbolTableImpl;
 
 /**
  * @author soulman
  * 
  * Parser for WMS Data Files
  */
-public class WMSDataSource implements IDataSource {
+public class WMSDataSource implements DataSource {
 	// TODO make static?
 
 	static String REGEX_1 = "(?:(?:^;.*?$)|(?:^\\#(.*)\\#$)|(\\S.*))";
 
-	ISymbolTable symbolTable = null;
+	SymbolTable symbolTable = null;
 	String input = "";
 	boolean parsed = false;
 
@@ -36,14 +36,14 @@ public class WMSDataSource implements IDataSource {
 	 * @param input
 	 */
 	public WMSDataSource(String input) {
-		symbolTable = new SymbolTable();
+		symbolTable = new SymbolTableImpl();
 		this.input = input;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.soulspace.dataloader.IDataSource#getSymbolTable()
 	 */
-	public ISymbolTable getSymbolTable() {
+	public SymbolTable getSymbolTable() {
 		if(!parsed) {
 			parsed = parse();
 		}
@@ -89,7 +89,7 @@ public class WMSDataSource implements IDataSource {
 				// is this the first symbol?
 				if(symbolName != null) {
 					// no, so add it to the symbol table
-					symbolTable.addNewStringSymbol(symbolName, buffer.toString());					
+					symbolTable.addStringValue(symbolName, buffer.toString());					
 					buffer = new StringBuffer(64);
 				}
 				// set symbol name
@@ -102,7 +102,7 @@ public class WMSDataSource implements IDataSource {
 		}
 		// add last symbol
 		if(symbolName != null) {
-			symbolTable.addNewStringSymbol(symbolName, buffer.toString());								
+			symbolTable.addStringValue(symbolName, buffer.toString());								
 		}
 		
 		return true;	

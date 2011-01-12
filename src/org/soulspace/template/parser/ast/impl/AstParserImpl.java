@@ -5,30 +5,30 @@ package org.soulspace.template.parser.ast.impl;
 
 import org.soulspace.template.exception.SyntaxException;
 import org.soulspace.template.parser.ast.AstNodeType;
-import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.parser.ast.IAstNodeFactory;
-import org.soulspace.template.tokenizer.IToken;
-import org.soulspace.template.tokenizer.ITokenList;
+import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeFactory;
+import org.soulspace.template.tokenizer.Token;
+import org.soulspace.template.tokenizer.TokenList;
 import org.soulspace.template.tokenizer.TokenType;
-import org.soulspace.template.tokenizer.impl.TokenList;
+import org.soulspace.template.tokenizer.impl.TokenListImpl;
 
 public class AstParserImpl {
 
-	private IAstNodeFactory nodeFactory = new AstNodeFactory();
+	private AstNodeFactory nodeFactory = new AstNodeFactoryImpl();
 
 	public AstParserImpl() {
 		super();
 	}
 
-	public IAstNode parse(ITokenList list) throws SyntaxException {
-		IAstNode node = nodeFactory.create(AstNodeType.ROOT, null);
+	public AstNode parse(TokenList list) throws SyntaxException {
+		AstNode node = nodeFactory.create(AstNodeType.ROOT, null);
 		node.addChildNode(parseTerm(list, node, false));
 		return node;
 	}
 
-	public IAstNode parseTerm(ITokenList list, IAstNode parent, boolean inBlock)
+	public AstNode parseTerm(TokenList list, AstNode parent, boolean inBlock)
 			throws SyntaxException {
-		IAstNode node = nodeFactory.create(AstNodeType.TERM, list
+		AstNode node = nodeFactory.create(AstNodeType.TERM, list
 				.lookUpLastToken(), parent);
 		// Loop through token list
 		while (list.hasToken()) {
@@ -46,7 +46,6 @@ public class AstParserImpl {
 				if (!inBlock) {
 					throw new SyntaxException("BLOCK_END encountered while not in block! " + list.getToken());
 				}
-				list.skipToken();
 				break;
 			} else {
 				System.err.println("Unexpected token: " + list.getToken());
@@ -56,7 +55,7 @@ public class AstParserImpl {
 		return node;
 	}
 
-	IAstNode parseStatement(ITokenList list, IAstNode parent)
+	AstNode parseStatement(TokenList list, AstNode parent)
 			throws SyntaxException {
 		if (list.checkType(TokenType.IF)) {
 			return parseIf(list, parent);
@@ -68,7 +67,10 @@ public class AstParserImpl {
 			return parseDeclaration(list, parent);
 		} else if (list.checkType(TokenType.BLOCK_BEGIN)) {
 			list.skipToken();
-			return parseTerm(list, parent, true);
+			AstNode node = parseTerm(list, parent, true);
+			list.validateType(TokenType.BLOCK_END);
+			list.skipToken();
+			return node;
 		} else {
 			System.out.println("TODO: " + list.getToken());
 		}
@@ -79,23 +81,23 @@ public class AstParserImpl {
 	 * @param list
 	 * @return
 	 */
-	private IAstNode parseForeach(ITokenList list, IAstNode parent)
+	private AstNode parseForeach(TokenList list, AstNode parent)
 			throws SyntaxException {
 		// parse syntax: foreach x | x:Name eq 'Blub' <- xList { } ?
 		list.validateType(TokenType.FOREACH);
-		IAstNode node = nodeFactory.create(list.getToken(), parent);
+		AstNode node = nodeFactory.create(list.getToken(), parent);
 		list.skipToken();
 
-		IdentifierNode idNode = (IdentifierNode) parseExpression(list, node);
+		IdentifierNodeImpl idNode = (IdentifierNodeImpl) parseExpression(list, node);
 		node.addChildNode(idNode);
 		if (list.checkType(TokenType.FILTER)) {
 			list.skipToken();
-			IAstNode filterNode = parseExpression(list, node);
+			AstNode filterNode = parseExpression(list, node);
 			node.addChildNode(filterNode);
 		}
 		list.validateType(TokenType.FOREACH_ASSIGN);
 		list.skipToken();
-		IAstNode exNode = parseExpression(list, node);
+		AstNode exNode = parseExpression(list, node);
 		node.addChildNode(exNode);
 
 		node.addChildNode(parseStatement(list, node));
@@ -106,10 +108,10 @@ public class AstParserImpl {
 	 * @param list
 	 * @return
 	 */
-	IAstNode parseWhile(ITokenList list, IAstNode parent)
+	AstNode parseWhile(TokenList list, AstNode parent)
 			throws SyntaxException {
 		list.validateType(TokenType.WHILE);
-		IAstNode node = nodeFactory.create(list.getToken(), parent);
+		AstNode node = nodeFactory.create(list.getToken(), parent);
 		list.skipToken();
 
 		node.addChildNode(parseExpression(list, node));
@@ -122,9 +124,9 @@ public class AstParserImpl {
 	 * @param list
 	 * @return
 	 */
-	IAstNode parseIf(ITokenList list, IAstNode parent) throws SyntaxException {
+	AstNode parseIf(TokenList list, AstNode parent) throws SyntaxException {
 		list.validateType(TokenType.IF);
-		IAstNode node = nodeFactory.create(list.getToken(), parent);
+		AstNode node = nodeFactory.create(list.getToken(), parent);
 
 		// skip if
 		list.skipToken();
@@ -142,11 +144,11 @@ public class AstParserImpl {
 		return node;
 	}
 
-	private IAstNode parseDeclaration(ITokenList list, IAstNode parent)
+	private AstNode parseDeclaration(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IToken token = list.getToken();
-		IAstNode node = null;
-		IAstNode child = null;
+		Token token = list.getToken();
+		AstNode node = null;
+		AstNode child = null;
 		String type = token.getData();
 
 		list.skipToken();
@@ -154,19 +156,21 @@ public class AstParserImpl {
 
 		if (list.checkNextType(TokenType.PAREN_LEFT)) {
 			// method declaration
-			MethodNode mNode = null;
+			MethodNodeImpl mNode = null;
 			token = list.getToken();
 			String methodName = token.getData();
-			mNode = (MethodNode) nodeFactory.create(AstNodeType.METHOD, token,
+			mNode = (MethodNodeImpl) nodeFactory.create(AstNodeType.METHOD, token,
 					parent);
 			mNode.setData(methodName);
 			mNode.setReturnType(type);
 			list.skipToken();
 			parseMethodDeclaration(list, mNode);
+			if(!methodName.equals("fn")) {
+				mNode.addMethodNode(mNode);
+			}
 			// don't return a node, because the method declaration is added to
 			// the method registry
 			// and not to the parent node
-			mNode.addMethodNode(mNode);
 			return null;
 		} else {
 			// symbol declaration
@@ -178,10 +182,31 @@ public class AstParserImpl {
 		return node;
 	}
 
-	private IAstNode parseMethodDeclaration(ITokenList list, IAstNode parent)
+	private AstNode parseMethodAssignmentDeclaration(TokenList list, AstNode parent) {
+		Token token = list.getToken();
+		AstNode node = null;
+		AstNode child = null;
+		String type = token.getData();
+
+		list.skipToken();
+		list.validateType(TokenType.IDENTIFIER);
+
+		MethodNodeImpl mNode = null;
+		token = list.getToken();
+		String methodName = token.getData();
+		mNode = (MethodNodeImpl) nodeFactory.create(AstNodeType.METHOD, token,
+				parent);
+		mNode.setData(methodName);
+		mNode.setReturnType(type);
+		list.skipToken();
+		parseMethodDeclaration(list, mNode);
+		return mNode;
+	}
+	
+	private AstNode parseMethodDeclaration(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IAstNode node = parent;
-		IAstNode child = null;
+		AstNode node = parent;
+		AstNode child = null;
 
 		list.validateType(TokenType.PAREN_LEFT);
 		// skip left parenthesis
@@ -208,10 +233,10 @@ public class AstParserImpl {
 	 * @return
 	 * @throws SyntaxException
 	 */
-	private IAstNode parseParameterDeclarationList(ITokenList list,
-			IAstNode parent) throws SyntaxException {
-		IAstNode node = null;
-		IAstNode child = null;
+	private AstNode parseParameterDeclarationList(TokenList list,
+			AstNode parent) throws SyntaxException {
+		AstNode node = null;
+		AstNode child = null;
 
 		node = nodeFactory.create(AstNodeType.PARAM_LIST, list
 				.lookUpLastToken(), parent);
@@ -234,7 +259,7 @@ public class AstParserImpl {
 	 * @param node
 	 * @return
 	 */
-	private IAstNode parseExpression(ITokenList list, IAstNode parent)
+	private AstNode parseExpression(TokenList list, AstNode parent)
 			throws SyntaxException {
 		return parseAssignExpression(list, parent);
 	}
@@ -243,20 +268,29 @@ public class AstParserImpl {
 	 * @param list
 	 * @param parent
 	 */
-	private IAstNode parseAssignExpression(ITokenList list, IAstNode parent)
+	private AstNode parseAssignExpression(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IAstNode node = null;
-		IAstNode child = null;
+		AstNode node = null;
+		AstNode child = null;
 
+		// left hand side expression (results in identifier)
 		child = parseLogicalOrExpression(list, parent);
 
 		if (list.checkType(TokenType.ASSIGN)) {
+			// create ASSIGN node
 			node = nodeFactory.create(list.getToken(), parent);
+			// add left hand side node
 			node.addChildNode(child);
 			list.skipToken();
-
-			child = parseLogicalOrExpression(list, parent);
-			node.addChildNode(child);
+			if(list.checkType(TokenType.DECLARATION)) {
+				// method assignment
+				child = parseMethodAssignmentDeclaration(list, node);
+			} else {
+				// expression assignment
+				child = parseLogicalOrExpression(list, parent);
+			}
+			// add right hand side
+			node.addChildNode(child);				
 		} else {
 			node = child;
 		}
@@ -268,10 +302,10 @@ public class AstParserImpl {
 	 * @param list
 	 * @param parent
 	 */
-	private IAstNode parseLogicalOrExpression(ITokenList list, IAstNode parent)
+	private AstNode parseLogicalOrExpression(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IAstNode node = null;
-		IAstNode child = null;
+		AstNode node = null;
+		AstNode child = null;
 
 		child = parseLogicalAndExpression(list, parent);
 
@@ -300,10 +334,10 @@ public class AstParserImpl {
 	 * @param list
 	 * @param parent
 	 */
-	private IAstNode parseLogicalAndExpression(ITokenList list, IAstNode parent)
+	private AstNode parseLogicalAndExpression(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IAstNode node = null;
-		IAstNode child = null;
+		AstNode node = null;
+		AstNode child = null;
 
 		child = parseEqualExpression(list, parent);
 
@@ -331,10 +365,10 @@ public class AstParserImpl {
 	 * @param list
 	 * @param parent
 	 */
-	private IAstNode parseEqualExpression(ITokenList list, IAstNode parent)
+	private AstNode parseEqualExpression(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IAstNode node = null;
-		IAstNode child = null;
+		AstNode node = null;
+		AstNode child = null;
 
 		child = parseRelationalExpression(list, parent);
 
@@ -357,10 +391,10 @@ public class AstParserImpl {
 	 * @param list
 	 * @param parent
 	 */
-	private IAstNode parseRelationalExpression(ITokenList list, IAstNode parent)
+	private AstNode parseRelationalExpression(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IAstNode node = null;
-		IAstNode child = null;
+		AstNode node = null;
+		AstNode child = null;
 
 		child = parseAdditiveExpression(list, parent);
 
@@ -383,10 +417,10 @@ public class AstParserImpl {
 	 * @param list
 	 * @param parent
 	 */
-	private IAstNode parseAdditiveExpression(ITokenList list, IAstNode parent)
+	private AstNode parseAdditiveExpression(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IAstNode node = null;
-		IAstNode child = null;
+		AstNode node = null;
+		AstNode child = null;
 
 		child = parseMultiplicativeExpression(list, parent);
 
@@ -424,10 +458,10 @@ public class AstParserImpl {
 	 * @param list
 	 * @param parent
 	 */
-	private IAstNode parseMultiplicativeExpression(ITokenList list,
-			IAstNode parent) throws SyntaxException {
-		IAstNode node = null;
-		IAstNode child = null;
+	private AstNode parseMultiplicativeExpression(TokenList list,
+			AstNode parent) throws SyntaxException {
+		AstNode node = null;
+		AstNode child = null;
 
 		child = parseUnaryExpression(list, parent);
 
@@ -466,10 +500,10 @@ public class AstParserImpl {
 	 * @param list
 	 * @param parent
 	 */
-	private IAstNode parseUnaryExpression(ITokenList list, IAstNode parent)
+	private AstNode parseUnaryExpression(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IAstNode node = null;
-		IAstNode child = null;
+		AstNode node = null;
+		AstNode child = null;
 
 		if (list.checkType(TokenType.MINUS)
 				|| list.checkType(TokenType.LOGICAL_NOT)) {
@@ -490,10 +524,10 @@ public class AstParserImpl {
 	 * @param list
 	 * @param parent
 	 */
-	private IAstNode parsePrimaryExpression(ITokenList list, IAstNode parent)
+	private AstNode parsePrimaryExpression(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IToken token = list.getToken();
-		IAstNode node = null;
+		Token token = list.getToken();
+		AstNode node = null;
 
 		if (list.checkType(TokenType.PAREN_LEFT)) {
 			list.skipToken();
@@ -516,11 +550,11 @@ public class AstParserImpl {
 	 * @param list
 	 * @param parent
 	 */
-	private IAstNode parseDereferenceExpression(ITokenList list, IAstNode parent)
+	private AstNode parseDereferenceExpression(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IToken token = list.getToken();
-		IAstNode child = null;
-		IAstNode node = null;
+		Token token = list.getToken();
+		AstNode child = null;
+		AstNode node = null;
 
 		child = parseIdExpression(list, parent);
 
@@ -578,10 +612,10 @@ public class AstParserImpl {
 	 * @param list
 	 * @param parent
 	 */
-	private IAstNode parseIdExpression(ITokenList list, IAstNode parent)
+	private AstNode parseIdExpression(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IToken token = list.getToken();
-		IAstNode node = null;
+		Token token = list.getToken();
+		AstNode node = null;
 
 		node = nodeFactory.create(token, parent);
 		list.skipToken();
@@ -604,9 +638,9 @@ public class AstParserImpl {
 		return node;
 	}
 
-	private IAstNode parseArgList(ITokenList list, IAstNode parent)
+	private AstNode parseArgList(TokenList list, AstNode parent)
 			throws SyntaxException {
-		IAstNode node = nodeFactory.create(AstNodeType.ARG_LIST, list
+		AstNode node = nodeFactory.create(AstNodeType.ARG_LIST, list
 				.lookUpLastToken(), parent);
 
 		while (checkForExpression(list)) {
@@ -623,15 +657,15 @@ public class AstParserImpl {
 	 * @param list
 	 * @return
 	 */
-	IAstNode parseText(ITokenList list, IAstNode parent) throws SyntaxException {
+	AstNode parseText(TokenList list, AstNode parent) throws SyntaxException {
 		list.validateType(TokenType.TEXT);
-		IAstNode node = nodeFactory.create(list.getToken(), parent);
+		AstNode node = nodeFactory.create(list.getToken(), parent);
 		// skip to next
 		list.skipToken();
 		return node;
 	}
 
-	boolean checkForStatement(ITokenList list) {
+	boolean checkForStatement(TokenList list) {
 		if (list.checkType(TokenType.IF) || list.checkType(TokenType.WHILE)
 				|| list.checkType(TokenType.FOREACH)
 				|| list.checkType(TokenType.DECLARATION)
@@ -642,7 +676,7 @@ public class AstParserImpl {
 		}
 	}
 
-	boolean checkForExpression(ITokenList list) {
+	boolean checkForExpression(TokenList list) {
 		if (list.checkType(TokenType.PAREN_LEFT)
 				|| list.checkType(TokenType.LOGICAL_NOT)
 				|| list.checkType(TokenType.MINUS)
@@ -655,7 +689,7 @@ public class AstParserImpl {
 		}
 	}
 
-	boolean checkForEqualOperator(ITokenList list) {
+	boolean checkForEqualOperator(TokenList list) {
 		if (list.checkType(TokenType.EQUAL)
 				|| list.checkType(TokenType.NOT_EQUAL)
 				|| list.checkType(TokenType.STRING_EQUAL)
@@ -666,7 +700,7 @@ public class AstParserImpl {
 		}
 	}
 
-	boolean checkForRelationalOperator(ITokenList list) {
+	boolean checkForRelationalOperator(TokenList list) {
 		if (list.checkType(TokenType.GREATER)
 				|| list.checkType(TokenType.GREATER_EQUAL)
 				|| list.checkType(TokenType.LESS)
@@ -677,7 +711,7 @@ public class AstParserImpl {
 		}
 	}
 
-	boolean checkForMultiplicationOperator(ITokenList list) {
+	boolean checkForMultiplicationOperator(TokenList list) {
 		if (list.checkType(TokenType.MULT)
 				|| list.checkType(TokenType.DIV)
 				|| list.checkType(TokenType.IDIV)
@@ -688,7 +722,7 @@ public class AstParserImpl {
 		}
 	}
 
-	boolean checkForAdditionOperator(ITokenList list) {
+	boolean checkForAdditionOperator(TokenList list) {
 		if (list.checkType(TokenType.PLUS)
 				|| list.checkType(TokenType.MINUS)) {
 			return true;

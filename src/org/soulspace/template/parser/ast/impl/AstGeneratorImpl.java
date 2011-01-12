@@ -4,8 +4,8 @@
 package org.soulspace.template.parser.ast.impl;
 
 import org.soulspace.template.exception.GenerateException;
-import org.soulspace.template.parser.ast.IAstNode;
-import org.soulspace.template.value.ISymbolTable;
+import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.value.SymbolTable;
 
 public class AstGeneratorImpl {
 
@@ -13,9 +13,9 @@ public class AstGeneratorImpl {
     super();
   }
 
-  public String generate(IAstNode root, ISymbolTable symbolTable) throws GenerateException { 
+  public String generate(AstNode root, SymbolTable symbolTable) throws GenerateException { 
     root.setSymbolTable(symbolTable);
-    String result = root.generateSymbol().evaluate();
+    String result = root.generateValue().evaluate();
     return result;
   }
     

@@ -1,22 +1,35 @@
 Template Engine
 ===============
 
-presentation language and template engine
+The project TemplateEngine consists of a presentation language and an
+engine for processing the language and transforming and emmitting texts
 
 Features:
 ---------
 
-* syntax easy to learn
-* string, numeric, list and map variables
-* declaration of new variables within the templates
-* building of complex object structures ala Perl
-* numeric and string operators
-* data binding for java beans, use bean objects as input
-* extensible library of type methods (e.g. a.toLower() on strings)
-* defineable methods with recursion support in templates
-* filters for iterations
+* simple things are easy to accomplish, very complex things are possible
+* syntax is easy to learn
+* data binding for java beans (use bean objects as input) and xml
+* string, numeric, list, map and method datatypes
+* operators (like +,-,==,>=) on datatypes
+* branching with if/else
+* while loops and foreach loops with filters
+* declaration of variables and methods within the templates
+* full recursion and overriding support for methods
+* functional programming support
+	* methods as first class citizens
+	* closures
+	* higher order methods
+	* methods as return value (function builders)
 * safe by design, no modification of input java objects possible
-	(if getters have no side effects, which is bad design anyway)
+	(if getters on objects have no side effects, which is bad design anyway)
+* extensible library of type methods (e.g. a.toLower() on strings)
+* enables building of complex data structures
+* turing complete language
+
+Rationale:
+----------
+
 
 Runtime Requirements:
 ---------------------
@@ -26,19 +39,25 @@ then there would be no external dependencies anymore. Volunteers?)
 
 
 Version 1.0.0 (--.--.2010)
----------------------------
+--------------------------
 
-* made method return types list and map possible
+* added method datatype as first class citizen to enable functional programming
+* added list and map as method return types
+* added *.type() method
+* added list.reverse() method
 * added string.replace() method
 * added string.endsWith() method
-* added string.utf8tolatin1() and string.latin1ToUtf8() methods (TODO validate)
+* added string.utf8tolatin1() and string.latin1ToUtf8() methods (TODO validate functionality)
 * added list.clearList() and map.clearMap() methods
-* added IMethodRegistry.register() and DynamicMethodRegistry.registerPackage()
+* added MethodRegistry.register() and DynamicMethodRegistryImpl.registerPackage()
 * made method registries configurable
 * refactored code for robustness, removed review issues
 * fixed tokenizer bug for identifiers starting with keywords
+* fixed tokenizer for better matching of a xml declaration
 * suppressed string evaluation of numerics, lists and maps when not in string context
-* enhanced diagnosis output on GenerateExceptions
+* added methods to MapValue to make them more convenient
+* enhanced diagnostic output on GenerateExceptions
+* refactored names of interfaces and classes
 
 Version 0.9.17 (21.09.2009)
 ---------------------------

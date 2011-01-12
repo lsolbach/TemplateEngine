@@ -1,0 +1,43 @@
+<?
+method cJoin(string s) {
+	method result
+	{
+		string separator = s
+		result = string fn(string a, string b) {
+			if(a ne ''  && b ne '') {
+				a + separator + b
+			} else if(a ne '') {
+				a
+			} else if(b ne '') {
+				b
+			}
+		}
+	}
+	result
+}
+
+method cEquals(string s) {
+	method result
+	{
+		string value = s
+		result = numeric fn(string element) {
+			element eq value
+		}
+	}
+	result
+}
+
+string format(list elements) {
+	fold(cJoin(', '), elements)
+}
+
+list elements
+elements = elements.add('0')
+elements = elements.add('1')
+elements = elements.add('0')
+elements = elements.add('1')
+elements = elements.add('0')
+elements = elements.add('1')
+
+format(filter(cEquals('0'), elements))
+?>

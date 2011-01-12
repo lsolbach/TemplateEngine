@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.soulspace.template.exception.SyntaxException;
 import org.soulspace.template.exception.UnknownTokenException;
 import org.soulspace.template.impl.TemplateEngineImpl;
-import org.soulspace.template.value.impl.SymbolTable;
+import org.soulspace.template.value.impl.SymbolTableImpl;
 
 import junit.framework.TestCase;
 
@@ -24,7 +24,7 @@ public class TemplateFileTest extends TestCase {
 //		TemplateEngine te = new TemplateEngineImpl();
 //		String result = "";
 //		te.loadTemplate("data/unittest/b.tmpl");
-//		result = te.generate(new SymbolTable());
+//		result = te.generate(new SymbolTableImpl());
 //		assertEquals("Testtext", result);
 //	}
 
@@ -36,7 +36,7 @@ public class TemplateFileTest extends TestCase {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		result = te.generate(new SymbolTable());
+		result = te.generate(new SymbolTableImpl());
 		assertEquals("Testtext", result);
 	}
 
@@ -45,7 +45,7 @@ public class TemplateFileTest extends TestCase {
 //		String result = "";
 //		String[] filenames = new String[] {"data/unittest/a.tmpl", "data/unittest/b.tmpl"};
 //		te.loadTemplates(filenames);
-//		result = te.generate(new SymbolTable());
+//		result = te.generate(new SymbolTableImpl());
 //		assertEquals("Testtext", result);
 //	}
 
@@ -55,7 +55,7 @@ public class TemplateFileTest extends TestCase {
 		try {
 			File[] files = new File[] {new File("data/unittest/a.tmpl"), new File("data/unittest/b.tmpl")};
 			te.loadTemplates(files);
-			result = te.generate(new SymbolTable());
+			result = te.generate(new SymbolTableImpl());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

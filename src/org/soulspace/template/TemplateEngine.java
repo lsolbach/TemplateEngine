@@ -6,11 +6,11 @@ package org.soulspace.template;
 import java.io.File;
 import java.io.IOException;
 
-import org.soulspace.template.datasource.IDataSource;
+import org.soulspace.template.datasource.DataSource;
 import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.exception.SyntaxException;
 import org.soulspace.template.exception.UnknownTokenException;
-import org.soulspace.template.value.ISymbolTable;
+import org.soulspace.template.value.SymbolTable;
 
 /**
  * 
@@ -41,7 +41,7 @@ public interface TemplateEngine {
    * @throws SyntaxException
    * @throws GenerateException
    */
-  String generate(ISymbolTable symbolTable) throws SyntaxException, GenerateException;
+  String generate(SymbolTable symbolTable) throws SyntaxException, GenerateException;
 
   /**
    * 
@@ -50,6 +50,6 @@ public interface TemplateEngine {
    * @throws SyntaxException
    * @throws GenerateException
    */
-  String generate(IDataSource dataSource) throws SyntaxException, GenerateException;
+  String generate(DataSource dataSource) throws SyntaxException, GenerateException;
 
 }

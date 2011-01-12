@@ -5,10 +5,12 @@ package org.soulspace.template.tokenizer;
 
 import org.soulspace.template.exception.UnknownTokenException;
 
-
 public interface Tokenizer {
 
-	ITokenList createTokenList();
-  ITokenList tokenize(String input) throws UnknownTokenException;
-  ITokenList tokenize(ITokenList tokenList, String input) throws UnknownTokenException;
+	TokenList createTokenList();
+
+	TokenList tokenize(String input) throws UnknownTokenException;
+
+	TokenList tokenize(TokenList tokenList, String input)
+			throws UnknownTokenException;
 }

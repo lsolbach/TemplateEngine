@@ -1,22 +1,25 @@
 package org.soulspace.template;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.exception.SyntaxException;
 import org.soulspace.template.exception.UnknownTokenException;
 import org.soulspace.template.impl.TemplateEngineImpl;
-import org.soulspace.template.parser.ast.IAstNode;
+import org.soulspace.template.parser.ast.AstNode;
 import org.soulspace.template.parser.ast.impl.AstGeneratorImpl;
 import org.soulspace.template.parser.ast.impl.AstParserImpl;
-import org.soulspace.template.tokenizer.ITokenList;
+import org.soulspace.template.tokenizer.TokenList;
 import org.soulspace.template.tokenizer.Tokenizer;
 import org.soulspace.template.tokenizer.impl.TokenizerImpl;
 import org.soulspace.template.util.FileUtils;
-import org.soulspace.template.value.IListValue;
-import org.soulspace.template.value.ISymbolTable;
-import org.soulspace.template.value.IValue;
-import org.soulspace.template.value.impl.SymbolTable;
+import org.soulspace.template.value.ListValue;
+import org.soulspace.template.value.SymbolTable;
+import org.soulspace.template.value.Value;
+import org.soulspace.template.value.impl.ListValueImpl;
+import org.soulspace.template.value.impl.StringValueImpl;
+import org.soulspace.template.value.impl.SymbolTableImpl;
 
 import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 
@@ -25,12 +28,12 @@ import junit.framework.TestCase;
 public class AstGeneratorTest extends TestCase {
 
 	TemplateEngineImpl te = null;
-	ITokenList tl = null;
+	TokenList tl = null;
 	Tokenizer t = null;
 	AstParserImpl p = null;
 	AstGeneratorImpl g = null;
-	ISymbolTable st = null;
-	IAstNode root = null;
+	SymbolTable st = null;
+	AstNode root = null;
 
 	/*
 	 * @see TestCase#setUp()
@@ -41,7 +44,7 @@ public class AstGeneratorTest extends TestCase {
 		t = new TokenizerImpl();
 		p = new AstParserImpl();
 		g = new AstGeneratorImpl();
-		st = new SymbolTable();
+		st = new SymbolTableImpl();
 	}
 
 	/*
@@ -77,9 +80,10 @@ public class AstGeneratorTest extends TestCase {
 	public void testLineFeeds2() {
 		String result = "";
 
-		st.addNewListSymbol("e", new ArrayList<IValue>());
-		((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
-		((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
+		ListValue list = new ListValueImpl();
+		list.addValue(new StringValueImpl("Ju"));
+		list.addValue(new StringValueImpl("Hu"));
+		st.addSymbol("e", list);
 
 		StringBuilder sb = new StringBuilder(128);
 		sb.append("<?foreach s <- e {?>");
@@ -99,9 +103,9 @@ public class AstGeneratorTest extends TestCase {
 	public void testLineFeeds3() {
 		String result = "";
 
-		st.addNewListSymbol("e", new ArrayList<IValue>());
-		((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
-		((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
+		st.addListValue("e", new ArrayList<Value>());
+		((ListValue) st.getSymbol("e")).addNewStringValue("Ju");
+		((ListValue) st.getSymbol("e")).addNewStringValue("Hu");
 
 		StringBuilder sb = new StringBuilder(128);
 		sb.append("<?xml version=\"1.0\"?>\n");
@@ -120,7 +124,7 @@ public class AstGeneratorTest extends TestCase {
 
 	public void testGenAssign() {
 		String result = "";
-		st.addNewStringSymbol("a", "Hello World");
+		st.addStringValue("a", "Hello World");
 
 		try {
 			tl = t.tokenize("<?" + "string b " + "b = a " + "b " + "?>");
@@ -139,14 +143,14 @@ public class AstGeneratorTest extends TestCase {
 
 	public void testGenAssignMapAccess() {
 		String result = "";
-		ISymbolTable map = new SymbolTable();
-		map.addNewStringSymbol("b", "Greetings");
-		st.addNewStringSymbol("a", "Hello World");
-		st.addNewMapSymbol("c", map);
-		st.addNewStringSymbol("d", "b");
-		st.addNewListSymbol("e", new ArrayList<IValue>());
-		((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
-		((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
+		SymbolTable map = new SymbolTableImpl();
+		map.addStringValue("b", "Greetings");
+		st.addStringValue("a", "Hello World");
+		st.addMapValue("c", map);
+		st.addStringValue("d", "b");
+		st.addListValue("e", new ArrayList<Value>());
+		((ListValue) st.getSymbol("e")).addNewStringValue("Ju");
+		((ListValue) st.getSymbol("e")).addNewStringValue("Hu");
 
 		try {
 			tl = t.tokenize("<?string r?>" + "<?r = c[d]?>" + "<?r?>");
@@ -165,17 +169,17 @@ public class AstGeneratorTest extends TestCase {
 
 	public void testGenMapAccessInLoopVar() {
 		String result = "";
-		ISymbolTable map1 = new SymbolTable();
-		ISymbolTable map2 = new SymbolTable();
-		map1.addNewStringSymbol("Greetings", "Greetings");
-		map1.addNewStringSymbol("Name", "Olli");
-		map2.addNewStringSymbol("Greetings", "Howdy");
-		map2.addNewStringSymbol("Name", "Timur");
-		st.addNewMapSymbol("myMap1", map1);
-		st.addNewMapSymbol("myMap2", map2);
-		st.addNewListSymbol("myList", new ArrayList<IValue>());
-		((IListValue) st.getSymbol("myList")).addSymbol(st.getSymbol("myMap1"));
-		((IListValue) st.getSymbol("myList")).addSymbol(st.getSymbol("myMap2"));
+		SymbolTable map1 = new SymbolTableImpl();
+		SymbolTable map2 = new SymbolTableImpl();
+		map1.addStringValue("Greetings", "Greetings");
+		map1.addStringValue("Name", "Olli");
+		map2.addStringValue("Greetings", "Howdy");
+		map2.addStringValue("Name", "Timur");
+		st.addMapValue("myMap1", map1);
+		st.addMapValue("myMap2", map2);
+		st.addListValue("myList", new ArrayList<Value>());
+		((ListValue) st.getSymbol("myList")).addValue(st.getSymbol("myMap1"));
+		((ListValue) st.getSymbol("myList")).addValue(st.getSymbol("myMap2"));
 
 		try {
 			tl = t.tokenize("<?foreach m <- myList {?>"
@@ -222,7 +226,7 @@ public class AstGeneratorTest extends TestCase {
 
 	public void testGenSuperMethods() {
 		String result = "";
-		st.addNewStringSymbol("name", "Ludger Solbach");
+		st.addStringValue("name", "Ludger Solbach");
 
 		try {
 			tl = t.tokenize("<?" + "string printMessage(string message) { "
@@ -272,29 +276,29 @@ public class AstGeneratorTest extends TestCase {
 
 	public void testPlusOperator() {
 		String result = "";
-		st.addNewNumericSymbol("one", "1");
-		st.addNewNumericSymbol("three", "3");
+		st.addNumericValue("one", "1");
+		st.addNumericValue("three", "3");
 
-		st.addNewStringSymbol("FirstName", "Ludger");
-		st.addNewStringSymbol("LastName", "Solbach");
+		st.addStringValue("FirstName", "Ludger");
+		st.addStringValue("LastName", "Solbach");
 
-		st.addNewListSymbol("a", new ArrayList<IValue>());
-		((IListValue) st.getSymbol("a")).addNewStringSymbol("Hallo");
-		((IListValue) st.getSymbol("a")).addNewStringSymbol("Echo");
+		st.addListValue("a", new ArrayList<Value>());
+		((ListValue) st.getSymbol("a")).addNewStringValue("Hallo");
+		((ListValue) st.getSymbol("a")).addNewStringValue("Echo");
 
-		st.addNewListSymbol("b", new ArrayList<IValue>());
-		((IListValue) st.getSymbol("b")).addNewStringSymbol("Hallo");
-		((IListValue) st.getSymbol("b")).addNewStringSymbol("Ludger");
+		st.addListValue("b", new ArrayList<Value>());
+		((ListValue) st.getSymbol("b")).addNewStringValue("Hallo");
+		((ListValue) st.getSymbol("b")).addNewStringValue("Ludger");
 
-		ISymbolTable map1 = new SymbolTable();
-		map1.addNewStringSymbol("Greetings", "Greetings");
-		map1.addNewStringSymbol("Name", "Olli");
-		st.addNewMapSymbol("m1", map1);
+		SymbolTable map1 = new SymbolTableImpl();
+		map1.addStringValue("Greetings", "Greetings");
+		map1.addStringValue("Name", "Olli");
+		st.addMapValue("m1", map1);
 
-		ISymbolTable map2 = new SymbolTable();
-		map2.addNewStringSymbol("Goodbye", "GoodBye");
-		map2.addNewStringSymbol("Name", "Timur");
-		st.addNewMapSymbol("m2", map2);
+		SymbolTable map2 = new SymbolTableImpl();
+		map2.addStringValue("Goodbye", "GoodBye");
+		map2.addStringValue("Name", "Timur");
+		st.addMapValue("m2", map2);
 
 		try {
 			tl = t.tokenize("<?one + three?>");
@@ -325,14 +329,14 @@ public class AstGeneratorTest extends TestCase {
 
 	public void testForeachFilter() {
 		String result = "";
-		st.addNewStringSymbol("name", "Ludger Solbach");
+		st.addStringValue("name", "Ludger Solbach");
 
-		st.addNewListSymbol("xList", new ArrayList<IValue>());
-		((IListValue) st.getSymbol("xList")).addNewNumericSymbol("1");
-		((IListValue) st.getSymbol("xList")).addNewNumericSymbol("2");
-		((IListValue) st.getSymbol("xList")).addNewNumericSymbol("3");
-		((IListValue) st.getSymbol("xList")).addNewNumericSymbol("4");
-		((IListValue) st.getSymbol("xList")).addNewNumericSymbol("5");
+		st.addListValue("xList", new ArrayList<Value>());
+		((ListValue) st.getSymbol("xList")).addNewNumericValue("1");
+		((ListValue) st.getSymbol("xList")).addNewNumericValue("2");
+		((ListValue) st.getSymbol("xList")).addNewNumericValue("3");
+		((ListValue) st.getSymbol("xList")).addNewNumericValue("4");
+		((ListValue) st.getSymbol("xList")).addNewNumericValue("5");
 
 		try {
 			tl = t.tokenize("<?" + "foreach x | (x % 2 == 1) <- xList { "
@@ -349,17 +353,17 @@ public class AstGeneratorTest extends TestCase {
 
 	public void testGenTypeMethodCalls() {
 		String result = "";
-		st.addNewStringSymbol("name", "Ludger Solbach");
-		st.addNewStringSymbol("property", "address");
-		st.addNewStringSymbol("class", "PhoneNumber");
-		st.addNewStringSymbol("path", "org/soulspace/template/method");
-		st.addNewListSymbol("e", new ArrayList<IValue>());
-		((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
-		((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
-		ISymbolTable map1 = new SymbolTable();
-		map1.addNewStringSymbol("Greetings", "Greetings");
-		map1.addNewStringSymbol("Name", "Olli");
-		st.addNewMapSymbol("myMap", map1);
+		st.addStringValue("name", "Ludger Solbach");
+		st.addStringValue("property", "address");
+		st.addStringValue("class", "PhoneNumber");
+		st.addStringValue("path", "org/soulspace/template/method");
+		st.addListValue("e", new ArrayList<Value>());
+		((ListValue) st.getSymbol("e")).addNewStringValue("Ju");
+		((ListValue) st.getSymbol("e")).addNewStringValue("Hu");
+		SymbolTable map1 = new SymbolTableImpl();
+		map1.addStringValue("Greetings", "Greetings");
+		map1.addStringValue("Name", "Olli");
+		st.addMapValue("myMap", map1);
 
 		try {
 			tl = t.tokenize("<?name.size()?>");
@@ -460,11 +464,12 @@ public class AstGeneratorTest extends TestCase {
 		}
 	}
 
-	public void testGenStringConversionCalls() {
+	public void testGenMethodReturnTypes() {
 		String result = "";
-		st.addNewListSymbol("e", new ArrayList<IValue>());
-		((IListValue) st.getSymbol("e")).addNewStringSymbol("Ju");
-		((IListValue) st.getSymbol("e")).addNewStringSymbol("Hu");
+		st.addListValue("e", new ArrayList<Value>());
+		((ListValue) st.getSymbol("e")).addNewStringValue("Ju");
+		((ListValue) st.getSymbol("e")).addNewStringValue("Hu");
+		st.addListValue("d", new ArrayList<Value>());
 		try {
 			tl = t.tokenize("<?" +
 					"list f = reflect(e)" +
@@ -479,12 +484,112 @@ public class AstGeneratorTest extends TestCase {
 			root = p.parse(tl);
 			result = g.generate(root, st);
 			assertEquals("Result", "JuHu", result);
+
+			tl = t.tokenize("<?" +
+					"list f = reflect(e)" +
+					"foreach s <- f {" +
+					"  s" +
+					"}" +
+					"" +
+					"any reflect(list myList) {" +
+					"  myList " +
+					"}" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			assertEquals("Result", "JuHu", result);
+
+			tl = t.tokenize("<?" +
+					"list f = reflect(d)" +
+					"foreach s <- f {" +
+					"  s" +
+					"}" +
+					"" +
+					"any reflect(list myList) {" +
+					"	list result" +
+					"	if(myList) {" +
+					"		result = myList" +
+					"	}" +
+					"	result" +
+					"}" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			assertEquals("Result", "", result);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
 		}
 	}
 	
+	public void testGenMethodReturnTypes2() {
+		String result = "";
+		st.addListValue("e", new ArrayList<Value>());
+		((ListValue) st.getSymbol("e")).addNewStringValue("Ju");
+		((ListValue) st.getSymbol("e")).addNewStringValue("Hu");
+		st.addListValue("d", new ArrayList<Value>());
+		SymbolTable map1 = new SymbolTableImpl();
+		map1.addStringValue("Greetings", "Greetings");
+		map1.addStringValue("Name", "Oli");
+		st.addMapValue("map1", map1);
+		SymbolTable map2 = new SymbolTableImpl();
+		map2.addStringValue("Greetings", "Howdy");
+		map2.addStringValue("Name", "Micha");
+		st.addMapValue("map2", map2);
+		st.addListValue("List", new ArrayList<Value>());
+		((ListValue) st.getSymbol("List")).addValue(st.getSymbol("map1"));
+		((ListValue) st.getSymbol("List")).addValue(st.getSymbol("map2"));
+		try {
+			tl = t.tokenize("<?" +
+					"any head(list elements) {\n" +
+					"	if(elements) {\n" +
+					"		elements[0]\n" +
+					"	}\n" +
+					"}\n" +
+					"\n" +
+					"string name(map element) {\n" +
+					"	element:Name\n" +
+					"}\n" +
+					"\n" +
+					"name(head(List))\n" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			assertEquals("Result", "Oli", result);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+	
+	public void testGenParameterMatching() {
+		String result = "";
+		st.addListValue("e", new ArrayList<Value>());
+		((ListValue) st.getSymbol("e")).addNewStringValue("Ju");
+		((ListValue) st.getSymbol("e")).addNewStringValue("Hu");
+		try {
+			tl = t.tokenize("<?\n" +
+					"toString(e)\n" +
+					"string toString(string arg) {\n" +
+					"	arg\n" +
+					"}\n" +
+					"string toString(list argList) {\n" +
+					"	foreach item <- argList {\n" +
+					"		item\n" +
+					"	}\n" +
+					"}\n" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			assertEquals("Result", "JuHu", result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
 	public void testCodeComments() {
 		String result = "";
 		try {
@@ -512,21 +617,216 @@ public class AstGeneratorTest extends TestCase {
 		}
 		
 	}
+
+	public void testGenMethodValues() {
+		String result = "";
+		st.addListValue("e", new ArrayList<Value>());
+		((ListValue) st.getSymbol("e")).addNewStringValue("Peter");
+		((ListValue) st.getSymbol("e")).addNewStringValue("Mary");
+		((ListValue) st.getSymbol("e")).addNewStringValue("Helmut");
+		try {
+			tl = t.tokenize("<?\n" +
+					"method h = string toString(string arg) {\n" +
+					"	arg\n" +
+					"}\n" +
+					"h('hello method')\n" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			assertEquals("Result", "hello method", result);
+
+			tl = t.tokenize("<?\n" +
+					"method h = string toString(string arg) {\n" +
+					"	arg\n" +
+					"}\n" +
+					"string test(method m, string value) {\n" +
+					"	m(value)\n" +
+					"}\n" +
+					"test(h, 'hello method')\n" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			assertEquals("Result", "hello method", result);
+
+			tl = t.tokenize("<?\n" +
+					"method h = string greet(string arg) {\n" +
+					"	'hello ' + arg + '!'?>\n" +
+					"<?\n" +
+					"}\n" +
+					"string apply(list e, method m) {\n" +
+					"	foreach name <- e {" +
+					"		m(name)\n" +
+					"	}" +
+					"}\n" +
+					"apply(e, h)\n" +
+					"?>\n");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			System.out.println(result);
+			// assertEquals("Result", "hello method", result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	public void testGenMethodValues2() {
+		String result = "";
+		st.addListValue("e", new ArrayList<Value>());
+		st.addListValue("mList", new ArrayList<Value>());
+		((ListValue) st.getSymbol("e")).addNewStringValue("Peter");
+		((ListValue) st.getSymbol("e")).addNewStringValue("Mary");
+		((ListValue) st.getSymbol("e")).addNewStringValue("Helmut");
+		try {
+			tl = t.tokenize("<?\n" +
+					"method m1 = string hello(string arg) {\n" +
+					"	'hello ' + arg + '!'?>\n" +
+					"<?\n" +
+					"}\n" +
+					"method m2 = string hello(string arg) {\n" +
+					"	'goodbye ' + arg + '!'?>\n" +
+					"<?\n" +
+					"}\n" +
+					"mList.add(m1)" +
+					"mList.add(m2)" +
+					"string apply1(list e, list methodList) {\n" +
+					"	foreach name <- e {" +
+					"		foreach m <- methodList {" +
+					"			m(name)\n" +
+					"		}" +
+					"	}" +
+					"}\n" +
+					"string apply2(list e, list methodList) {\n" +
+					"	foreach m <- methodList {" +
+					"		foreach name <- e {" +
+					"			m(name)\n" +
+					"		}" +
+					"	}" +
+					"}\n" +
+					"apply1(e, mList)\n" +
+					"apply2(e, mList)\n" +
+					"?>\n");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			System.out.println(result);
+//			assertEquals("Result", "hello method", result);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
 	
-//	public void testMethodReturnTypes() {
-//		String result = "";
-//		try {
-//			String template = FileUtils.loadStringFromFile("data/unittest/methods.tmpl");
-//			tl = t.tokenize(template);
-//			root = p.parse(tl);
-//			result = g.generate(root, null);
-//			System.out.println(result);
-//		} catch (Exception e) {
-//			e.printStackTrace();
+	public void testGenMethodLookup() {
+		String result = "";
+		try {
+			tl = t.tokenize("<?" +
+					"string helloWorld() {" +
+					"	'hello world'" +
+					"}" +
+					"method f = helloWorld\n" +
+					"f()" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			System.out.println(result);
+//			assertEquals("Result", "hello method", result);
+
+			tl = t.tokenize("<?" +
+					"string hello(string name) {" +
+					"	'hello ' + name" +
+					"}" +
+					"method f = hello\n" +
+					"f('world')" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			System.out.println(result);
+//			assertEquals("Result", "hello method", result);
+
+			tl = t.tokenize("<?\n" +
+					"string helloWorld() {\n" +
+					"	'hello world'\n" +
+					"}\n" +
+					"string helloWorld(string name) {\n" +
+					"	'hello ' + name\n" +
+					"}\n" +
+					"string helloWorld(numeric count) {\n" +
+					"	numeric i = 0\n" +
+					"	while(i < count) {\n" +
+					"		'hello world '\n" +
+					"		i = i + 1" +
+					"	}\n" +
+					"}\n" +
+					"method f = helloWorld\n" +
+					"f()\n" +
+					"' '\n" +
+					"f('world')\n" +
+					"' '\n" +
+					"f(3)\n" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			System.out.println(result);
+//			assertEquals("Result", "hello method", result);
+
+			tl = t.tokenize("<?\n" +
+					"string helloWorld() {\n" +
+					"	'hello world'\n" +
+					"}\n" +
+					"string call(method f) {\n" +
+					"	f()\n" +
+					"}\n" +
+					"call(helloWorld)\n" +
+					"?>");
+			root = p.parse(tl);
+			result = g.generate(root, st);
+			System.out.println(result);
+//			assertEquals("Result", "hello method", result);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+	
+	public void testGenClosures() {
+		String result = "";
+		try {
+			System.out.println("Dynamic scope");
+			File[] files = {new File("data/unittest/lib.tinc"), new File("data/unittest/m_dyn.tmpl")};
+			te.loadTemplates(files);
+			result = te.generate();
+			System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
 //			fail();
-//		}
-//	}
-	
+		}
+		try {
+			System.out.println("Lexical scope");
+			File[] files = {new File("data/unittest/lib.tinc"), new File("data/unittest/m_lex.tmpl")};
+			te.loadTemplates(files);
+			result = te.generate();
+			System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+//			fail();
+		}
+	}
+
+	public void testAnonMethods() {
+		String result = "";
+		try {
+			System.out.println("Anon method");
+			File[] files = {new File("data/unittest/lib.tinc"), new File("data/unittest/anon_method.tmpl")};
+			te.loadTemplates(files);
+			result = te.generate();
+			System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+//			fail();
+		}
+	}
 	
 //	public void testGenStringConversionCalls() {
 //		String result = "";

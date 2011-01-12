@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.value.IListValue;
-import org.soulspace.template.value.IValue;
-import org.soulspace.template.value.impl.ListValue;
-import org.soulspace.template.value.impl.NumericValue;
+import org.soulspace.template.value.ListValue;
+import org.soulspace.template.value.Value;
+import org.soulspace.template.value.impl.ListValueImpl;
+import org.soulspace.template.value.impl.NumericValueImpl;
 
 public class GetElementMethodImpl extends AbstractMethod {
 
 	private static final String NAME = "element";
-	protected static final Class<? extends IValue> RETURN_TYPE = IValue.class;
-	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
-	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
+	protected static final Class<? extends Value> RETURN_TYPE = Value.class;
+	protected static final List<Class<? extends Value>> DEFINED_TYPES = new ArrayList<Class<? extends Value>>();
+	protected static final List<Class<? extends Value>> ARGUMENT_TYPES = new ArrayList<Class<? extends Value>>();
 
 	static {
-		DEFINED_TYPES.add(ListValue.class);
+		DEFINED_TYPES.add(ListValueImpl.class);
 	}
 
 	public GetElementMethodImpl() {
@@ -29,9 +29,9 @@ public class GetElementMethodImpl extends AbstractMethod {
 	}
 	
 	@Override
-	protected IValue doEvaluation(List<IValue> arguments) {
-		IValue value = arguments.get(0);
-		return ((IListValue) value).getEntry();
+	protected Value doEvaluation(List<Value> arguments) {
+		Value value = arguments.get(0);
+		return ((ListValue) value).getEntry();
 	}
 
 }

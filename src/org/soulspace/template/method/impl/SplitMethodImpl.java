@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.value.IStringValue;
-import org.soulspace.template.value.IValue;
-import org.soulspace.template.value.impl.ListValue;
-import org.soulspace.template.value.impl.StringValue;
+import org.soulspace.template.value.StringValue;
+import org.soulspace.template.value.Value;
+import org.soulspace.template.value.impl.ListValueImpl;
+import org.soulspace.template.value.impl.StringValueImpl;
 
 public class SplitMethodImpl extends AbstractMethod {
 
 	private static final String NAME = "split";
-	protected static final Class<? extends IValue> RETURN_TYPE = ListValue.class;
-	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
-	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
+	protected static final Class<? extends Value> RETURN_TYPE = ListValueImpl.class;
+	protected static final List<Class<? extends Value>> DEFINED_TYPES = new ArrayList<Class<? extends Value>>();
+	protected static final List<Class<? extends Value>> ARGUMENT_TYPES = new ArrayList<Class<? extends Value>>();
 
 	static {
-		DEFINED_TYPES.add(StringValue.class);
-		ARGUMENT_TYPES.add(StringValue.class);
+		DEFINED_TYPES.add(StringValueImpl.class);
+		ARGUMENT_TYPES.add(StringValueImpl.class);
 	}
 
 	public SplitMethodImpl() {
@@ -30,15 +30,15 @@ public class SplitMethodImpl extends AbstractMethod {
 	}
 	
 	@Override
-	protected IValue doEvaluation(List<IValue> arguments) {
-		ListValue result = new ListValue();
+	protected Value doEvaluation(List<Value> arguments) {
+		ListValueImpl result = new ListValueImpl();
 		
-		String string = ((IStringValue) arguments.get(0)).getData();
-		String pattern = ((IStringValue) arguments.get(1)).getData();
+		String string = ((StringValue) arguments.get(0)).getData();
+		String pattern = ((StringValue) arguments.get(1)).getData();
 		String[] strings = string.split(pattern);
 		
 		for(String part : strings) {
-			result.addNewStringSymbol(part);
+			result.addNewStringValue(part);
 		}
 		return result;
 	}

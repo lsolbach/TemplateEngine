@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.value.IListValue;
-import org.soulspace.template.value.IValue;
-import org.soulspace.template.value.impl.ListValue;
-import org.soulspace.template.value.impl.NumericValue;
+import org.soulspace.template.value.ListValue;
+import org.soulspace.template.value.Value;
+import org.soulspace.template.value.impl.ListValueImpl;
+import org.soulspace.template.value.impl.NumericValueImpl;
 
 public class HasNextElementMethodImpl extends AbstractMethod {
 
 	private static final String NAME = "hasNext";
-	protected static final Class<? extends IValue> RETURN_TYPE = NumericValue.class;
-	protected static final List<Class<? extends IValue>> DEFINED_TYPES = new ArrayList<Class<? extends IValue>>();
-	protected static final List<Class<? extends IValue>> ARGUMENT_TYPES = new ArrayList<Class<? extends IValue>>();
+	protected static final Class<? extends Value> RETURN_TYPE = NumericValueImpl.class;
+	protected static final List<Class<? extends Value>> DEFINED_TYPES = new ArrayList<Class<? extends Value>>();
+	protected static final List<Class<? extends Value>> ARGUMENT_TYPES = new ArrayList<Class<? extends Value>>();
 
 	static {
-		DEFINED_TYPES.add(ListValue.class);
+		DEFINED_TYPES.add(ListValueImpl.class);
 	}
 
 	public HasNextElementMethodImpl() {
@@ -29,11 +29,11 @@ public class HasNextElementMethodImpl extends AbstractMethod {
 	}
 
 	@Override
-	protected IValue doEvaluation(List<IValue> arguments) {
-		IValue value = arguments.get(0);
-		if(((IListValue) value).hasNext()) {
-			return new NumericValue(1);				
+	protected Value doEvaluation(List<Value> arguments) {
+		Value value = arguments.get(0);
+		if(((ListValue) value).hasNext()) {
+			return new NumericValueImpl(1);				
 		}
-		return new NumericValue(0);
+		return new NumericValueImpl(0);
 	}
 }

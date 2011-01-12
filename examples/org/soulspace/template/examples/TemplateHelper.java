@@ -7,14 +7,14 @@ import java.io.File;
 import java.io.IOException;
 
 import org.soulspace.template.TemplateEngine;
-import org.soulspace.template.datasource.IDataSource;
-import org.soulspace.template.datasource.impl.BeanDataSource;
+import org.soulspace.template.datasource.DataSource;
+import org.soulspace.template.datasource.impl.BeanDataSourceImpl;
 import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.exception.SyntaxException;
 import org.soulspace.template.exception.UnknownTokenException;
 import org.soulspace.template.impl.TemplateEngineImpl;
-import org.soulspace.template.value.ISymbolTable;
-import org.soulspace.template.value.impl.SymbolTable;
+import org.soulspace.template.value.SymbolTable;
+import org.soulspace.template.value.impl.SymbolTableImpl;
 
 public class TemplateHelper {
 
@@ -35,7 +35,7 @@ public class TemplateHelper {
     String result;
 
     te.loadTemplate(template);
-    result = te.generate(new SymbolTable());
+    result = te.generate(new SymbolTableImpl());
 
     return result;
   }
@@ -49,7 +49,7 @@ public class TemplateHelper {
    * @throws SyntaxException
    * @throws GenerateException
    */
-  public static String generate(String template, ISymbolTable st) {
+  public static String generate(String template, SymbolTable st) {
     TemplateEngine te = new TemplateEngineImpl();
     String result;
 
@@ -68,7 +68,7 @@ public class TemplateHelper {
    * @throws SyntaxException
    * @throws GenerateException
    */
-  public static String generate(String template, IDataSource dataSource) {
+  public static String generate(String template, DataSource dataSource) {
     TemplateEngine te = new TemplateEngineImpl();
     String result;
 
@@ -93,7 +93,7 @@ public class TemplateHelper {
       IOException {
     String result;
     TemplateEngine te = new TemplateEngineImpl();
-    BeanDataSource ds = new BeanDataSource(obj);
+    BeanDataSourceImpl ds = new BeanDataSourceImpl(obj);
 
     te.loadTemplate(templateFile);
     result = te.generate(ds);
