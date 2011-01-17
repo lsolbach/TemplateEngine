@@ -42,10 +42,16 @@ public class MethodCallNodeImpl extends AbstractAstNode {
 	}
 
 	public Value generateValue() {
-		if (getMethodName().equals("super")) {
-			return generateSuperCall();
-		} else {
-			return generateMethodCall();
+		try {
+			if (getMethodName().equals("super")) {
+				return generateSuperCall();
+			} else {
+				return generateMethodCall();
+			}
+		} catch (NullPointerException e) {
+			throw new GenerateException(
+					"Error in method call to "
+							+ getMethodName() + "()! Template " + getTemplate() + ", line " + getLine());
 		}
 	}
 

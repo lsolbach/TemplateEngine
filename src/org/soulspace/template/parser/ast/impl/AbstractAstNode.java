@@ -384,7 +384,8 @@ public abstract class AbstractAstNode implements AstNode {
 				for (int i = 0; i < paramList.getChildCount(); i++) {
 					AstNode paramNode = paramList.getChild(i);
 					String paramType = paramNode.getData();
-					if(!valueList.get(i).getType().equals(ValueType.valueOf(paramType))) {
+					if(valueList.get(i) == null ||
+							!valueList.get(i).getType().equals(ValueType.valueOf(paramType))) {
 						matches = false;
 					}
 				}
