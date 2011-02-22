@@ -3,12 +3,15 @@ package org.soulspace.template.ant;
 public class TemplateEngineTaskTest {
 
 	public static void main(String[] args) {
+		TemplateEngineTaskTest tet = new TemplateEngineTaskTest();
+		tet.test1();
+	}
+
+	void test1() {
 		TemplateEngineTask task = new TemplateEngineTask();
-		task.setTemplateDirs("../MdaTemplates/std-templates,../MdaTemplates/templates");
-		task.addConfiguredParam(new Param("module", "Test"));
+		task.setTemplateDirs("../MdaTemplates/std-templates2,../MdaTemplates/test");
 		Generator gen = new Generator();
-		gen.addConfiguredParam(new Param("module", "Test"));
-		gen.setTemplate("component/test");
+		gen.setTemplate("test");
 		gen.setTarget("build/test/test.txt");
 		gen.setImports("lib");
 		task.addGenerator(gen);
