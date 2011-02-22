@@ -30,7 +30,11 @@ public class MethodCallNodeImpl extends AbstractAstNode {
 		String sep = "";
 		for(Value v : valueList) {
 			sb.append(sep);
-			sb.append(v.getType());
+			if(v.getType() != null) {
+				sb.append(v.getType());
+			} else {
+				sb.append("UNKNOWN");
+			}
 			sep = ", ";
 		}
 		sb.append(")");

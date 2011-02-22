@@ -232,11 +232,11 @@ public abstract class AbstractAstNode implements AstNode {
 	public String toString() {
 		StringBuilder sb = new StringBuilder(32);
 		sb.append("AstNode[");
-		sb.append("Type=" + getType().getName() + ",");
+		sb.append("Type=" + getType().getName() + ", ");
 		if (getData() != null) {
-			sb.append(",Data=" + getData());
+			sb.append("Data=" + getData() + ", ");
 		}
-		sb.append("Template=" + getTemplate() + ",");
+		sb.append("Template=" + getTemplate() + ", ");
 		sb.append("Line=" + getLine());
 		sb.append("]");
 		return sb.toString();
