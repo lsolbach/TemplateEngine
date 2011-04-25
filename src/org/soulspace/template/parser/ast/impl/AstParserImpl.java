@@ -168,10 +168,15 @@ public class AstParserImpl {
 			if(!methodName.equals("fn")) {
 				mNode.addMethodNode(mNode);
 			}
-			// don't return a node, because the method declaration is added to
-			// the method registry
-			// and not to the parent node
-			return null;
+			if(parent.getType().equals(AstNodeType.ASSIGN)) {
+				// return method node because it gets assigned
+				return mNode;
+			} else {
+				// don't return a node, because the method declaration is added to
+				// the method registry
+				// and not to the parent node
+				return null;
+			}
 		} else {
 			// symbol declaration
 			node = nodeFactory.create(token, parent);
@@ -198,6 +203,7 @@ public class AstParserImpl {
 				parent);
 		mNode.setData(methodName);
 		mNode.setReturnType(type);
+		// don't register node in method registry
 		list.skipToken();
 		parseMethodDeclaration(list, mNode);
 		return mNode;
@@ -290,7 +296,7 @@ public class AstParserImpl {
 				child = parseLogicalOrExpression(list, parent);
 			}
 			// add right hand side
-			node.addChildNode(child);				
+			node.addChildNode(child);
 		} else {
 			node = child;
 		}
@@ -464,7 +470,7 @@ public class AstParserImpl {
 		AstNode child = null;
 
 		child = parseUnaryExpression(list, parent);
-
+		
 		// token type for the node
 		TokenType tokenType = null;
 

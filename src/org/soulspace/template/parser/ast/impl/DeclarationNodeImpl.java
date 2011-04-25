@@ -40,6 +40,7 @@ public class DeclarationNodeImpl extends AbstractAstNode {
 					"No identifier given for declaration! Template "
 							+ getTemplate() + ", line " + getLine());
 		}
+		
 		if (child instanceof IdentifierNodeImpl) {
 			name = child.getData();
 			symbol = lookupSymbolInBlock(name);
@@ -47,6 +48,7 @@ public class DeclarationNodeImpl extends AbstractAstNode {
 			name = child.getChild(0).getData();
 			symbol = lookupSymbolInBlock(name);
 		}
+		
 		if (symbol != null) {
 			throw new GenerateException("Symbol already exists: " + name
 					+ "! Template " + getTemplate() + ", line " + getLine());

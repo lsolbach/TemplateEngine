@@ -9,6 +9,7 @@ import org.soulspace.template.parser.ast.AstNode;
 import org.soulspace.template.parser.ast.MethodNode;
 import org.soulspace.template.value.ListValue;
 import org.soulspace.template.value.MapValue;
+import org.soulspace.template.value.MethodValue;
 import org.soulspace.template.value.NumericValue;
 import org.soulspace.template.value.StringValue;
 import org.soulspace.template.value.Value;
@@ -67,8 +68,9 @@ public class AssignNodeImpl extends AbstractAstNode {
 					// assign to list symbol
 					Value aSymbol = child.generateValue();
 					if (!(aSymbol instanceof ListValue)) {
-						throw new GenerateException("Symbol not of type list "
-								+ child.getData() + "! Template "
+						throw new GenerateException("The value of symbol "+ child.getData()
+								+ " is not of type list but of type "
+								+ aSymbol.getType() + "! Template "
 								+ getTemplate() + ", line " + getLine());
 					}
 					((ListValue) symbol).setData(((ListValue) aSymbol)
@@ -77,24 +79,35 @@ public class AssignNodeImpl extends AbstractAstNode {
 					// assign to map symbol
 					Value aSymbol = child.generateValue();
 					if (!(aSymbol instanceof MapValue)) {
-						throw new GenerateException("Symbol not of type map: "
-								+ child.getData() + "! Template "
+						throw new GenerateException("The value of symbol "+ child.getData()
+								+ " is not of type map but of type "
+								+ aSymbol.getType() + "! Template "
 								+ getTemplate() + ", line " + getLine());
 					}
 					((MapValue) symbol).setData(((MapValue) aSymbol).getData());
 				} else if (symbol.getType().equals(ValueType.METHOD)) {
 					if (child.getType().equals(AstNodeType.METHOD)) {
 						MethodNode mNode = (MethodNode) child;
-						((MethodValueImpl) symbol).setData(mNode.getData());
-						// TODO check if adding assigned methods to the global
+						// FIXME check if adding assigned methods to the global
 						// method registry is desirable
-						mNode.addMethodNode(mNode);
+						if(!mNode.getData().equals("fn")) {
+							((MethodValueImpl) symbol).setData(mNode.getData());
+							mNode.addMethodNode(mNode);
+						} else {
+							((MethodValueImpl) symbol).setMethodNode(mNode);
+							//System.out.println("anonymous method");
+						}
+					} else if(child.getType().equals(AstNodeType.METHOD_CALL)) {
+						// FIXME set the node itself instead of the name here
+						//((MethodValue) symbol).setData(((MethodValue) child.generateValue()).getData());
+						((MethodValue) symbol).setMethodNode(((MethodValue) child.generateValue()).getMethodNode());
 					} else if (child.getType().equals(AstNodeType.IDENTIFIER)) {
 						IdentifierNodeImpl iNode = (IdentifierNodeImpl) child;
 						((MethodValueImpl) symbol).setData(iNode.getData());
 					} else {
 						throw new GenerateException(
-								"Symbol not of type method: " + child.getData()
+								"Symbol not of type method: Symbol " + child.getData()
+										+ " Type " + child.getType()
 										+ "! Template " + getTemplate()
 										+ ", line " + getLine());
 					}

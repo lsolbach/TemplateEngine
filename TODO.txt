@@ -9,4 +9,3 @@ Version 1.0
 
 Version 1.1
 range operator '..', cons operator '&' or '->'?
-switch from dynamic to lexical typing to enable closures

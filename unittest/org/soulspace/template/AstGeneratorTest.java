@@ -810,7 +810,7 @@ public class AstGeneratorTest extends TestCase {
 			System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
-//			fail();
+			fail();
 		}
 	}
 
@@ -824,7 +824,33 @@ public class AstGeneratorTest extends TestCase {
 			System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
-//			fail();
+			fail();
+		}
+	}
+	
+	public void testMapClosure() {
+		String result = "";
+
+		st.addListValue("myList", new ArrayList<Value>());
+		SymbolTable map1 = new SymbolTableImpl();
+		map1.addStringValue("Greetings", "Greetings");
+		map1.addStringValue("Name", "Oli");
+		st.addMapValue("map1", map1);
+		SymbolTable map2 = new SymbolTableImpl();
+		map2.addStringValue("Greetings", "Howdy");
+		map2.addStringValue("Name", "Micha");
+		st.addMapValue("map2", map2);
+		((ListValue) st.getSymbol("myList")).addValue(st.getSymbol("map1"));
+		((ListValue) st.getSymbol("myList")).addValue(st.getSymbol("map2"));
+		try {
+			System.out.println("Map Closure");
+			File[] files = {new File("data/unittest/lib.tinc"), new File("data/unittest/map_closure.tmpl")};
+			te.loadTemplates(files);
+			result = te.generate(st);
+			System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
 		}
 	}
 	

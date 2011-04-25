@@ -297,7 +297,7 @@ public abstract class AbstractAstNode implements AstNode {
 			return new NumericValueImpl(((MapValue) symbol).getData()
 					.getSymbolCount());
 		} else {
-			throw new GenerateException("Unknown type: "
+			throw new GenerateException("Unknown type conversion to type numeric: "
 					+ symbol.getClass().getSimpleName());
 		}
 	}
@@ -317,7 +317,7 @@ public abstract class AbstractAstNode implements AstNode {
 			return new StringValueImpl(String.valueOf(((MapValue) symbol)
 					.getData().getSymbolCount()));
 		} else {
-			throw new GenerateException("Unknown type: "
+			throw new GenerateException("Unknown type conversion to type string: "
 					+ symbol.getClass().getSimpleName());
 		}
 	}
@@ -350,6 +350,8 @@ public abstract class AbstractAstNode implements AstNode {
 			System.out.println("reducing map to scalar");
 			result = String.valueOf(((MapValue) symbol).getData()
 					.getSymbolCount());
+		} else if(symbol.getType().equals(ValueType.METHOD)) {
+			System.out.println("Don't know how to evaluate method symbol: " + getData());
 		}
 		return result;
 	}
@@ -440,5 +442,4 @@ public abstract class AbstractAstNode implements AstNode {
 		}
 		return true;
 	}
-	
 }

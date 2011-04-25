@@ -7,6 +7,14 @@ list filter(method m, list elements) {
 	result
 }
 
+list mapFn(method m, list elements) {
+	list result
+	foreach element <- elements {
+		result.add(m(element))
+	}
+	result
+}
+
 string fold(method m, list elements) {
 	if(elements) {
 		fold(m, head(elements), last(elements))
@@ -77,5 +85,14 @@ list head(list elements) {
 		}
 	}
 	result
+}
+
+string formatList(list elements, string separator) {
+	numeric first = 1
+	string sep = ''
+	foreach element <- elements {
+		sep + element
+		sep = separator
+	}
 }
 ?>

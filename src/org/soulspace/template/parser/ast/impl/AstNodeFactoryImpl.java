@@ -17,15 +17,15 @@ import org.soulspace.template.tokenizer.TokenType;
 public class AstNodeFactoryImpl implements AstNodeFactory {
 
 	/**
-   * 
-   */
+	 * 
+	 */
 	public AstNodeFactoryImpl() {
 		super();
 	}
 
 	/**
-   * 
-   */
+	 * 
+	 */
 	public AstNode create(AstNodeType type, Token token, AstNode parent) {
 		AbstractAstNode node = null;
 		if (type.equals(AstNodeType.TERM)) {
@@ -55,8 +55,8 @@ public class AstNodeFactoryImpl implements AstNodeFactory {
 	}
 
 	/**
-   * 
-   */
+	 * 
+	 */
 	public AstNode create(Token token, AstNode parent) {
 		AbstractAstNode node = null;
 

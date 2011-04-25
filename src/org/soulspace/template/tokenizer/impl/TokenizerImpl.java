@@ -220,13 +220,8 @@ public class TokenizerImpl implements Tokenizer {
 			token.setData(token.getData() + text);
 		} else if (token != null && !token.getType().equals(TokenType.TEXT)
 				&& !token.getType().equals(TokenType.IDENTIFIER)) {
-			// if (RegExHelper.match(text, "^(\\n|\\r\\n)(\\w*)$") != null) {
-			// // filter blank lines
-			// // tokenList.addToken(TokenType.TEXT, "");
-			// } else {
 			// create new token
 			tokenList.addToken(TokenType.TEXT, text);
-			// }
 		} else {
 			// create new token
 			tokenList.addToken(TokenType.TEXT, text);
@@ -245,7 +240,7 @@ public class TokenizerImpl implements Tokenizer {
 
 		if ((result = RegExHelper.match(code, "(?:/\\*(.*?)(?:\\*/))")) != null) {
 			// Code comment, just for documentation. Do nothing.
-		} else if ((result = RegExHelper.match(code, "^(xml.*)$")) != null) {
+		} else if ((result = RegExHelper.match(code, "^(xml .*)$")) != null) {
 			tokenList.addToken(TokenType.TEXT, "<?" + result.group(0) + "?>");
 		} else if ((result = RegExHelper.match(code, "if")) != null) {
 			tokenList.addToken(TokenType.IF);

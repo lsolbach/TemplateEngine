@@ -8,4 +8,7 @@ public interface MethodValue extends Value {
 	
 	void setData(String methodName);
 	
+	MethodNode getMethodNode();
+	
+	void setMethodNode(MethodNode node);
 }

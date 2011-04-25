@@ -108,12 +108,6 @@ public class MethodNodeImpl extends AbstractAstNode implements MethodNode {
 		// at the moment, these are set to this node
 		// and chained with the dynamic scope, that is the chain of
 		// parent symbol tables via the caller
-		// TODO add capability of lexical scoping to enable closures
-		// TODO reference scope of the parent of the method node and
-		// TODO not of the caller, if method node parent is not the term node
-		// TODO that is the direct child of the root node.
-		// TODO Which means, that the method node was defined in a block that
-		// TODO could function as the lexical scope of the method
 		
 		Value result = null;
 		if (context != null) {

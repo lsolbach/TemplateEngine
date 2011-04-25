@@ -29,6 +29,11 @@ public class MethodCallNodeImpl extends AbstractAstNode {
 		sb.append("(");
 		String sep = "";
 		for(Value v : valueList) {
+			if(v == null) {
+				throw new GenerateException(
+						"Null value in argument list of method call to "
+						+ getMethodName() + "()! Template " + getTemplate() + ", line " + getLine());
+			}
 			sb.append(sep);
 			if(v.getType() != null) {
 				sb.append(v.getType());
@@ -47,7 +52,7 @@ public class MethodCallNodeImpl extends AbstractAstNode {
 
 	public Value generateValue() {
 		try {
-			if (getMethodName().equals("super")) {
+			if (getMethodName() != null && getMethodName().equals("super")) {
 				return generateSuperCall();
 			} else {
 				return generateMethodCall();
@@ -55,7 +60,7 @@ public class MethodCallNodeImpl extends AbstractAstNode {
 		} catch (NullPointerException e) {
 			throw new GenerateException(
 					"Error in method call to "
-							+ getMethodName() + "()! Template " + getTemplate() + ", line " + getLine());
+							+ getMethodName() + "()! Template " + getTemplate() + ", line " + getLine(), e);
 		}
 	}
 
@@ -63,7 +68,13 @@ public class MethodCallNodeImpl extends AbstractAstNode {
 		List<Value> valueList = new ArrayList<Value>();
 		for(int i = 0; i < argList.getChildCount(); i++) {
 			AstNode argNode = argList.getChild(i);
-			valueList.add(argNode.generateValue());
+			Value value = argNode.generateValue();
+			if(value == null) {
+				throw new GenerateException(
+						"Null value in argument " + argNode + " with index " + i + " of method call to "
+						+ getMethodName() + "()! Template " + getTemplate() + ", line " + getLine());
+			}
+			valueList.add(value);
 		}
 		return valueList;
 	}
@@ -78,7 +89,11 @@ public class MethodCallNodeImpl extends AbstractAstNode {
 		if(value != null && value.getType().equals(ValueType.METHOD)) {
 			MethodValue methodValue = (MethodValue) value;
 			// lookup method by the data of the value
-			methodNode = getMethodNode(methodValue.getData(), valueList);
+			if(methodValue.getMethodNode() != null) {
+				methodNode = methodValue.getMethodNode();
+			} else {
+				methodNode = getMethodNode(methodValue.getData(), valueList);
+			}
 		} else {
 			methodNode = getMethodNode(getMethodName(), valueList);
 		}
