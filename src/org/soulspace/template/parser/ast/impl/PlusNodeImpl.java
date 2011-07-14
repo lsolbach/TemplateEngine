@@ -5,9 +5,10 @@ package org.soulspace.template.parser.ast.impl;
 
 import java.util.Iterator;
 
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.exception.GenerateException;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.value.ListValue;
 import org.soulspace.template.value.MapValue;
 import org.soulspace.template.value.NumericValue;
@@ -35,13 +36,14 @@ public class PlusNodeImpl extends AbstractAstNode {
 		setType(AstNodeType.PLUS);
 	}
 
-	public Value generateValue() {
-		Value symbol = getChild(0).generateValue();
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
+		Value symbol = getChild(0).generateValue(environment);
 		if (symbol instanceof StringValue) {
 			StringValueImpl string = new StringValueImpl("");
 			Iterator<AstNode> it = getChildNodes().iterator();
 			while (it.hasNext()) {
-				StringValue next = asString(it.next().generateValue());
+				StringValue next = asString(it.next().generateValue(environment));
 				string = string.add(next);
 			}
 			return string;
@@ -49,14 +51,14 @@ public class PlusNodeImpl extends AbstractAstNode {
 			NumericValueImpl numeric = new NumericValueImpl(0.0);
 			Iterator<AstNode> it = getChildNodes().iterator();
 			while (it.hasNext()) {
-				numeric = numeric.add(asNumeric(it.next().generateValue()));
+				numeric = numeric.add(asNumeric(it.next().generateValue(environment)));
 			}
 			return numeric;
 		} else if (symbol instanceof ListValue) {
 			ListValueImpl list = new ListValueImpl();
 			Iterator<AstNode> it = getChildNodes().iterator();
 			while (it.hasNext()) {
-				Value s = it.next().generateValue();
+				Value s = it.next().generateValue(environment);
 				if (s instanceof ListValue) {
 					list.getData().addAll(((ListValue) s).getData());
 				}
@@ -66,7 +68,7 @@ public class PlusNodeImpl extends AbstractAstNode {
 			MapValueImpl map = new MapValueImpl();
 			Iterator<AstNode> it = getChildNodes().iterator();
 			while (it.hasNext()) {
-				Value s = it.next().generateValue();
+				Value s = it.next().generateValue(environment);
 				if (s instanceof MapValue) {
 					map.getData().addSymbolTable(((MapValue) s).getData());
 				}

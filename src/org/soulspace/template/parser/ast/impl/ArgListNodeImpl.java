@@ -3,9 +3,10 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.exception.GenerateException;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.value.Value;
 
 public class ArgListNodeImpl extends AbstractAstNode {
@@ -19,7 +20,8 @@ public class ArgListNodeImpl extends AbstractAstNode {
     setType(AstNodeType.ARG_LIST);
   }
 
-	public Value generateValue() {
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
 		throw new GenerateException("Method generateSymbol() must not be called on ArgListNodeImpl! Template " + getTemplate() + ", line " + getLine());
 	}
 

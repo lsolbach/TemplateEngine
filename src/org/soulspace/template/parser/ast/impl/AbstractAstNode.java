@@ -6,13 +6,15 @@ package org.soulspace.template.parser.ast.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.exception.SyntaxException;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.MethodNode;
 import org.soulspace.template.value.ListValue;
 import org.soulspace.template.value.MapValue;
@@ -24,8 +26,6 @@ import org.soulspace.template.value.ValueType;
 import org.soulspace.template.value.impl.NumericValueImpl;
 import org.soulspace.template.value.impl.StringValueImpl;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
-
 /**
  * @author soulman
  * 
@@ -34,12 +34,12 @@ public abstract class AbstractAstNode implements AstNode {
 
 	private AstNode parent;
 	private AstNodeType type;
+	protected Environment environment = null;
 	private String template = "";
 	private int line = 0;
 	private SymbolTable symbolTable;
 	private List<AstNode> childNodes = new ArrayList<AstNode>();
 	private String data;
-	private Map<String, MethodNode> methodTable;
 	private Map<String, List<MethodNode>> methodRegistry;
 
 	/**
@@ -128,19 +128,6 @@ public abstract class AbstractAstNode implements AstNode {
 		return childNodes.size();
 	}
 
-	/**
-	 * 
-	 * @param subNodes
-	 *            The subNodes to set.
-	 */
-	public void setSubNodes(List<AstNode> subNodes) {
-		this.childNodes = subNodes;
-	}
-
-	/**
-	 * 
-	 * @param astNode
-	 */
 	public void addChildNode(AstNode astNode) {
 		if (astNode != null) {
 			childNodes.add(astNode);
@@ -148,56 +135,28 @@ public abstract class AbstractAstNode implements AstNode {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.soulspace.templates.ast.IAstNode#getParent()
-	 */
 	public AstNode getParent() {
 		return parent;
 	}
 
-	/**
-	 * @param parent
-	 *            The parent to set.
-	 */
 	public void setParent(AstNode parent) {
 		this.parent = parent;
 	}
 
-	/**
-	 * @return Returns the symbolTable.
-	 */
-	public SymbolTable getSymbolTable() {
-		if (symbolTable == null && parent != null) {
-			return parent.getSymbolTable();
-		} else {
-			return symbolTable;
-		}
+	public String getData() {
+		return data;
 	}
 
-	/**
-	 * @param symbolTable
-	 *            The symbolTable to set.
-	 */
-	public void setSymbolTable(SymbolTable symbolTable) {
-		this.symbolTable = symbolTable;
+	public Environment getEnvironment() {
+		return environment;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.soulspace.templates.ast.IAstNode#lookupSymbol(java.lang.String)
-	 */
+	public void setEnvironment(Environment environment) {
+		this.environment = environment;
+	}
+
 	public Value lookupSymbol(String name) {
-		Value symbol = null;
-		if (symbolTable != null) {
-			symbol = symbolTable.getSymbol(name);
-		}
-		if (symbol == null && parent != null) {
-			symbol = parent.lookupSymbol(name);
-		}
-		return symbol;
+		return environment.lookupValue(name);
 	}
 
 	public Value lookupSymbolInBlock(String name) {
@@ -208,17 +167,44 @@ public abstract class AbstractAstNode implements AstNode {
 		return symbol;
 	}
 
-	public Value getSymbol(AstNode node) {
-		Value symbol = null;
-		symbol = node.generateValue();
-		return symbol;
+	protected Value derefSymbol(Value symbol, AstNode ref) {
+		Value aSymbol = null;
+		if (symbol == null) {
+			aSymbol = ref.generateValue(getEnvironment());
+		} else if (symbol instanceof MapValue) {
+			aSymbol = ((MapValue) symbol).getData().getSymbol(ref.getData());
+		} else if (symbol instanceof ListValue) {
+			if (isNumeric(ref.getData())) {
+				// Get entry by index
+				List<Value> list = ((ListValue) symbol).getData();
+				int i = Integer.parseInt(roundResult(ref.getData()));
+				if (list.size() > i) {
+					aSymbol = list.get(i);
+				}
+			}
+		}
+
+		return aSymbol;
 	}
 
-	/**
-	 * @return Returns the data.
-	 */
-	public String getData() {
-		return data;
+	protected Value derefSymbol(Value symbol, String ref) {
+		Value aSymbol = null;
+		if (symbol == null) {
+			aSymbol = lookupSymbol(ref);
+		} else if (symbol instanceof MapValue) {
+			aSymbol = ((MapValue) symbol).getData().getSymbol(ref);
+		} else if (symbol instanceof ListValue) {
+			if (isNumeric(ref)) {
+				// Get entry by index
+				List<Value> list = ((ListValue) symbol).getData();
+				int i = Integer.parseInt(roundResult(ref));
+				if (list.size() > i) {
+					aSymbol = list.get(i);
+				}
+			}
+		}
+
+		return aSymbol;
 	}
 
 	/**
@@ -298,7 +284,8 @@ public abstract class AbstractAstNode implements AstNode {
 					.getSymbolCount());
 		} else {
 			throw new GenerateException("Unknown type conversion to type numeric: "
-					+ symbol.getClass().getSimpleName());
+					+ symbol.getClass().getSimpleName() + "! Template "
+					+ getTemplate() + ", line " + getLine());
 		}
 	}
 
@@ -318,7 +305,8 @@ public abstract class AbstractAstNode implements AstNode {
 					.getData().getSymbolCount()));
 		} else {
 			throw new GenerateException("Unknown type conversion to type string: "
-					+ symbol.getClass().getSimpleName());
+					+ symbol.getClass().getSimpleName() + "! Template "
+					+ getTemplate() + ", line " + getLine());
 		}
 	}
 
@@ -364,18 +352,21 @@ public abstract class AbstractAstNode implements AstNode {
 		if (methodRegistry == null && parent != null) {
 			return parent.getMethodRegistry();
 		} else {
+//			if(methodRegistry != null) {
+//				System.out.println("Method registry found in node of type " + getType());
+//			}
 			return methodRegistry;
 		}
 	}
 
-	public MethodNode getMethodNode(String signature, List<Value> valueList) {
+	public MethodNode getMethodNode(AstNode callNode, String signature, List<Value> valueList) {
 		// TODO implement a lookup with signature compatibility and best match
 		// strategy
 		List<MethodNode> methodNodeList = getMethodRegistry().get(signature);
 		if(methodNodeList == null) {
 			throw new GenerateException(
 					"No method node found for signature "
-							+ signature + "! Template " + getTemplate() + ", line " + getLine());	
+							+ signature + "! Called from template " + callNode.getTemplate() + ", line " + callNode.getLine());	
 		}
 		MethodNode matchedNode = null;
 		

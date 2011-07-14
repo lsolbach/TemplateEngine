@@ -3,14 +3,17 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
-import java.util.ArrayList;
-
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.exception.GenerateException;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
+import org.soulspace.template.value.MethodValue;
 import org.soulspace.template.value.Value;
+import org.soulspace.template.value.impl.ListValueImpl;
+import org.soulspace.template.value.impl.MapValueImpl;
+import org.soulspace.template.value.impl.MethodValueImpl;
+import org.soulspace.template.value.impl.NumericValueImpl;
 import org.soulspace.template.value.impl.StringValueImpl;
-import org.soulspace.template.value.impl.SymbolTableImpl;
 
 public class DeclarationNodeImpl extends AbstractAstNode {
 
@@ -29,7 +32,8 @@ public class DeclarationNodeImpl extends AbstractAstNode {
 		setType(AstNodeType.DECLARATION);
 	}
 
-	public Value generateValue() {
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
 		AstNode child = null;
 		Value symbol = null;
 		String name = "";
@@ -45,6 +49,7 @@ public class DeclarationNodeImpl extends AbstractAstNode {
 			name = child.getData();
 			symbol = lookupSymbolInBlock(name);
 		} else if (child instanceof AssignNodeImpl) {
+			// get left hand side of the assignment
 			name = child.getChild(0).getData();
 			symbol = lookupSymbolInBlock(name);
 		}
@@ -55,23 +60,23 @@ public class DeclarationNodeImpl extends AbstractAstNode {
 		}
 
 		if (type.equals("string")) {
-			getSymbolTable().addStringValue(name, "");
+			environment.addValue(name, new StringValueImpl(""));
 		} else if (type.equals("numeric")) {
-			getSymbolTable().addNumericValue(name, "0");
+			environment.addValue(name, new NumericValueImpl(0));
 		} else if (type.equals("list")) {
-			getSymbolTable().addListValue(name, new ArrayList<Value>());
+			environment.addValue(name, new ListValueImpl());
 		} else if (type.equals("map")) {
-			getSymbolTable().addMapValue(name, new SymbolTableImpl());
+			environment.addValue(name, new MapValueImpl());
 		} else if(type.equals("method")) {
-			getSymbolTable().addMethodValue(name, null);
+			MethodValue mValue = new MethodValueImpl(name);
+			environment.addValue(name, mValue);
+			mValue.setEnvironment(getEnvironment());
 		}
 		if (child instanceof AssignNodeImpl) {
 			// evaluate assign expression
-			child.generateValue();
+			child.generateValue(environment);
 		}
 
-		// TODO is returning of the created symbol useful?
-		// return symbol = lookupSymbolInBlock(name);
 		return new StringValueImpl("");
 	}
 

@@ -1,10 +1,12 @@
 package org.soulspace.template;
 
+import junit.framework.TestCase;
+
 import org.soulspace.template.exception.SyntaxException;
 import org.soulspace.template.exception.UnknownTokenException;
 import org.soulspace.template.impl.TemplateEngineImpl;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.impl.AstGeneratorImpl;
 import org.soulspace.template.parser.ast.impl.AstParserImpl;
 import org.soulspace.template.tokenizer.TokenList;
@@ -12,8 +14,6 @@ import org.soulspace.template.tokenizer.Tokenizer;
 import org.soulspace.template.tokenizer.impl.TokenizerImpl;
 import org.soulspace.template.value.SymbolTable;
 import org.soulspace.template.value.impl.SymbolTableImpl;
-
-import junit.framework.TestCase;
 
 public class AstParserTest extends TestCase {
 

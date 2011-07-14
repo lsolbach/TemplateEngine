@@ -3,12 +3,10 @@ package org.soulspace.template;
 import java.io.File;
 import java.io.IOException;
 
-import org.soulspace.template.exception.SyntaxException;
-import org.soulspace.template.exception.UnknownTokenException;
+import junit.framework.TestCase;
+
 import org.soulspace.template.impl.TemplateEngineImpl;
 import org.soulspace.template.value.impl.SymbolTableImpl;
-
-import junit.framework.TestCase;
 
 public class TemplateFileTest extends TestCase {
 

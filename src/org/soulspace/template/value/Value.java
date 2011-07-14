@@ -26,4 +26,9 @@ public interface Value {
 	String evaluate();
 
 	boolean isTrue();
+	
+	String asString();
+	
+	long asLong();
+
 }

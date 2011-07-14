@@ -1,28 +1,21 @@
 package org.soulspace.template.datasource.impl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Stack;
-
-import javax.sql.rowset.spi.XmlReader;
 
 import org.soulspace.template.datasource.DataSource;
 import org.soulspace.template.value.ListValue;
 import org.soulspace.template.value.MapValue;
 import org.soulspace.template.value.StringValue;
 import org.soulspace.template.value.SymbolTable;
-import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.ListValueImpl;
 import org.soulspace.template.value.impl.StringValueImpl;
 import org.soulspace.template.value.impl.SymbolTableImpl;
 import org.soulspace.template.value.impl.ValueFactoryImpl;
 import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
-import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;

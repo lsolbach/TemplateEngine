@@ -10,6 +10,8 @@ import java.io.IOException;
 
 import org.soulspace.template.TemplateEngine;
 import org.soulspace.template.datasource.DataSource;
+import org.soulspace.template.environment.Environment;
+import org.soulspace.template.environment.impl.EnvironmentImpl;
 import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.exception.SyntaxException;
 import org.soulspace.template.exception.UnknownTokenException;
@@ -20,10 +22,10 @@ import org.soulspace.template.parser.ast.AstNode;
 import org.soulspace.template.parser.ast.impl.AstParserImpl;
 import org.soulspace.template.tokenizer.TokenList;
 import org.soulspace.template.tokenizer.Tokenizer;
-import org.soulspace.template.tokenizer.impl.TokenListImpl;
 import org.soulspace.template.tokenizer.impl.TokenizerImpl;
 import org.soulspace.template.util.FileUtils;
 import org.soulspace.template.value.SymbolTable;
+import org.soulspace.template.value.impl.SymbolTableImpl;
 
 /**
  * Implementation of the TemplateEngine interface.
@@ -153,7 +155,8 @@ public class TemplateEngineImpl implements TemplateEngine {
 	 */
 	public String generate() throws SyntaxException,
 			GenerateException {
-		return root.generateValue().evaluate();		
+		Environment environment = new EnvironmentImpl(new SymbolTableImpl());
+		return root.generateValue(environment).evaluate();		
 	}
 	
 	/**
@@ -167,9 +170,8 @@ public class TemplateEngineImpl implements TemplateEngine {
 	 */
 	public String generate(SymbolTable symbolTable) throws SyntaxException,
 			GenerateException {
-
-		root.setSymbolTable(symbolTable);
-		return root.generateValue().evaluate();
+		Environment environment = new EnvironmentImpl(symbolTable);
+		return root.generateValue(environment).evaluate();
 	}
 
 	/**
@@ -183,8 +185,8 @@ public class TemplateEngineImpl implements TemplateEngine {
 	 */
 	public String generate(DataSource dataSource) throws SyntaxException,
 			GenerateException {
-		root.setSymbolTable(dataSource.getSymbolTable());
-		return root.generateValue().evaluate();
+		Environment environment = new EnvironmentImpl(dataSource.getSymbolTable());
+		return root.generateValue(environment).evaluate();
 	}
 	
 	private TokenList tokenize(TokenList tokenList, String name, String content) {

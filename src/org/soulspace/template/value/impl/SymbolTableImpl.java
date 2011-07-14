@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.soulspace.template.parser.ast.MethodNode;
 import org.soulspace.template.value.SymbolTable;
 import org.soulspace.template.value.Value;
 
@@ -33,8 +32,11 @@ public class SymbolTableImpl implements SymbolTable {
 
 	/**
 	 * Adds a new string symbol to the symbol table
-	 * @param name the name of the symbol
-	 * @param data the value of the symbol
+	 * 
+	 * @param name
+	 *            the name of the symbol
+	 * @param data
+	 *            the value of the symbol
 	 */
 	public void addStringValue(String name, String data) {
 		StringValueImpl stringSymbol = new StringValueImpl(data);
@@ -43,8 +45,11 @@ public class SymbolTableImpl implements SymbolTable {
 
 	/**
 	 * Adds a new numeric symbol to the symbol table
-	 * @param name the name of the symbol
-	 * @param data the value of the symbol
+	 * 
+	 * @param name
+	 *            the name of the symbol
+	 * @param data
+	 *            the value of the symbol
 	 */
 	public void addNumericValue(String name, String data) {
 		NumericValueImpl numericSymbol = new NumericValueImpl(data);
@@ -53,8 +58,11 @@ public class SymbolTableImpl implements SymbolTable {
 
 	/**
 	 * Adds a new list symbol to the symbol table
-	 * @param name the name of the symbol
-	 * @param data the value of the symbol
+	 * 
+	 * @param name
+	 *            the name of the symbol
+	 * @param data
+	 *            the value of the symbol
 	 */
 	public void addListValue(String name, List<Value> data) {
 		ListValueImpl listSymbol = new ListValueImpl(data);
@@ -63,8 +71,11 @@ public class SymbolTableImpl implements SymbolTable {
 
 	/**
 	 * Adds a new map symbol to the symbol table
-	 * @param name the name of the symbol
-	 * @param data the value of the symbol
+	 * 
+	 * @param name
+	 *            the name of the symbol
+	 * @param data
+	 *            the value of the symbol
 	 */
 	public void addMapValue(String name, SymbolTable data) {
 		MapValueImpl mapSymbol = new MapValueImpl(data);
@@ -78,38 +89,44 @@ public class SymbolTableImpl implements SymbolTable {
 
 	/**
 	 * Adds a given symbol to the symbol table
-	 * @param name the name of the symbol
-	 * @param symbol the symbol to add
+	 * 
+	 * @param name
+	 *            the name of the symbol
+	 * @param symbol
+	 *            the symbol to add
 	 */
 	public void addSymbol(String name, Value symbol) {
 		this.symbolTable.put(name, symbol);
 	}
-	
+
 	public void addSymbolTable(SymbolTable symbolTable) {
 		this.symbolTable.putAll(((SymbolTableImpl) symbolTable).symbolTable);
 	}
 
 	/**
 	 * Retrieves a symbol by name
-	 * @param name the name of the symbol to retrieve
-	 * @return ISymbol - symbol, if symbol is found - null if symbol could not be found
+	 * 
+	 * @param name
+	 *            the name of the symbol to retrieve
+	 * @return ISymbol symbol, if symbol is found, null if symbol could not be
+	 *         found
 	 */
 	public Value getSymbol(String name) {
-    if(name != null && !name.equals("")) {
-      return (Value) symbolTable.get(name);      
-    }
-    return null;
+		if (name != null && !name.equals("")) {
+			return (Value) symbolTable.get(name);
+		}
+		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.soulspace.templates.ISymbolTable#getSymbolCount()
-	 */
 	public int getSymbolCount() {
-		return symbolTable.size();	
+		return symbolTable.size();
 	}
-	
+
 	public Set<String> getKeySet() {
 		return symbolTable.keySet();
 	}
 
+	public String toString() {
+		return symbolTable.toString();
+	}
 }

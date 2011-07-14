@@ -3,16 +3,15 @@ package org.soulspace.template.parser.ast.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.exception.GenerateException;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.MethodNode;
-import org.soulspace.template.parser.ast.Signature;
 import org.soulspace.template.value.MethodValue;
 import org.soulspace.template.value.SymbolTable;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.ValueType;
-import org.soulspace.template.value.impl.MethodValueImpl;
 import org.soulspace.template.value.impl.StringValueImpl;
 import org.soulspace.template.value.impl.SymbolTableImpl;
 
@@ -23,7 +22,108 @@ public class MethodCallNodeImpl extends AbstractAstNode {
 		setType(AstNodeType.METHOD_CALL);
 	}
 
-	public String getSignatureString(List<Value> valueList) {
+	public String getMethodName() {
+		return getData();
+	}
+
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
+		try {
+			if (getMethodName() != null && getMethodName().equals("super")) {
+				return generateSuperCall();
+			} else {
+				return generateMethodCall();
+			}
+		} catch (NullPointerException e) {
+			throw new GenerateException(
+					"Error in method call to "
+							+ getMethodName() + "()! Template " + getTemplate() + ", line " + getLine(), e);
+		}
+	}
+
+	public List<Value> evaluateArgList(ArgListNodeImpl argList) {
+		List<Value> valueList = new ArrayList<Value>();
+		for(int i = 0; i < argList.getChildCount(); i++) {
+			AstNode argNode = argList.getChild(i);
+			Value value = argNode.generateValue(getEnvironment());
+			if(value == null) {
+				throw new GenerateException(
+						"Null value in argument " + argNode + " with index " + i + " of method call to "
+						+ getMethodName() + "()! Template " + getTemplate() + ", line " + getLine());
+			}
+			valueList.add(value);
+		}
+		return valueList;
+	}
+	
+	public Value generateMethodCall() {
+		MethodNode methodNode;
+		ArgListNodeImpl argList = (ArgListNodeImpl) getChild(0);
+		List<Value> valueList = evaluateArgList(argList);
+		
+		Value value = lookupSymbol(getMethodName());
+		Environment environment = getEnvironment();
+		
+		if(value != null && value.getType().equals(ValueType.METHOD)) {
+			MethodValue methodValue = (MethodValue) value;
+			// lookup method by the data of the value
+			if(methodValue.getMethodNode() != null) {
+				methodNode = methodValue.getMethodNode();
+				environment = methodValue.getEnvironment();
+//				System.out.println("Call to method " + getMethodName() + " by method node in method value " + methodValue.toString());
+//				System.out.println("Environment for call to method " + getMethodName());
+//				System.out.println(environment.printEnvironment());
+			} else {
+				methodNode = getMethodNode(this, methodValue.getData(), valueList);
+				environment = getEnvironment();
+//				System.out.println("method " + getMethodName() + " by method lookup with method value");
+			}
+		} else {
+			methodNode = getMethodNode(this, getMethodName(), valueList);
+			environment = getEnvironment();
+//			System.out.println("method " + getMethodName() + " by method name");
+		}
+
+		if(methodNode != null) {
+			// create symbol table for arguments
+//			SymbolTable argTable = methodNode.createSymbolTable(valueList);
+
+			// generate from the method
+			return ((MethodNodeImpl) methodNode).generateSymbol(
+					environment, methodNode, valueList);		
+		} else {
+			throw new GenerateException(
+					"No method node found for signature "
+							+ getSignatureString(valueList) + "! Template " + getTemplate() + ", line " + getLine());
+		}
+	}
+	
+	public Value generateSuperCall() {
+		AstNode node = getParent();
+		boolean found = false;
+		while (!found) {
+			if (node != null) {
+				if (node instanceof MethodNodeImpl) {
+					MethodNodeImpl mNode = (MethodNodeImpl) node;
+					if (mNode.getSuperMethod() == null) {
+						throw new GenerateException(
+								"super() call, but there is no super method! Template " + getTemplate() + ", line " + getLine());
+					}
+					// TODO call method outside of loop to make the exits from this method more clear
+					ArgListNodeImpl argList = (ArgListNodeImpl) getChild(0);
+					List<Value> valueList = evaluateArgList(argList);
+					return mNode.callSuperMethod(valueList);
+				}
+				node = node.getParent();
+			} else {
+				throw new GenerateException(
+						"super() call outside a method body! Template " + getTemplate() + ", line " + getLine());
+			}
+		}
+		return new StringValueImpl("");
+	}
+	
+	String getSignatureString(List<Value> valueList) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getData());
 		sb.append("(");
@@ -44,124 +144,6 @@ public class MethodCallNodeImpl extends AbstractAstNode {
 		}
 		sb.append(")");
 		return sb.toString();
-	}
-
-	public String getMethodName() {
-		return getData();
-	}
-
-	public Value generateValue() {
-		try {
-			if (getMethodName() != null && getMethodName().equals("super")) {
-				return generateSuperCall();
-			} else {
-				return generateMethodCall();
-			}
-		} catch (NullPointerException e) {
-			throw new GenerateException(
-					"Error in method call to "
-							+ getMethodName() + "()! Template " + getTemplate() + ", line " + getLine(), e);
-		}
-	}
-
-	public List<Value> evaluateArgList(ArgListNodeImpl argList) {
-		List<Value> valueList = new ArrayList<Value>();
-		for(int i = 0; i < argList.getChildCount(); i++) {
-			AstNode argNode = argList.getChild(i);
-			Value value = argNode.generateValue();
-			if(value == null) {
-				throw new GenerateException(
-						"Null value in argument " + argNode + " with index " + i + " of method call to "
-						+ getMethodName() + "()! Template " + getTemplate() + ", line " + getLine());
-			}
-			valueList.add(value);
-		}
-		return valueList;
-	}
-	
-	public Value generateMethodCall() {
-		MethodNode methodNode;
-		ArgListNodeImpl argList = (ArgListNodeImpl) getChild(0);
-		List<Value> valueList = evaluateArgList(argList);
-		
-		Value value = lookupSymbol(getMethodName());
-		
-		if(value != null && value.getType().equals(ValueType.METHOD)) {
-			MethodValue methodValue = (MethodValue) value;
-			// lookup method by the data of the value
-			if(methodValue.getMethodNode() != null) {
-				methodNode = methodValue.getMethodNode();
-			} else {
-				methodNode = getMethodNode(methodValue.getData(), valueList);
-			}
-		} else {
-			methodNode = getMethodNode(getMethodName(), valueList);
-		}
-		
-		if(methodNode != null) {
-			// create symbol table for arguments
-			SymbolTable symbolTable = createSymbolTable(methodNode, valueList);
-
-			// generate from the method
-			return ((MethodNodeImpl) methodNode).generateSymbol(methodNode,
-					symbolTable);		
-		} else {
-			throw new GenerateException(
-					"No method node found for signature "
-							+ getSignatureString(valueList) + "! Template " + getTemplate() + ", line " + getLine());
-		}
-	}
-	
-	public Value generateSuperCall() {
-		AstNode node = getParent();
-		boolean found = false;
-		while (!found) {
-			if (node != null) {
-				if (node instanceof MethodNodeImpl) {
-					MethodNodeImpl mNode = (MethodNodeImpl) node;
-					if (mNode.getSuperMethod() == null) {
-						throw new GenerateException(
-								"super() call, but there is no super method! Template " + getTemplate() + ", line " + getLine());
-					}
-					return mNode.callSuperMethod();
-				}
-				node = node.getParent();
-			} else {
-				throw new GenerateException(
-						"super() call outside a method body! Template " + getTemplate() + ", line " + getLine());
-			}
-		}
-		return new StringValueImpl("");
-	}
-	
-	/**
-	 * 
-	 * @param node
-	 * @return
-	 * @throws GenerateException
-	 */
-	SymbolTable createSymbolTable(AstNode node, List<Value> valueList) throws GenerateException {
-		SymbolTable symbolTable = new SymbolTableImpl();
-
-		if (!(node instanceof MethodNodeImpl)) {
-			throw new GenerateException("Wrong node type " + node.getType() + "! Template " + getTemplate() + ", line " + getLine());
-		}
-		if (node.getChild(0) == null) {
-			throw new GenerateException("Missing parameter list! Template " + getTemplate() + ", line " + getLine());
-		}
-		AstNode paramList = node.getChild(0);
-		if (paramList.getChildCount() != valueList.size()) {
-			throw new GenerateException("Wrong argument count in method "
-					+ getData() + "! Template " + getTemplate() + ", line " + getLine());
-		}
-
-		for (int i = 0; i < paramList.getChildCount(); i++) {
-			AstNode paramNode = paramList.getChild(i);
-			String paramName = paramNode.getChild(0).getData();
-			symbolTable.addSymbol(paramName, valueList.get(i));
-		}
-
-		return symbolTable;
 	}
 
 }

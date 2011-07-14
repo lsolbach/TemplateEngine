@@ -3,9 +3,10 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.exception.GenerateException;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.MethodNode;
 import org.soulspace.template.value.ListValue;
 import org.soulspace.template.value.MapValue;
@@ -34,7 +35,8 @@ public class AssignNodeImpl extends AbstractAstNode {
 		setType(AstNodeType.ASSIGN);
 	}
 
-	public Value generateValue() {
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
 		AstNode child = null;
 		Value symbol = null;
 		String name = "";
@@ -56,17 +58,17 @@ public class AssignNodeImpl extends AbstractAstNode {
 			if ((child = getChild(1)) != null) {
 				if (symbol.getType().equals(ValueType.STRING)) {
 					// assign to string symbol
-					Value rSymbol = child.generateValue();
+					Value rSymbol = child.generateValue(getEnvironment());
 					((StringValue) symbol).setData(((StringValue) rSymbol)
 							.getData());
 				} else if (symbol.getType().equals(ValueType.NUMERIC)) {
 					// assign to numeric symbol
-					Value rSymbol = child.generateValue();
+					Value rSymbol = child.generateValue(getEnvironment());
 					((NumericValue) symbol).setData(((NumericValue) rSymbol)
 							.getData());
 				} else if (symbol.getType().equals(ValueType.LIST)) {
 					// assign to list symbol
-					Value aSymbol = child.generateValue();
+					Value aSymbol = child.generateValue(getEnvironment());
 					if (!(aSymbol instanceof ListValue)) {
 						throw new GenerateException("The value of symbol "+ child.getData()
 								+ " is not of type list but of type "
@@ -77,7 +79,7 @@ public class AssignNodeImpl extends AbstractAstNode {
 							.getData());
 				} else if (symbol.getType().equals(ValueType.MAP)) {
 					// assign to map symbol
-					Value aSymbol = child.generateValue();
+					Value aSymbol = child.generateValue(getEnvironment());
 					if (!(aSymbol instanceof MapValue)) {
 						throw new GenerateException("The value of symbol "+ child.getData()
 								+ " is not of type map but of type "
@@ -88,19 +90,28 @@ public class AssignNodeImpl extends AbstractAstNode {
 				} else if (symbol.getType().equals(ValueType.METHOD)) {
 					if (child.getType().equals(AstNodeType.METHOD)) {
 						MethodNode mNode = (MethodNode) child;
-						// FIXME check if adding assigned methods to the global
+						MethodValue lValue = (MethodValue) symbol;
+						// TODO check if adding assigned methods to the global
 						// method registry is desirable
 						if(!mNode.getData().equals("fn")) {
-							((MethodValueImpl) symbol).setData(mNode.getData());
+							lValue.setData(mNode.getData());
+//							lValue.setMethodNode(mNode);
+							lValue.setEnvironment(lValue.getEnvironment());
 							mNode.addMethodNode(mNode);
+//							System.out.println("Named method assignment");
+//							System.out.println(getEnvironment().printEnvironment());
 						} else {
-							((MethodValueImpl) symbol).setMethodNode(mNode);
-							//System.out.println("anonymous method");
+							lValue.setMethodNode(mNode);
+							lValue.setEnvironment(lValue.getEnvironment());
+//							System.out.println("Anonymous method assignment");
+//							System.out.println(getEnvironment().printEnvironment());
 						}
 					} else if(child.getType().equals(AstNodeType.METHOD_CALL)) {
-						// FIXME set the node itself instead of the name here
-						//((MethodValue) symbol).setData(((MethodValue) child.generateValue()).getData());
-						((MethodValue) symbol).setMethodNode(((MethodValue) child.generateValue()).getMethodNode());
+						MethodValue lValue = (MethodValue) symbol;
+						MethodValue rValue = (MethodValue) child.generateValue(getEnvironment());
+						// copy the node and the enviroment to the new value
+						lValue.setMethodNode(rValue.getMethodNode());
+						lValue.setEnvironment(rValue.getEnvironment());
 					} else if (child.getType().equals(AstNodeType.IDENTIFIER)) {
 						IdentifierNodeImpl iNode = (IdentifierNodeImpl) child;
 						((MethodValueImpl) symbol).setData(iNode.getData());

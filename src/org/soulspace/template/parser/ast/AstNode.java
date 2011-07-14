@@ -7,12 +7,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.soulspace.template.parser.ast.impl.ArgListNodeImpl;
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.value.NumericValue;
 import org.soulspace.template.value.StringValue;
-import org.soulspace.template.value.SymbolTable;
 import org.soulspace.template.value.Value;
-import org.soulspace.template.value.ValueType;
 
 /**
  * @author soulman
@@ -34,29 +32,25 @@ public interface AstNode {
 
 	void addChildNode(AstNode node);
 
-	Value lookupSymbol(String name);
-
-	Value getSymbol(AstNode node);
-
-	SymbolTable getSymbolTable();
-
-	void setSymbolTable(SymbolTable symbolTable);
-
 	String getData();
 
 	void setData(String data);
 
-	Map<String, List<MethodNode>> getMethodRegistry();
+	Environment getEnvironment();
+	
+	Value lookupSymbol(String name);
 
-	MethodNode getMethodNode(String signature, List<Value> valueList);
-
-	void addMethodNode(MethodNode node);
-
-	Value generateValue();
+	Value generateValue(Environment environment);
 
 	NumericValue asNumeric(Value symbol);
 
 	StringValue asString(Value symbol);
+
+	Map<String, List<MethodNode>> getMethodRegistry();
+
+	MethodNode getMethodNode(AstNode callNode, String signature, List<Value> valueList);
+
+	void addMethodNode(MethodNode node);
 
 	// diagnostic information
 	String getTemplate();

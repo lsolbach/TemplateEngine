@@ -1,6 +1,7 @@
 Todo's TemplateEngine:
 
 Version 1.0
+* Full closure support
 * Document abstract and rationale
 * Document method values and functional programming
 * English documentation (WIP Michael)

@@ -3,28 +3,29 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
-import org.soulspace.template.parser.ast.AstNodeType;
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.StringValueImpl;
 
 public class RootNodeImpl extends AbstractAstNode {
 
-  public RootNodeImpl() {
-    this(null);
-  }
+	public RootNodeImpl() {
+		this(null);
+	}
 
-  public RootNodeImpl(AstNode parent) {
-    super(parent);
-    setType(AstNodeType.ROOT);
-    // initMethodTable();
-    initMethodRegistry();
-  }
+	public RootNodeImpl(AstNode parent) {
+		super(parent);
+		setType(AstNodeType.ROOT);
+		initMethodRegistry();
+	}
 
-	public Value generateValue() {
-		if(getChild(0) != null) {
-			return getChild(0).generateValue();
-		}		
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
+		if (getChild(0) != null) {
+			return getChild(0).generateValue(environment);
+		}
 		return new StringValueImpl("");
 	}
 }

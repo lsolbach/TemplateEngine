@@ -146,4 +146,12 @@ public class StringValueImpl implements Value, StringValue {
 		return true;
 	}
 	
+	public String asString() {
+		return data;
+	}
+
+	public long asLong() {
+		return Long.valueOf(data.length());
+	}
+
 }

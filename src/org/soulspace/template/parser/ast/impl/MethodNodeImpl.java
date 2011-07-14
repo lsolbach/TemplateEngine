@@ -1,19 +1,21 @@
 package org.soulspace.template.parser.ast.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
+import org.soulspace.template.environment.Environment;
+import org.soulspace.template.environment.impl.EnvironmentImpl;
 import org.soulspace.template.exception.GenerateException;
-import org.soulspace.template.parser.ast.AstNodeType;
+import org.soulspace.template.method.impl.SignatureImpl;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.MethodNode;
 import org.soulspace.template.parser.ast.Signature;
 import org.soulspace.template.value.SymbolTable;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.ValueType;
-import org.soulspace.template.value.impl.StringValueImpl;
+import org.soulspace.template.value.impl.SymbolTableImpl;
 
 public class MethodNodeImpl extends AbstractAstNode implements MethodNode {
 
@@ -98,46 +100,30 @@ public class MethodNodeImpl extends AbstractAstNode implements MethodNode {
 		return sb.toString();
 	}
 
-	public Value callSuperMethod() {
-		return getSuperMethod().generateSymbol(this, getSymbolTable());
+	public Value callSuperMethod(List<Value> valueList) {
+		return getSuperMethod().generateSymbol(
+				getEnvironment(), this, valueList);
 	}
 
-	public Value generateSymbol(AstNode returnNode, SymbolTable symbolTable)
-			throws GenerateException {
-		// this given symbolTable contains the arguments of the call
-		// at the moment, these are set to this node
-		// and chained with the dynamic scope, that is the chain of
-		// parent symbol tables via the caller
-		
-		Value result = null;
-		if (context != null) {
-			callStack.push(context);
-		}
-		context = new MethodContext(returnNode, symbolTable);
-		setSymbolTable(symbolTable);
+	public SymbolTable createSymbolTable(List<Value> valueList) {
+		SymbolTable symbolTable = new SymbolTableImpl();
 
-		AstNode node = null;
-		if ((node = getChild(1)) != null
-				&& node.getType().equals(AstNodeType.TERM)) {
-			result = ((TermNodeImpl) node).generateSymbol(returnType);
+		if (getChild(0) == null) {
+			throw new GenerateException("Missing parameter list! Template " + getTemplate() + ", line " + getLine());
+		}
+		AstNode paramList = getChild(0);
+		if (paramList.getChildCount() != valueList.size()) {
+			throw new GenerateException("Wrong argument count in method "
+					+ getData() + "! Template " + getTemplate() + ", line " + getLine());
 		}
 
-		if (!callStack.empty()) {
-			context = callStack.pop();
-			// setParent(context.getReturnNode());
-			setSymbolTable(context.getSymbolTable());
+		for (int i = 0; i < paramList.getChildCount(); i++) {
+			AstNode paramNode = paramList.getChild(i);
+			String paramName = paramNode.getChild(0).getData();
+			symbolTable.addSymbol(paramName, valueList.get(i));
 		}
 
-		
-		if (result != null) {
-			validateResultType(returnType, result.getType());
-			if (returnType.equals(ValueType.STRING)) {
-				result = asString(result);
-			} else if (returnType.equals(ValueType.NUMERIC)) {
-				result = asNumeric(result);
-			}
-		}
-		return result;
+		return symbolTable;
 	}
 
 	void validateResultType(ValueType returnType, ValueType resultType) {
@@ -153,14 +139,8 @@ public class MethodNodeImpl extends AbstractAstNode implements MethodNode {
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.soulspace.template.parser.ast.impl.AstNode#getParent()
-	 */
 	@Override
 	public AstNode getParent() {
-		// FIXME endless loop in getMethodTable()
 		if (context.getReturnNode() != null) {
 			return context.getReturnNode();
 		} else {
@@ -168,30 +148,66 @@ public class MethodNodeImpl extends AbstractAstNode implements MethodNode {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.soulspace.template.parser.ast.impl.AstNode#getSymbolTable()
-	 */
 	@Override
-	public SymbolTable getSymbolTable() {
-		if (context.getSymbolTable() != null) {
-			return context.getSymbolTable();
+	public Environment getEnvironment() {
+		if (context.getEnvironment() != null) {
+			return context.getEnvironment();
 		} else {
-			return super.getSymbolTable();
+			return super.getEnvironment();
 		}
 	}
 
-	public Value generateValue() {
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
 		throw new GenerateException(
 				"Method generateSymbol() must not be called on MethodNodeImpl! Template "
 				+ getTemplate() + ", line " + getLine());
 	}
 
-	private Signature buildSignature() {
-		Signature sig = new SignatureImpl(getMethodName(), getReturnType(),
-				getParameterTypes());
-		return sig;
+	public Value generateSymbol(Environment environment, AstNode returnNode,
+			List<Value> valueList) {
+		// FIXME use Environment
+		// this given list of values contains the arguments of the call
+		// at the moment, these are set to this node
+		// and chained with the dynamic scope, that is the chain of
+		// parent symbol tables via the caller
+
+		Value result = null;
+		if (context != null) {
+			callStack.push(context);
+		}
+
+		SymbolTable paramTable = createSymbolTable(valueList);
+		environment = new EnvironmentImpl(environment, paramTable);
+		setEnvironment(environment);		
+		context = new MethodContext(environment, returnNode);
+//		System.out.println("Method execution " + getData());
+//		System.out.println(environment.printEnvironment());
+
+
+		AstNode node = null;
+		if ((node = getChild(1)) != null
+				&& node.getType().equals(AstNodeType.TERM)) {
+			result = ((TermNodeImpl) node).generateSymbol(environment, returnType);
+		}
+		
+		if (result != null) {
+			validateResultType(returnType, result.getType());
+			if(returnType.equals(ValueType.METHOD)
+					&& result.getType().equals(ValueType.METHOD)) {
+			} else if (returnType.equals(ValueType.STRING)) {
+				result = asString(result);
+			} else if (returnType.equals(ValueType.NUMERIC)) {
+				result = asNumeric(result);
+			}
+		}
+		
+		if (!callStack.empty()) {
+			context = callStack.pop();
+			setEnvironment(context.getEnvironment());
+		}
+
+		return result;
 	}
 
 	/**
@@ -200,22 +216,19 @@ public class MethodNodeImpl extends AbstractAstNode implements MethodNode {
 	 * @author soulman
 	 */
 	private class MethodContext {
-		SymbolTable symbolTable;
+		Environment environment;
 		AstNode returnNode;
 
 		public MethodContext() {
 		}
 
-		public MethodContext(AstNode returnNode, SymbolTable symbolTable) {
+		public MethodContext(Environment environment, AstNode returnNode) {
+			this.environment = environment;
 			this.returnNode = returnNode;
-			this.symbolTable = symbolTable;
 		}
 
-		/**
-		 * @return the symbolTable
-		 */
-		public SymbolTable getSymbolTable() {
-			return symbolTable;
+		public Environment getEnvironment() {
+			return environment;
 		}
 
 		/**

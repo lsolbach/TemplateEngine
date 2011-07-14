@@ -5,8 +5,9 @@ package org.soulspace.template.parser.ast.impl;
 
 import java.util.Iterator;
 
-import org.soulspace.template.parser.ast.AstNodeType;
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.NumericValueImpl;
 
@@ -27,11 +28,12 @@ public class LogicalAndNodeImpl extends AbstractAstNode {
 		setType(AstNodeType.LOGICAL_AND);
 	}
 
-	public Value generateValue() {
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
 		Value result = null;
 		Iterator<AstNode> it = getChildNodes().iterator();
 		while (it.hasNext()) {
-			result = it.next().generateValue();
+			result = it.next().generateValue(environment);
 			if (result == null || !result.isTrue()) {
 				// lazy evaluation, return if result is false
 				return new NumericValueImpl(0);

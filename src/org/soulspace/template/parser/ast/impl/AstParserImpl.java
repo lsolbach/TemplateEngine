@@ -4,13 +4,12 @@
 package org.soulspace.template.parser.ast.impl;
 
 import org.soulspace.template.exception.SyntaxException;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
 import org.soulspace.template.parser.ast.AstNodeFactory;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.tokenizer.Token;
 import org.soulspace.template.tokenizer.TokenList;
 import org.soulspace.template.tokenizer.TokenType;
-import org.soulspace.template.tokenizer.impl.TokenListImpl;
 
 public class AstParserImpl {
 
@@ -632,8 +631,7 @@ public class AstParserImpl {
 			list.validateType(TokenType.BRACKET_RIGHT);
 			list.skipToken();
 		} else if (list.checkType(TokenType.PAREN_LEFT)) {
-			node = nodeFactory.create(AstNodeType.METHOD_CALL, list
-					.lookUpLastToken(), parent);
+			node = nodeFactory.create(AstNodeType.METHOD_CALL, token, parent);
 			node.setData(token.getData());
 			list.skipToken();
 			node.addChildNode(parseArgList(list, node));

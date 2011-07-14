@@ -8,12 +8,14 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 
+import org.soulspace.template.environment.Environment;
+import org.soulspace.template.environment.impl.EnvironmentImpl;
 import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.exception.SyntaxException;
 import org.soulspace.template.exception.UnknownTokenException;
 import org.soulspace.template.impl.TemplateEngineImpl;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.impl.AstGeneratorImpl;
 import org.soulspace.template.parser.ast.impl.AstParserImpl;
 import org.soulspace.template.parser.ast.impl.RootNodeImpl;
@@ -37,6 +39,7 @@ public class TemplateEngineTest extends TestCase {
 	Tokenizer t = null;
 	AstParserImpl p = null;
 	AstGeneratorImpl g = null;
+	Environment env = null;
 	SymbolTable st = null;
 	AstNode root = null;
 
@@ -903,7 +906,8 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<html></html>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "<html></html>", result);
 	}
 
@@ -912,22 +916,26 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?6.0 + 3.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "9", result);
 
 		tl = t.tokenize("<?6.0 + -6.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "0", result);
 
 		tl = t.tokenize("<?-6.0 + 4.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "-2", result);
 
 		tl = t.tokenize("<?6.0 + 0.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "6", result);
 	}
 
@@ -936,22 +944,26 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?6.0 - 3.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "3", result);
 
 		tl = t.tokenize("<?6.0 - 6.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "0", result);
 
 		tl = t.tokenize("<?6.0 - -4.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "10", result);
 
 		tl = t.tokenize("<?6.0 - 0.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "6", result);
 	}
 
@@ -960,17 +972,20 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?6.0 * 3.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "18", result);
 
 		tl = t.tokenize("<?6.0 * -6.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "-36", result);
 
 		tl = t.tokenize("<?6.0 * 0.5?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "3", result);
 	}
 
@@ -979,23 +994,27 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?6.0 / 3.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "2", result);
 
 		tl = t.tokenize("<?6.0 / 6.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "1", result);
 
 		tl = t.tokenize("<?6.0 / 4.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "1.5", result);
 
 		try {
 			tl = t.tokenize("<?6.0 / 0.0?>");
 			root = p.parse(tl);
-			result = g.generate(root, st);
+			env = new EnvironmentImpl(st);
+			result = g.generate(env, root);
 			fail("Generate Exception (Division by zero!) expected");
 		} catch (GenerateException e) {
 		}
@@ -1006,28 +1025,33 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?6.0 // 3?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "2", result);
 
 		tl = t.tokenize("<?6.0 // 6?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "1", result);
 
 		tl = t.tokenize("<?6.0 // 4?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "1", result);
 
 		tl = t.tokenize("<?6.0 // 9?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "0", result);
 
 		try {
 			tl = t.tokenize("<?6.0 // 3.0?>");
 			root = p.parse(tl);
-			result = g.generate(root, st);
+			env = new EnvironmentImpl(st);
+			result = g.generate(env, root);
 			fail("Generate Exception (Not Integer!) expected");
 		} catch (GenerateException e) {
 		}
@@ -1035,7 +1059,8 @@ public class TemplateEngineTest extends TestCase {
 		try {
 			tl = t.tokenize("<?6.0 // 0.0?>");
 			root = p.parse(tl);
-			result = g.generate(root, st);
+			env = new EnvironmentImpl(st);
+			result = g.generate(env, root);
 			fail("Generate Exception (Division by zero!) expected");
 		} catch (GenerateException e) {
 		}
@@ -1046,27 +1071,32 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?6.0 % 3.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "0", result);
 
 		tl = t.tokenize("<?6.0 % 6.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "0", result);
 
 		tl = t.tokenize("<?6.0 % -6.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "0", result);
 
 		tl = t.tokenize("<?3.0 % 6.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "3", result);
 
 		tl = t.tokenize("<?9.0 % 6.0?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "3", result);
 	}
 
@@ -1075,17 +1105,20 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?-2.5 * 3?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "-7.5", result);
 
 		tl = t.tokenize("<?'Hallo' eq 'Hallo'?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "1", result);
 
 		tl = t.tokenize("<?'Hallo' ne 'Hello'?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "1", result);
 	}
 
@@ -1098,12 +1131,14 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?c && a && e?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "0", result);
 
 		tl = t.tokenize("<?a || c || e?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "1", result);
 	}
 
@@ -1120,22 +1155,26 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?a?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "Hello World", result);
 
 		tl = t.tokenize("<?c[d]?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "Greetings", result);
 
 		tl = t.tokenize("<?e[0]?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "Ju", result);
 
 		tl = t.tokenize("<?e[1]?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "Hu", result);
 	}
 
@@ -1147,23 +1186,27 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?string da?><?da = 'Hello'?><?da?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "Hello", result);
 
 		tl = t.tokenize("<?numeric db?><?db = 12.5?><?db?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "12.5", result);
 
 		tl = t.tokenize("<?list dc?><?dc = e?><?dc[0]?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "Ju", result);
 
 		st.addStringValue("da", "Schon da!");
 		tl = t.tokenize("<?string da?><?da = 'Hello'?><?da?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		// FIXME validate correct behaviour
 	}
 
@@ -1180,12 +1223,14 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?if(1) { a } else { b }?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "Hello World", result);
 
 		tl = t.tokenize("<?if(0) { a } else { b }?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "Greetings", result);
 	}
 
@@ -1202,7 +1247,8 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?if(1) { a } else { b } if(0) { a } else { b }?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "Hello WorldGreetings", result);
 	}
 
@@ -1215,17 +1261,20 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?foreach x <- e { x }?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "JuHuBu", result);
 
 		tl = t.tokenize("<content><?foreach x <- e { x }?></content>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "<content>JuHuBu</content>", result);
 
 		tl = t.tokenize("<?foreach x <- e { x } foreach x <- e { x }?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "JuHuBuJuHuBu", result);
 	}
 
@@ -1238,7 +1287,8 @@ public class TemplateEngineTest extends TestCase {
 		tl = t.tokenize("<?" + "numeric i " + "i = 0 " + "while(i < 3) { "
 				+ "  e[i] " + "  i = i + 1 " + "}" + "?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "JuHuBu", result);
 	}
 
@@ -1259,7 +1309,8 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?numeric i i = 0 while(i < 3) { e[i] i = i + 1 }?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "JuHuBu", result);
 	}
 
@@ -1284,7 +1335,8 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize("<?if(classes[1]:name eq 'Class2') { 'true' }?>");
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		assertEquals("Result correct", "true", result);
 	}
 
@@ -1298,7 +1350,8 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize(sb.toString());
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		System.out.println(result);
 	}
 
@@ -1312,7 +1365,8 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize(sb.toString());
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		System.out.println(result);
 	}
 
@@ -1329,7 +1383,8 @@ public class TemplateEngineTest extends TestCase {
 
 		tl = t.tokenize(sb.toString());
 		root = p.parse(tl);
-		result = g.generate(root, st);
+		env = new EnvironmentImpl(st);
+		result = g.generate(env, root);
 		System.out.println(result);
 	}
 

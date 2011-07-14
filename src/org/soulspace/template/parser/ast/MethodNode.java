@@ -1,5 +1,9 @@
 package org.soulspace.template.parser.ast;
 
+import java.util.List;
+
+import org.soulspace.template.environment.Environment;
+import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.value.SymbolTable;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.ValueType;
@@ -15,7 +19,8 @@ public interface MethodNode extends AstNode {
 
 	MethodNode getSuperMethod();
 	void setSuperMethod(MethodNode node);
-	Value callSuperMethod();
+	Value callSuperMethod(List<Value> valueList);
 	
-	Value generateSymbol(AstNode returnNode, SymbolTable symbolTable);
+	SymbolTable createSymbolTable(List<Value> valueList);
+	Value generateSymbol(Environment environment, AstNode returnNode, List<Value> valueList);
 }

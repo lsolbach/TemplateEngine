@@ -39,6 +39,8 @@ public class StaticMethodRegistryImpl implements MethodRegistry {
 		methodClassList.add("org.soulspace.template.method.impl.KeyListMethodImpl");
 
 		methodClassList.add("org.soulspace.template.method.impl.TypeMethodImpl");
+		
+		methodClassList.add("org.soulspace.template.method.impl.DebugMethodImpl");
 	}
 	
 	String name = "";

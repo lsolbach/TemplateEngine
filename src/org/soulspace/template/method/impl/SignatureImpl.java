@@ -1,4 +1,4 @@
-package org.soulspace.template.parser.ast.impl;
+package org.soulspace.template.method.impl;
 
 import java.util.ArrayList;
 import java.util.List;

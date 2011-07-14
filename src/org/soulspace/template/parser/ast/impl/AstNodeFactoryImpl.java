@@ -4,9 +4,9 @@
 package org.soulspace.template.parser.ast.impl;
 
 import org.soulspace.template.exception.SyntaxException;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
 import org.soulspace.template.parser.ast.AstNodeFactory;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.tokenizer.Token;
 import org.soulspace.template.tokenizer.TokenType;
 

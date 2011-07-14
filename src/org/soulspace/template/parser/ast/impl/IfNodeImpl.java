@@ -3,8 +3,9 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
-import org.soulspace.template.parser.ast.AstNodeType;
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.StringValueImpl;
 
@@ -25,13 +26,14 @@ public class IfNodeImpl extends AbstractAstNode {
 		setType(AstNodeType.IF);
 	}
 
-	public Value generateValue() {
-		Value exSymbol = getChild(0).generateValue();
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
+		Value exSymbol = getChild(0).generateValue(environment);
 
 		if (exSymbol != null && exSymbol.isTrue()) {
-			return getChild(1).generateValue();
+			return getChild(1).generateValue(environment);
 		} else if (getChild(2) != null) {
-			return getChild(2).generateValue();
+			return getChild(2).generateValue(environment);
 		}
 		return new StringValueImpl("");
 	}

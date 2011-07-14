@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.value.StringValue;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.MapValueImpl;
-import org.soulspace.template.value.impl.StringValueImpl;
 
 public class MapClearMethodImpl extends AbstractMethod {
 

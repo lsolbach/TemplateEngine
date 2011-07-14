@@ -7,8 +7,6 @@ package org.soulspace.template.value;
 import java.util.List;
 import java.util.Set;
 
-import org.soulspace.template.parser.ast.MethodNode;
-
 /**
  * Interface for symbol tables.
  * 

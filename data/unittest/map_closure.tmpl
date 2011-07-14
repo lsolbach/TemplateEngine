@@ -1,28 +1,23 @@
 <?
 method cX(string s) {
-	method result
-	{
-		string x = s
-		result = string fn(map element) {
-			element[x]
-		}
+	string x = s
+	method result = string fn(map element) {
+		element[x]
 	}
 	result
 }
 
 method cY(string s) {
 	method result
-	{
-		string z = s
-		result = string fn(map element) {
-			element[z].toLower()
-		}
+	string z = s
+	result = string fn(map element) {
+		element[z].toLower()
 	}
 	result
 }
 
-method y = cX('Name')
-method x = cX('Greetings')
+method xm = cX('Greetings')
+method ym = cX('Name')
 ?>
-<?formatList(mapFn(x, myList), ', ')?>
-<?formatList(mapFn(y, myList), ', ')?>
+<?formatList(mapFn(cX('Greetings'), myList), ', ')?>
+<?formatList(mapFn(ym, myList), ': ')?>

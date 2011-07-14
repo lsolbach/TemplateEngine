@@ -3,8 +3,9 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
-import org.soulspace.template.parser.ast.AstNodeType;
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.StringValueImpl;
 
@@ -25,13 +26,14 @@ public class WhileNodeImpl extends AbstractAstNode {
 		setType(AstNodeType.WHILE);
 	}
 
-	public Value generateValue() {
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
 		StringBuffer sb = new StringBuffer(128);
 
-		Value exSymbol = getChild(0).generateValue();
+		Value exSymbol = getChild(0).generateValue(environment);
 		while (exSymbol != null && exSymbol.isTrue()) {
-			sb.append(getChild(1).generateValue().evaluate());
-			exSymbol = getChild(0).generateValue();
+			sb.append(getChild(1).generateValue(environment).evaluate());
+			exSymbol = getChild(0).generateValue(environment);
 		}
 		return new StringValueImpl(sb.toString());
 	}

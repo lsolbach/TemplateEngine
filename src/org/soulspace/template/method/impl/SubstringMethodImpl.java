@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.method.Method;
-import org.soulspace.template.value.MapValue;
 import org.soulspace.template.value.NumericValue;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.StringValueImpl;

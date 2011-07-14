@@ -6,9 +6,10 @@ package org.soulspace.template.parser.ast.impl;
 import java.util.Iterator;
 import java.util.List;
 
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.exception.GenerateException;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.MethodNode;
 import org.soulspace.template.value.ListValue;
 import org.soulspace.template.value.MapValue;
@@ -26,12 +27,14 @@ public class IdentifierNodeImpl extends AbstractAstNode {
 		setType(AstNodeType.IDENTIFIER);
 	}
 
-	public Value generateValue() {
-
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
 		Value symbol = lookupSymbol(getData());
 		if(symbol != null) {
 			// evaluate indexed access (a[b])
-			symbol = lookup(symbol);
+			if(getChildNodes().size() > 0) {
+				symbol = deref(symbol);
+			}
 			return symbol;
 		}
 		// lookup method too, if no symbol is found, because maybe a method parameter is required
@@ -39,59 +42,29 @@ public class IdentifierNodeImpl extends AbstractAstNode {
 		if(methodNodeList != null) {
 			return new MethodValueImpl(getData());
 		}
+		System.out.println(getEnvironment().printEnvironment());
 		throw new GenerateException("Variable " + getData()
 				+ " not found! Template " + getTemplate() + ", line "
 				+ getLine());
 	}
 
-	/**
-	 * 
-	 * @param symbol
-	 * @return
-	 */
-	Value lookup(Value symbol) {
+	protected Value deref(Environment environment, Value symbol) {
+		setEnvironment(environment);
+		return deref(symbol);
+	}
+
+	protected Value deref(Value symbol) {
 		Value aSymbol = symbol;
 		AstNode child = null;
 		try {
 			Iterator<AstNode> it = getChildNodes().iterator();
 			while (it.hasNext() && aSymbol != null) {
 				child = it.next();
-				// TODO implement direct lookup without use of deref
-				aSymbol = derefSymbol(aSymbol, child.generateValue()
-						.evaluate());
-				if (aSymbol == null) {
-					// System.out.println("Warning: Lookup for " +
-					// child.getData() + " failed");
-				}
+				String ref = child.generateValue(getEnvironment()).evaluate();
+				aSymbol = derefSymbol(aSymbol, ref);
 			}
 		} catch (GenerateException e) {
 			System.out.println(e.getMessage());
-		}
-
-		return aSymbol;
-	}
-
-	/**
-	 * @param symbolTable
-	 * @param name
-	 * @return AbstractSymbol
-	 */
-	Value derefSymbol(Value symbol, String name) {
-		Value aSymbol = null;
-		if (symbol == null) {
-			aSymbol = lookupSymbol(name);
-		} else if (symbol instanceof MapValue) {
-			aSymbol = ((MapValue) symbol).getData().getSymbol(name);
-		} else if (symbol instanceof ListValue) {
-			if (isNumeric(name)) {
-				// TODO necessary?
-				// Get entry by index
-				List<Value> list = ((ListValue) symbol).getData();
-				int i = Integer.parseInt(roundResult(name));
-				if (list.size() > i) {
-					aSymbol = list.get(i);
-				}
-			}
 		}
 
 		return aSymbol;

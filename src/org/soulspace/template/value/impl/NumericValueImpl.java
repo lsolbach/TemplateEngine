@@ -102,6 +102,10 @@ public class NumericValueImpl implements Value, NumericValue {
   	}
   }
   
+  public String asString() {
+	  return String.valueOf(data);
+  }
+  
   /* (non-Javadoc)
 	 * @see org.soulspace.template.symbols.impl.INumericType#add(org.soulspace.template.symbols.impl.INumericType)
 	 */

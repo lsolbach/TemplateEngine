@@ -3,8 +3,9 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
-import org.soulspace.template.parser.ast.AstNodeType;
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.value.StringValue;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.NumericValueImpl;
@@ -26,9 +27,10 @@ public class StringEqualNodeImpl extends AbstractAstNode {
     setType(AstNodeType.STRING_EQUAL);
   }
 
-	public Value generateValue() {
-		StringValue s0 = asString(getChild(0).generateValue());
-		StringValue s1 = asString(getChild(1).generateValue());
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
+		StringValue s0 = asString(getChild(0).generateValue(environment));
+		StringValue s1 = asString(getChild(1).generateValue(environment));
 
 		return new NumericValueImpl((s0.equals(s1)) ? 1 : 0);			
 	}

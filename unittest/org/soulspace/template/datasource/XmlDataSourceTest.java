@@ -2,10 +2,10 @@ package org.soulspace.template.datasource;
 
 import java.io.File;
 
+import junit.framework.TestCase;
+
 import org.soulspace.template.datasource.impl.XmlDataSourceImpl;
 import org.soulspace.template.value.SymbolTable;
-
-import junit.framework.TestCase;
 
 public class XmlDataSourceTest extends TestCase {
 

@@ -7,7 +7,6 @@ import org.soulspace.template.method.AbstractMethod;
 import org.soulspace.template.value.ListValue;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.ListValueImpl;
-import org.soulspace.template.value.impl.NumericValueImpl;
 
 public class GetElementMethodImpl extends AbstractMethod {
 

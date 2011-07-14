@@ -1,7 +1,6 @@
 package org.soulspace.template.method.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;

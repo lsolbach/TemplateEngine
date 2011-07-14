@@ -1,11 +1,7 @@
 package org.soulspace.template.parser.ast.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.soulspace.template.exception.SyntaxException;
 import org.soulspace.template.parser.ast.MethodNode;
 
 

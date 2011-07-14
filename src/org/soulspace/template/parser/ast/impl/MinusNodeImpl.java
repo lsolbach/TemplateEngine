@@ -3,8 +3,9 @@
  */
 package org.soulspace.template.parser.ast.impl;
 
-import org.soulspace.template.parser.ast.AstNodeType;
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.value.NumericValue;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.NumericValueImpl;
@@ -26,18 +27,19 @@ public class MinusNodeImpl extends AbstractAstNode {
 		setType(AstNodeType.MINUS);
 	}
 
-	public Value generateValue() {
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
 		if (getChildNodes().size() == 1) {
 			// unary minus
-			NumericValue result = asNumeric(getChild(0).generateValue());
+			NumericValue result = asNumeric(getChild(0).generateValue(environment));
 			return result.mult(new NumericValueImpl(-1.0));
 		} else {
-			NumericValueImpl result = asNumeric(getChild(0).generateValue());
+			NumericValueImpl result = asNumeric(getChild(0).generateValue(environment));
 			int n = getChildNodes().size();
 			for (int i = 1; i < n; i++) {
 				// substract further values
 				result = result.substract(asNumeric(getChild(i)
-						.generateValue()));
+						.generateValue(environment)));
 			}
 			return result;
 		}

@@ -5,14 +5,15 @@ package org.soulspace.template.parser.ast.impl;
 
 import java.util.List;
 
+import org.soulspace.template.environment.Environment;
+import org.soulspace.template.environment.impl.EnvironmentImpl;
 import org.soulspace.template.exception.GenerateException;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.value.ListValue;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.ValueType;
 import org.soulspace.template.value.impl.StringValueImpl;
-import org.soulspace.template.value.impl.SymbolTableImpl;
 
 public class ForeachNodeImpl extends AbstractAstNode {
 
@@ -31,9 +32,10 @@ public class ForeachNodeImpl extends AbstractAstNode {
 		setType(AstNodeType.FOREACH);
 	}
 
-	public Value generateValue() {
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
 		StringBuilder sb = new StringBuilder(128);
-		setSymbolTable(new SymbolTableImpl());
+		Environment newEnv = new EnvironmentImpl(environment);
 
 		List<Value> list;
 
@@ -55,16 +57,18 @@ public class ForeachNodeImpl extends AbstractAstNode {
 		AstNode filterNode = null;
 		AstNode stmtNode = null;
 		if (getChildNodes().size() == 4) {
+			// with filter
 			filterNode = getChild(1);
 			loopNode = getChild(2);
 			stmtNode = getChild(3);
 		} else {
+			// without filter
 			loopNode = getChild(1);
 			stmtNode = getChild(2);
 		}
 
 		// lookup loop variable
-		Value symbol = getSymbol(loopNode);
+		Value symbol = loopNode.generateValue(getEnvironment());
 		if (symbol == null) {
 			// Missing Variable
 			throw new GenerateException("Variable " + loopNode.getData()
@@ -89,18 +93,18 @@ public class ForeachNodeImpl extends AbstractAstNode {
 			// Set iteration variables
 			lSymbol.setIndex(i);
 			lSymbol.setEntry(list.get(i));
-			getSymbolTable().addSymbol(elName, list.get(i));
+			newEnv.addValue(elName, list.get(i));
 
 			// execute block
 			if (filterNode != null) {
 				// filter present
 				Value exSymbol = null;
-				exSymbol = filterNode.generateValue();
+				exSymbol = filterNode.generateValue(newEnv);
 				if (exSymbol != null && exSymbol.isTrue()) {
-					sb.append(stmtNode.generateValue().evaluate());
+					sb.append(stmtNode.generateValue(newEnv).evaluate());
 				}
 			} else {
-				sb.append(stmtNode.generateValue().evaluate());
+				sb.append(stmtNode.generateValue(newEnv).evaluate());
 			}
 		}
 

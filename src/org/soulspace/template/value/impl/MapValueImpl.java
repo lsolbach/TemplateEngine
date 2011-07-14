@@ -56,4 +56,12 @@ public class MapValueImpl implements Value, MapValue {
 		return data.getSymbol(name);
 	}
 
+	public String asString() {
+		return String.valueOf(data.getSymbolCount());
+	}
+
+	public long asLong() {
+		return Long.valueOf(data.getSymbolCount());
+	}
+
 }

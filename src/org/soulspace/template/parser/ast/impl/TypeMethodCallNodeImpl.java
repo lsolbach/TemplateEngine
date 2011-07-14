@@ -3,11 +3,12 @@ package org.soulspace.template.parser.ast.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.soulspace.template.environment.Environment;
 import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.method.Method;
 import org.soulspace.template.method.impl.MethodRegistryImpl;
-import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.AstNode;
+import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.value.Value;
 
 public class TypeMethodCallNodeImpl extends AbstractAstNode {
@@ -18,9 +19,10 @@ public class TypeMethodCallNodeImpl extends AbstractAstNode {
 		setType(AstNodeType.TYPE_METHOD_CALL);
 	}
 
-	public Value generateValue() {
+	public Value generateValue(Environment environment) {
+		setEnvironment(environment);
 		AstNode typeNode = getChild(0);
-		Value symbol = getSymbol(typeNode);
+		Value symbol = typeNode.generateValue(getEnvironment());
 		if (symbol == null) {
 			throw new GenerateException("Type method call " + getData()
 					+ "(). Variable " + typeNode.getData()
@@ -28,6 +30,7 @@ public class TypeMethodCallNodeImpl extends AbstractAstNode {
 					+ ", line " + getLine());
 		}
 
+		// lookup type method in type method registry
 		Method method = MethodRegistryImpl.lookup(getData());
 		if (method == null) {
 			throw new GenerateException("Method " + getData()
@@ -40,7 +43,7 @@ public class TypeMethodCallNodeImpl extends AbstractAstNode {
 		if (getChildCount() == 2) {
 			AstNode argListNode = getChild(1);
 			for (int i = 0; i < argListNode.getChildCount(); i++) {
-				Value s = argListNode.getChild(i).generateValue();
+				Value s = argListNode.getChild(i).generateValue(environment);
 				args.add(s);
 			}
 		}
