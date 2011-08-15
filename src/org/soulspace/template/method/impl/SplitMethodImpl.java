@@ -32,7 +32,6 @@ public class SplitMethodImpl extends AbstractMethod {
 	@Override
 	protected Value doEvaluation(List<Value> arguments) {
 		ListValueImpl result = new ListValueImpl();
-		
 		String string = ((StringValue) arguments.get(0)).getData();
 		String pattern = ((StringValue) arguments.get(1)).getData();
 		String[] strings = string.split(pattern);

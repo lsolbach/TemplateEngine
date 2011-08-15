@@ -59,6 +59,8 @@ Version 1.0.0 (--.--.2011)
 * added methods to MapValue to make them more convenient
 * enhanced diagnostic output on GenerateExceptions
 * refactored names of interfaces and classes
+* refactored method call mechanism for template methods
+* refactored symbol tables in ast nodes to a node independend value environment
 
 TODO
 * validate string.utf8tolatin1() and string.latin1ToUtf8() methods

@@ -39,5 +39,4 @@ public class IndexOfMethodImpl extends AbstractMethod implements Method {
 		result = new NumericValueImpl(index);
 		return result;
 	}
-
 }

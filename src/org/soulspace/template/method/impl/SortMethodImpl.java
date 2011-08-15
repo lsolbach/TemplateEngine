@@ -78,5 +78,4 @@ public class SortMethodImpl extends AbstractMethod {
 			return value.compareTo(arg0.value);
 		}
 	}
-	
 }

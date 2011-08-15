@@ -50,5 +50,4 @@ public class CamelCaseToUnderScoreMethodImpl extends AbstractMethod
 			return arguments.get(0);			
 		}
 	}
-
 }
