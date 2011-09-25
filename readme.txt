@@ -49,7 +49,7 @@ Version 1.0.0 (--.--.2011)
 * added list.reverse() method
 * added string.replace() method
 * added string.endsWith() method
-* added list.clearList() and map.clearMap() methods
+* added list.clearList() map.remove() and map.clearMap() methods
 * added MethodRegistry.register() and DynamicMethodRegistryImpl.registerPackage()
 * made method registries configurable
 * refactored code for robustness, removed review issues
@@ -65,7 +65,6 @@ Version 1.0.0 (--.--.2011)
 
 TODO
 * validate string.utf8tolatin1() and string.latin1ToUtf8() methods
-
 
 Version 0.9.17 (21.09.2009)
 ---------------------------
