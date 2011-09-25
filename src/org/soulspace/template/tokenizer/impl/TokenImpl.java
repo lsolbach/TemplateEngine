@@ -105,7 +105,8 @@ public class TokenImpl implements Token {
   public boolean validateType(TokenType type) throws SyntaxException {
     if(!getType().equals(type)) {
     	StringBuilder sb = new StringBuilder();
-    	sb.append("Expecting token of type " + type + ", found token " + this);
+    	sb.append("Expecting token of type " + type + ", found token " + this
+    			+ "! Template " + this.template + ", line " + this.line);
     	throw new SyntaxException(sb.toString());
     }
     return true;

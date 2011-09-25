@@ -30,6 +30,10 @@ public class SymbolTableImpl implements SymbolTable {
 		symbolTable = new HashMap<String, Value>();
 	}
 
+	public void removeSymbol(String name) {
+		symbolTable.remove(name);
+	}
+
 	/**
 	 * Adds a new string symbol to the symbol table
 	 * 
@@ -129,4 +133,5 @@ public class SymbolTableImpl implements SymbolTable {
 	public String toString() {
 		return symbolTable.toString();
 	}
+
 }

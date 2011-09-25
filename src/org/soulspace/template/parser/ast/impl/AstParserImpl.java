@@ -588,9 +588,14 @@ public class AstParserImpl {
 			child = node;
 		}
 
+		node = null;
 		// parse type method calls
 		while (list.checkType(TokenType.TYPE_METHOD_CALL)) {
+			// FIXME check if node is set to implement cascading type method calls
 			token = list.getNextToken();
+			if(node != null) {
+				child = node;
+			}
 			node = nodeFactory.create(AstNodeType.TYPE_METHOD_CALL, token,
 					parent);
 			node.setData(token.getData());

@@ -332,9 +332,9 @@ public class TokenizerImpl implements Tokenizer {
 			tokenList.addToken(TokenType.IDENTIFIER, result.group(0));
 		} else {
 			// Unknown TokenImpl
-			UnknownTokenException ex = new UnknownTokenException(
-					"Unknown TokenImpl '" + code + "'!");
-			throw ex;
+			throw new UnknownTokenException(
+					"Unknown TokenImpl '" + code + "'! Template: "
+					+ tokenList.getTemplate() + ", line " + tokenList.getCurrentLine());
 		}
 	}
 }

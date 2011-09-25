@@ -1,7 +1,7 @@
 Todo's TemplateEngine:
 
 Version 1.0
-* Full closure support
+* Full closure support (Done)
 * Document abstract and rationale
 * Document method values and functional programming
 * English documentation (WIP Michael)
@@ -9,4 +9,5 @@ Version 1.0
 * License reference in source files
 
 Version 1.1
-range operator '..', cons operator '&' or '->'?
+* range operator '..', cons operator '&' or '->'?
+* super method check on parsing

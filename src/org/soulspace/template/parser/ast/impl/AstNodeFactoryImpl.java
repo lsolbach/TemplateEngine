@@ -43,7 +43,9 @@ public class AstNodeFactoryImpl implements AstNodeFactory {
 		} else if (type.equals(AstNodeType.TYPE_METHOD_CALL)) {
 			node = new TypeMethodCallNodeImpl();
 		} else {
-			throw new SyntaxException("Unknown node type: " + type.getName());
+			throw new SyntaxException("Unknown node type: " + type.getName()
+					+ "! Template " + token.getTemplate()
+					+ ", Line " + token.getLine());
 		}
 		node.setParent(parent);
 		if (token != null) {
@@ -123,7 +125,9 @@ public class AstNodeFactoryImpl implements AstNodeFactory {
 			node = new StringConstNodeImpl();
 			node.setData(token.getData());
 		} else {
-			throw new SyntaxException("Unknown token type: " + token.getType());
+			throw new SyntaxException("Unknown token type: " + token.getType()
+					+ "! Template " + token.getTemplate()
+					+ ", Line " + token.getLine());
 		}
 		node.setLine(token.getLine());
 		node.setTemplate(token.getTemplate());

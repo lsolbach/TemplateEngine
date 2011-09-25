@@ -35,6 +35,7 @@ public class StaticMethodRegistryImpl implements MethodRegistry {
 		methodClassList.add("org.soulspace.template.method.impl.ListClearMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.ReverseListMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.MapPutMethodImpl");
+		methodClassList.add("org.soulspace.template.method.impl.MapRemoveMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.MapClearMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.KeyListMethodImpl");
 

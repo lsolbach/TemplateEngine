@@ -105,4 +105,6 @@ public interface SymbolTable {
 	 */
 	public Set<String> getKeySet();
 
+	public void removeSymbol(String name);
+
 }

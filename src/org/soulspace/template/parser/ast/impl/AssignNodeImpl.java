@@ -36,6 +36,7 @@ public class AssignNodeImpl extends AbstractAstNode {
 	}
 
 	public Value generateValue(Environment environment) {
+		// FIXME split in smaller methods, this gets to complex
 		setEnvironment(environment);
 		AstNode child = null;
 		Value symbol = null;
@@ -56,71 +57,75 @@ public class AssignNodeImpl extends AbstractAstNode {
 		}
 		try {
 			if ((child = getChild(1)) != null) {
-				if (symbol.getType().equals(ValueType.STRING)) {
-					// assign to string symbol
-					Value rSymbol = child.generateValue(getEnvironment());
-					((StringValue) symbol).setData(((StringValue) rSymbol)
-							.getData());
-				} else if (symbol.getType().equals(ValueType.NUMERIC)) {
-					// assign to numeric symbol
-					Value rSymbol = child.generateValue(getEnvironment());
-					((NumericValue) symbol).setData(((NumericValue) rSymbol)
-							.getData());
-				} else if (symbol.getType().equals(ValueType.LIST)) {
-					// assign to list symbol
-					Value aSymbol = child.generateValue(getEnvironment());
-					if (!(aSymbol instanceof ListValue)) {
-						throw new GenerateException("The value of symbol "+ child.getData()
-								+ " is not of type list but of type "
-								+ aSymbol.getType() + "! Template "
-								+ getTemplate() + ", line " + getLine());
-					}
-					((ListValue) symbol).setData(((ListValue) aSymbol)
-							.getData());
-				} else if (symbol.getType().equals(ValueType.MAP)) {
-					// assign to map symbol
-					Value aSymbol = child.generateValue(getEnvironment());
-					if (!(aSymbol instanceof MapValue)) {
-						throw new GenerateException("The value of symbol "+ child.getData()
-								+ " is not of type map but of type "
-								+ aSymbol.getType() + "! Template "
-								+ getTemplate() + ", line " + getLine());
-					}
-					((MapValue) symbol).setData(((MapValue) aSymbol).getData());
-				} else if (symbol.getType().equals(ValueType.METHOD)) {
-					if (child.getType().equals(AstNodeType.METHOD)) {
-						MethodNode mNode = (MethodNode) child;
-						MethodValue lValue = (MethodValue) symbol;
-						// TODO check if adding assigned methods to the global
-						// method registry is desirable
-						if(!mNode.getData().equals("fn")) {
-							lValue.setData(mNode.getData());
+				if(child.getType().equals(AstNodeType.METHOD)) {
+					MethodNode mNode = (MethodNode) child;
+					MethodValue lValue = (MethodValue) symbol;
+					// TODO check if adding assigned methods to the global
+					// method registry is desirable
+					if(!mNode.getData().equals("fn")) {
+						lValue.setData(mNode.getData());
 //							lValue.setMethodNode(mNode);
-							lValue.setEnvironment(lValue.getEnvironment());
-							mNode.addMethodNode(mNode);
+						lValue.setEnvironment(lValue.getEnvironment());
+						mNode.addMethodNode(mNode);
 //							System.out.println("Named method assignment");
 //							System.out.println(getEnvironment().printEnvironment());
-						} else {
-							lValue.setMethodNode(mNode);
-							lValue.setEnvironment(lValue.getEnvironment());
+					} else {
+						lValue.setMethodNode(mNode);
+						lValue.setEnvironment(lValue.getEnvironment());
 //							System.out.println("Anonymous method assignment");
 //							System.out.println(getEnvironment().printEnvironment());
+					}					
+				} else {
+					Value rValue = child.generateValue(getEnvironment());
+					if (rValue == null) {
+						throw new GenerateException("The value of symbol "+ child.getData()
+								+ " is null! Template "
+								+ getTemplate() + ", line " + getLine());
+					}
+					if (symbol.getType().equals(ValueType.STRING)) {
+						// assign to string symbol
+						((StringValue) symbol).setData(((StringValue) rValue)
+								.getData());
+					} else if (symbol.getType().equals(ValueType.NUMERIC)) {
+						// assign to numeric symbol
+						((NumericValue) symbol).setData(((NumericValue) rValue)
+								.getData());
+					} else if (symbol.getType().equals(ValueType.LIST)) {
+						// assign to list symbol
+						if (!(rValue instanceof ListValue)) {
+							throw new GenerateException("The value of symbol "+ child.getData()
+									+ " is not of type list but of type "
+									+ rValue.getType() + "! Template "
+									+ getTemplate() + ", line " + getLine());
 						}
-					} else if(child.getType().equals(AstNodeType.METHOD_CALL)) {
-						MethodValue lValue = (MethodValue) symbol;
-						MethodValue rValue = (MethodValue) child.generateValue(getEnvironment());
-						// copy the node and the enviroment to the new value
-						lValue.setMethodNode(rValue.getMethodNode());
-						lValue.setEnvironment(rValue.getEnvironment());
-					} else if (child.getType().equals(AstNodeType.IDENTIFIER)) {
-						IdentifierNodeImpl iNode = (IdentifierNodeImpl) child;
-						((MethodValueImpl) symbol).setData(iNode.getData());
-					} else {
-						throw new GenerateException(
-								"Symbol not of type method: Symbol " + child.getData()
-										+ " Type " + child.getType()
-										+ "! Template " + getTemplate()
-										+ ", line " + getLine());
+						((ListValue) symbol).setData(((ListValue) rValue)
+								.getData());
+					} else if (symbol.getType().equals(ValueType.MAP)) {
+						// assign to map symbol
+						if (!(rValue instanceof MapValue)) {
+							throw new GenerateException("The value of symbol "+ child.getData()
+									+ " is not of type map but of type "
+									+ rValue.getType() + "! Template "
+									+ getTemplate() + ", line " + getLine());
+						}
+						((MapValue) symbol).setData(((MapValue) rValue).getData());
+					} else if (symbol.getType().equals(ValueType.METHOD)) {
+						if(child.getType().equals(AstNodeType.METHOD_CALL)) {
+							MethodValue lValue = (MethodValue) symbol;
+							MethodValue mValue = (MethodValue) rValue;
+							// copy the node and the enviroment to the new value
+							lValue.setMethodNode(mValue.getMethodNode());
+							lValue.setEnvironment(mValue.getEnvironment());
+						} else if (child.getType().equals(AstNodeType.IDENTIFIER)) {
+							IdentifierNodeImpl iNode = (IdentifierNodeImpl) child;
+							((MethodValueImpl) symbol).setData(iNode.getData());
+						} else {
+							throw new GenerateException(
+									"Symbol not of type method: Symbol " + child.getData()
+											+ " Type " + child.getType()
+											+ "! Template " + getTemplate()
+											+ ", line " + getLine());
+						}
 					}
 				}
 			} else {

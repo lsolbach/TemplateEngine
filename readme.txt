@@ -23,7 +23,7 @@ Features:
 	* methods as return value (function builders)
 * safe by design, no modification of input java objects possible
 	(if getters on objects have no side effects, which is bad design anyway)
-* extensible library of type methods (e.g. a.toLower() on strings)
+* extensible library of type methods (e.g. s.split(';') or s.toLower() on strings)
 * enables building of complex data structures
 * turing complete language
 
@@ -55,9 +55,10 @@ Version 1.0.0 (--.--.2011)
 * refactored code for robustness, removed review issues
 * fixed tokenizer bug for identifiers starting with keywords
 * fixed tokenizer for better matching of a xml declaration
+* fixed cascading of type methods
 * suppressed string evaluation of numerics, lists and maps when not in string context
 * added methods to MapValue to make them more convenient
-* enhanced diagnostic output on GenerateExceptions
+* enhanced diagnostic output on Exceptions
 * refactored names of interfaces and classes
 * refactored method call mechanism for template methods
 * refactored symbol tables in ast nodes to a node independend value environment

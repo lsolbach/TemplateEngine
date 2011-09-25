@@ -45,7 +45,7 @@ public class EnvironmentImpl implements Environment {
 		Value result = symbolTable.getSymbol(name);
 		if(result != null) {
 			return result;
-		} else if(parent != null) {
+		} else if(parent != null && parent != this && parent.getSymbolTable() != symbolTable) {
 			return parent.lookupValue(name);
 		}
 		return null;

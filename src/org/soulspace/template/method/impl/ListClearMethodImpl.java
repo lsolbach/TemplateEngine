@@ -31,7 +31,7 @@ public class ListClearMethodImpl extends AbstractMethod {
 	protected Value doEvaluation(List<Value> arguments) {
 		ListValueImpl list = (ListValueImpl) arguments.get(0);
 		if(list.size() > 0) {
-			list = new ListValueImpl();
+			list.getData().clear();
 		}
 		return list;
 	}
