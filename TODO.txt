@@ -4,7 +4,7 @@ Version 1.0
 * Full closure support (Done)
 * Document abstract and rationale
 * Document method values and functional programming
-* English documentation (WIP Michael)
+* English documentation (Michael)
 * Source code publication
 * License reference in source files
 

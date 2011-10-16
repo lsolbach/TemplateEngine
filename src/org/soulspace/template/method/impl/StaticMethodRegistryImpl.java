@@ -26,6 +26,7 @@ public class StaticMethodRegistryImpl implements MethodRegistry {
 		methodClassList.add("org.soulspace.template.method.impl.CamelCaseToUnderScoreMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.Utf8ToIsoLatinMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.IsoLatinToUtf8MethodImpl");
+		methodClassList.add("org.soulspace.template.method.impl.UuidMethodImpl");
 
 		methodClassList.add("org.soulspace.template.method.impl.SizeMethodImpl");
 		methodClassList.add("org.soulspace.template.method.impl.HasNextElementMethodImpl");
