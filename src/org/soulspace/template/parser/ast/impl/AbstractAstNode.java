@@ -414,7 +414,7 @@ public abstract class AbstractAstNode implements AstNode {
 			}
 		} else {
 			throw new SyntaxException(
-					"Error while trying to add a method node: " + node);
+					"Error while trying to add a method node. The node is null!");
 		}
 	}
 
