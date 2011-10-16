@@ -8,7 +8,7 @@
 		</package>
 	</dependency>
 	<dependency type="runtime">
-		<package name="TemplateEngine" version="1.0.0rc4" type="project">
+		<package name="TemplateEngine" version="1.0.0rc7" type="project">
 			<module name="TemplateEngine"/>
 		</package>
 		<package name="JavaUtilLibrary" version="0.2.0" type="project">
