@@ -38,6 +38,8 @@ public class MethodCallNodeImpl extends AbstractAstNode {
 			throw new GenerateException(
 					"Error in method call to "
 							+ getMethodName() + "()! Template " + getTemplate() + ", line " + getLine(), e);
+		} catch (GenerateException ge) {
+			throw new GenerateException(ge.getMessage() + "\nCalled from " + getMethodName() + "()! Template " + getTemplate() + ", line " + getLine(), ge.getCause());
 		}
 	}
 
@@ -76,12 +78,10 @@ public class MethodCallNodeImpl extends AbstractAstNode {
 			} else {
 				methodNode = getMethodNode(this, methodValue.getData(), valueList);
 				environment = getEnvironment();
-//				System.out.println("method " + getMethodName() + " by method lookup with method value");
 			}
 		} else {
 			methodNode = getMethodNode(this, getMethodName(), valueList);
 			environment = getEnvironment();
-//			System.out.println("method " + getMethodName() + " by method name");
 		}
 
 		if(methodNode != null) {

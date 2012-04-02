@@ -75,7 +75,7 @@ public class PlusNodeImpl extends AbstractAstNode {
 			}
 			return map;
 		} else {
-			throw new GenerateException("Unknown type! Template " + getTemplate() + ", line " + getLine());
+			throw new GenerateException("Error in plus/concatenation, unknown type of operand! Template " + getTemplate() + ", line " + getLine());
 		}
 	}
 }

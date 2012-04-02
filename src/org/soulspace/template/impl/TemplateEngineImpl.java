@@ -122,31 +122,6 @@ public class TemplateEngineImpl implements TemplateEngine {
 	}
 
 	/**
-	 * Lookup and the template files from the given search dirs and parse them.
-	 * @param searchDirs
-	 * @param templateFiles
-	 * @throws UnknownTokenException
-	 * @throws SyntaxException
-	 * @throws IOException
-	 */
-	public void loadTemplates(File[] searchDirs, File[] templateFiles)
-			throws UnknownTokenException, SyntaxException, IOException {
-
-		TokenList tokenList = tokenizer.createTokenList();
-		// validate search dirs
-		for(File searchDir : searchDirs) {
-			if(!searchDir.exists() || !searchDir.isDirectory()) {
-				throw new IOException("Search directory " + searchDir.getName() + " is invalid!");
-			}
-		}
-		
-		for(File templateFile : templateFiles) {
-			
-		}		
-	}
-	
-	
-	/**
 	 * Generate output with the parsed template
 	 * 
 	 * @return generated output
@@ -201,6 +176,5 @@ public class TemplateEngineImpl implements TemplateEngine {
 		root = parser.parse(tokenList);
 		return true;
 	}
-	
 
 }

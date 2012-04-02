@@ -36,7 +36,7 @@ public class CamelCaseToUnderScoreMethodImpl extends AbstractMethod
 			StringBuilder sb = new StringBuilder();
 			for(int i = 0; i < camelCase.length(); i++) {
 				String ch = camelCase.substring(i, i + 1);
-				if(ch.equals(ch.toUpperCase())) {
+				if(Character.isLetter(ch.charAt(0)) && ch.equals(ch.toUpperCase())) {
 					if(i != 0) {
 						sb.append("_");
 					}

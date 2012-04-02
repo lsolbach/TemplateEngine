@@ -57,6 +57,7 @@ Version 1.0.0 (--.--.2011)
 * fixed tokenizer bug for identifiers starting with keywords
 * fixed tokenizer for better matching of a xml declaration
 * fixed cascading of type methods
+* fixed camelCaseToUnderScore() not to duplicate underscores
 * suppressed string evaluation of numerics, lists and maps when not in string context
 * added methods to MapValue to make them more convenient
 * enhanced diagnostic output on Exceptions

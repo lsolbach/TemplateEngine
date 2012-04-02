@@ -468,6 +468,12 @@ public class AstGeneratorTest extends TestCase {
 			result = g.generate(env, root);
 			assertEquals("Result", "PhoneNumber phone_number;", result);
 
+			tl = t.tokenize("<?class?> <?class.camelCaseToUnderScore().camelCaseToUnderScore()?>;");
+			root = p.parse(tl);
+			env = new EnvironmentImpl(st);
+			result = g.generate(env, root);
+			assertEquals("Result", "PhoneNumber phone_number;", result);
+
 			tl = t.tokenize("<?list parts = path.split('/') parts.size()?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
