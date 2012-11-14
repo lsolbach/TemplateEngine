@@ -51,22 +51,20 @@ Version 1.0.0 (--.--.2011)
 * added string.replace() method
 * added string.endsWith() method
 * added list.clearList() map.remove() and map.clearMap() methods
+* added methods to MapValue to make them more convenient
 * added MethodRegistry.register() and DynamicMethodRegistryImpl.registerPackage()
 * made method registries configurable
-* refactored code for robustness, removed review issues
 * fixed tokenizer bug for identifiers starting with keywords
 * fixed tokenizer for better matching of a xml declaration
 * fixed cascading of type methods
 * fixed camelCaseToUnderScore() not to duplicate underscores
 * suppressed string evaluation of numerics, lists and maps when not in string context
-* added methods to MapValue to make them more convenient
 * enhanced diagnostic output on Exceptions
+* refactored code for robustness, removed review issues
 * refactored names of interfaces and classes
 * refactored method call mechanism for template methods
 * refactored symbol tables in ast nodes to a node independend value environment
 
-TODO
-* validate string.utf8tolatin1() and string.latin1ToUtf8() methods
 
 Version 0.9.17 (21.09.2009)
 ---------------------------
@@ -77,6 +75,7 @@ Version 0.9.17 (21.09.2009)
 * fixed newline handling
 * refactored AstParserImpl
 
+
 Version 0.9.15 (01.09.2008)
 ---------------------------
 
@@ -84,6 +83,7 @@ Version 0.9.15 (01.09.2008)
 * method overloading, foreach with filters
 * better error reporting
 * new type methods map.keyList(), list.add(), list.hasNext(), map.put()
+
 
 Versions before (since 2002)
 ----------------------------
