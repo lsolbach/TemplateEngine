@@ -31,7 +31,7 @@ public class ReverseListMethodImpl extends AbstractMethod {
 		List<Value> resultList = new ArrayList<Value>();
 		ListValueImpl list = (ListValueImpl) arguments.get(0);
 		List<Value> inputList = list.getData();
-		for(int i = inputList.size() - 1; i >= 0 ; i++) {
+		for(int i = inputList.size() - 1; i >= 0 ; i--) {
 			resultList.add(inputList.get(i));
 		}
 		return new ListValueImpl(resultList);
