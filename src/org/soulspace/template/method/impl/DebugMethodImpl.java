@@ -41,7 +41,7 @@ public class DebugMethodImpl extends AbstractMethod {
 		Value value = arguments.get(0);
 		if(arguments.size() > 1) {
 			StringValue messageValue = (StringValue) arguments.get(1);
-			System.err.println(messageValue.asString() + value.asString());
+			System.err.println(messageValue.asString() + " " + value.asString());
 		} else {
 			System.err.println(value.asString());
 		}
