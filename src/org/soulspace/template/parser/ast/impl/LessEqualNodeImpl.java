@@ -14,17 +14,17 @@ public class LessEqualNodeImpl extends AbstractAstNode {
   /**
    * 
    */
-  public LessEqualNodeImpl() {
-    this(null);
-  }
+	public LessEqualNodeImpl() {
+		this(null);
+	}
 
-  /**
-   * @param parent
-   */
-  public LessEqualNodeImpl(AstNode parent) {
-    super(parent);
-    setType(AstNodeType.LESS_EQUAL);
-  }
+	/**
+	* @param parent
+	*/
+	public LessEqualNodeImpl(AstNode parent) {
+		super(parent);
+		setType(AstNodeType.LESS_EQUAL);
+	}
 
 	public Value generateValue(Environment environment) {
 		setEnvironment(environment);
@@ -32,6 +32,5 @@ public class LessEqualNodeImpl extends AbstractAstNode {
 		NumericValue op2 = asNumeric(getChild(1).generateValue(environment));
 		return op1.lessEqual(op2);
 	}
-
-
+	
 }
