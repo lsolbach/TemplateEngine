@@ -1,11 +1,11 @@
 Todo's TemplateEngine:
 
 Version 1.0
+* Closure support (Done)
 * Fix string.utf8tolatin1() and string.latin1ToUtf8() methods
-* Full closure support (Done?)
 * Document abstract and rationale
 * Document method values and functional programming
-* English documentation (Michael?)
+* English documentation (Michael)
 * Source code publication
 * License reference in source files
 

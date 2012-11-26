@@ -2,11 +2,10 @@ Template Engine
 ===============
 
 The project TemplateEngine consists of a presentation language and an
-engine for processing the language and transforming and emmitting texts
+engine for processing the language and transforming and emitting texts
 
 Features:
 ---------
-
 * simple things are easy to accomplish, really complex things are possible
 * syntax is easy to learn
 * data binding for java beans (use bean objects as input) and xml files
@@ -31,17 +30,20 @@ Rationale:
 ----------
 
 
-
 Runtime Requirements:
 ---------------------
-
 Jakarta ORO >= 2.0.8 (could be refactored to use standard Java RegEx,
 then there would be no external dependencies anymore. Volunteers?)
 
+License
+-------
+Eclipse Public License 1.0 (http://www.eclipse.org/legal/epl-v10.html)
+
+History
+-------
 
 Version 1.0.0 (--.--.2011)
 --------------------------
-
 * added XmlDataSource for generic XML data binding
 * added method datatype as first class citizen to enable functional programming
 * added closures
@@ -65,27 +67,21 @@ Version 1.0.0 (--.--.2011)
 * refactored method call mechanism for template methods
 * refactored symbol tables in ast nodes to a node independend value environment
 
-
 Version 0.9.17 (21.09.2009)
 ---------------------------
-
 * aded methods string.matches(), string.substring(), string.indexOf() and string.size()
 * fixed string.firstUpper() and string.firstLower() for empty strings
 * added TemplateEngine.generate() without parameters
 * fixed newline handling
 * refactored AstParserImpl
 
-
 Version 0.9.15 (01.09.2008)
 ---------------------------
-
 * package refactorings, removed cycles and enhanced the structure of the dependencies
 * method overloading, foreach with filters
 * better error reporting
 * new type methods map.keyList(), list.add(), list.hasNext(), map.put()
 
-
 Versions before (since 2002)
 ----------------------------
-
 * everything else :-)
