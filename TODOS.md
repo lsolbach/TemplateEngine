@@ -1,7 +1,7 @@
 TODO's
 ======
 
-* Simple ant build file
+* Add simple ant build file
 * Fix string.utf8tolatin1() and string.latin1ToUtf8() methods
 * Document abstract and rationale
 * Document method values and functional programming

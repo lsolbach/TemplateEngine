@@ -43,6 +43,8 @@ History
 
 Version 1.0.0 (--.--.2012)
 --------------------------
+* intitial import to github
+* switched to git
 * added XmlDataSource for generic XML data binding
 * added method datatype as first class citizen to enable functional programming
 * added closures
@@ -64,7 +66,7 @@ Version 1.0.0 (--.--.2012)
 * refactored code for robustness, removed review issues
 * refactored names of interfaces and classes
 * refactored method call mechanism for template methods
-* refactored symbol tables in ast nodes to a node independend value environment
+* refactored symbol tables in AST nodes to a node independent value environment
 
 Version 0.9.17 (21.09.2009)
 ---------------------------
