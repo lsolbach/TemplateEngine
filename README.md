@@ -1,8 +1,10 @@
 Template Engine
 ===============
 
-The project TemplateEngine consists of a presentation language and an
-engine for processing the language and transforming and emitting texts
+The soulspace.org TemplateEngine is as you might have guessed a
+template engine written in Java.
+It consists of a presentation language and an engine for processing
+the language and transforming and emitting texts.
 
 Features:
 ---------
