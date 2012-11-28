@@ -14,10 +14,16 @@ License
 History
 -------
 
-Version 1.0.1 (--.--.20--)
+Version 1.0.2 (--.--.201-)
 --------------------------
-* added coloring for code comments
+* initial import to github
+* switched to git
 
-Version 1.0.0 (--.--.20--)
---------------------------
+Version 1.0.1 (<= 01.10.2011)
+-----------------------------
+* added coloring for code comments
+* initial import into cvs
+
+Version 1.0.0 (sometime before)
+-------------------------------
 * initial release
