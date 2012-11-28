@@ -45,7 +45,7 @@ History
 
 Version 1.0.0 (--.--.2012)
 --------------------------
-* intitial import to github
+* initial import to github
 * switched to git
 * added XmlDataSource for generic XML data binding
 * added method datatype as first class citizen to enable functional programming
