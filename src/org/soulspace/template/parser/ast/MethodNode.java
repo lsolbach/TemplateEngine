@@ -3,7 +3,6 @@ package org.soulspace.template.parser.ast;
 import java.util.List;
 
 import org.soulspace.template.environment.Environment;
-import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.value.SymbolTable;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.ValueType;

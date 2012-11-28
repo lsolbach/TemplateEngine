@@ -27,7 +27,6 @@ public class XmlDataSourceImpl extends DefaultHandler implements DataSource {
 	private SymbolTable symbolTable = new SymbolTableImpl();
 	private Stack<MapValue> elementStack;
 	MapValue current = null;
-	private boolean parsed = false;
 	ValueFactoryImpl valueFactory = new ValueFactoryImpl();	
 	
 	private XmlDataSourceImpl() throws SAXException {
@@ -79,7 +78,6 @@ public class XmlDataSourceImpl extends DefaultHandler implements DataSource {
 		for(int i = 0; i < attrCount; i++) {
 			String key = attrs.getLocalName(i);
 			String value = attrs.getValue(key);
-			String type = attrs.getType(key);
 			attrMap.addValue(key, new StringValueImpl(value));
 		}
 		element.addValue("attrs", attrMap);

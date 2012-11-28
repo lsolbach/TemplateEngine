@@ -16,18 +16,19 @@ import java.util.Map;
 import org.soulspace.template.datasource.DataSource;
 import org.soulspace.template.value.ListValue;
 import org.soulspace.template.value.SymbolTable;
+import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.SymbolTableImpl;
 
 /**
- * @author soulman
- * 
- *         Transforms a bean (hierachy) to a SymbolTableImpl.<br>
- *         Calls the getter methods for all properties. The following mapping is
- *         used:<br>
- *         Object (except String) to MapSymbol<br>
- *         Simple types (incl. String) to Scalar Symbol<br>
- *         Lists to ListSymbol<br>
- *         Object Array to ListSymbol
+ *  Transforms a bean (hierachy) to a SymbolTableImpl.<br>
+ *  Calls the getter methods for all properties. The following mapping is
+ *  used:<br>
+ *  Object (except String) to MapSymbol<br>
+ *  Simple types (incl. String) to Scalar Symbol<br>
+ *  Lists to ListSymbol<br>
+ *  Object Array to ListSymbol
+ *  
+ * 	@author soulman
  */
 public class BeanDataSourceImpl implements DataSource {
 
@@ -56,6 +57,11 @@ public class BeanDataSourceImpl implements DataSource {
 		this.cache = cache;
 	}
 	
+	/**
+	 * Add an object to this data source under the given key. 
+	 * @param name
+	 * @param bean
+	 */
 	public void add(String name, Object bean) {
 		if (bean instanceof String) {
 			symbolTable.addStringValue(name, (String) bean);
@@ -80,8 +86,7 @@ public class BeanDataSourceImpl implements DataSource {
 	}
 
 	/**
-	 * Parse an Object into the SymbolTableImpl
-	 * 
+	 * Parse an object into the symbol table of this bean data source.
 	 * @param symbolTable
 	 * @param object
 	 * @return
@@ -99,10 +104,12 @@ public class BeanDataSourceImpl implements DataSource {
 			Class<? extends Object> myClass = object.getClass();
 			Method methods[] = myClass.getMethods();
 
+			// iterate over the methods of the class of the given object
 			for (int i = 0; i < methods.length; i++) {
 				Method method = methods[i];
 				String methodName = method.getName();
 
+				// we are only interested in public instance getters
 				if (method.getParameterTypes().length > 0
 						|| !Modifier.isPublic(method.getModifiers())
 						|| Modifier.isStatic(method.getModifiers())) {
@@ -124,12 +131,13 @@ public class BeanDataSourceImpl implements DataSource {
 
 				Object result = null;
 				try {
+					// call the getter
 					result = method.invoke(object, (Object[]) null);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 				if(result != null) {
-					// Add Symbol to SymbolTableImpl
+					// add the symbol to the symbol table
 					insert(symbolTable, symbolName, result);
 				}
 			}
@@ -148,10 +156,12 @@ public class BeanDataSourceImpl implements DataSource {
 		Class<? extends Object> myClass = object.getClass();
 		Method methods[] = myClass.getMethods();
 
+		// iterate over the methods of the class of the given object
 		for (int i = 0; i < methods.length; i++) {
 			Method method = methods[i];
 			String methodName = method.getName();
 
+			// we are only interested in public instance getters
 			if (method.getParameterTypes().length > 0
 					|| !Modifier.isPublic(method.getModifiers())
 					|| Modifier.isStatic(method.getModifiers())) {
@@ -169,6 +179,7 @@ public class BeanDataSourceImpl implements DataSource {
 
 			Object result = null;
 			try {
+				// call the getter
 				result = method.invoke(object, (Object[]) null);
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -182,9 +193,16 @@ public class BeanDataSourceImpl implements DataSource {
 		return true;
 	}
 
+	/**
+	 * Insert the result object to the symbol table under the given key.
+	 * @param symbolTable The symbol table to add to.
+	 * @param symbolName The key under which the object is added.
+	 * @param result The object to add.
+	 */
+	@SuppressWarnings("rawtypes")
 	public void insert(SymbolTable symbolTable, String symbolName,
 			Object result) {
-		// Add Symbol to SymbolTableImpl
+		// add the symbol to the symbol table
 		if(result == null) {
 			return;
 		} else if (result instanceof String) {
@@ -218,7 +236,7 @@ public class BeanDataSourceImpl implements DataSource {
 			symbolTable.addMapValue(symbolName, st);
 		} else if (result instanceof Collection) {
 			// List
-			List list = new ArrayList();
+			List<Value> list = new ArrayList<Value>();
 			symbolTable.addListValue(symbolName, list);
 			ListValue lSymbol = (ListValue) symbolTable.getSymbol(symbolName);
 			Iterator it = ((Collection) result).iterator();
@@ -229,7 +247,7 @@ public class BeanDataSourceImpl implements DataSource {
 			// Object Array
 			// TODO add handling for arrays of base types
 			Object[] objects = (Object[]) result;
-			List list = new ArrayList();
+			List<Value> list = new ArrayList<Value>();
 			symbolTable.addListValue(symbolName, list);
 			ListValue lSymbol = (ListValue) symbolTable.getSymbol(symbolName);
 			for (int i = 0; i < objects.length; i++) {
@@ -247,6 +265,7 @@ public class BeanDataSourceImpl implements DataSource {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void insert(ListValue listSymbol, Object result) {
 		if(result == null) {
 			return;
@@ -270,7 +289,7 @@ public class BeanDataSourceImpl implements DataSource {
 			// Void
 		} else if (Collection.class.isAssignableFrom(result.getClass())) {
 			// List
-			List list = new ArrayList();
+			List<Value> list = new ArrayList<Value>();
 			listSymbol.addNewListValue(list);
 			// ListSymbol lSymbol = (ListSymbol)
 			// listSymbol.getSymbol(symbolName);
@@ -287,7 +306,7 @@ public class BeanDataSourceImpl implements DataSource {
 			// Object Array
 			// TODO add handling for arrays of base types
 			Object[] objects = (Object[]) result;
-			List list = new ArrayList();
+			List<Value> list = new ArrayList<Value>();
 			listSymbol.addNewListValue(list);
 			// ListSymbol lSymbol = (ListSymbol)
 			// symbolTable.getSymbol(symbolName);

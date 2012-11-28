@@ -11,8 +11,6 @@ import org.soulspace.template.exception.GenerateException;
 import org.soulspace.template.parser.ast.AstNode;
 import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.MethodNode;
-import org.soulspace.template.value.ListValue;
-import org.soulspace.template.value.MapValue;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.MethodValueImpl;
 

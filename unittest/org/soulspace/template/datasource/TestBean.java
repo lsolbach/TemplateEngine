@@ -145,7 +145,7 @@ public class TestBean {
 	/**
 	 * @return
 	 */
-	public List getTestList() {
+	public List<Object> getTestList() {
 		return testList;
 	}
 
@@ -215,7 +215,7 @@ public class TestBean {
 	/**
 	 * @param list
 	 */
-	public void setTestList(List list) {
+	public void setTestList(List<Object> list) {
 		testList = list;
 	}
 

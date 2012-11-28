@@ -259,10 +259,7 @@ public class AstGeneratorTest extends TestCase {
 	}
 
 	public void testCallToNonexistingSuperMethod() {
-		String result = "";
-
-		tl = t
-				.tokenize("<?"
+		tl = t.tokenize("<?"
 						+ "printMessages('hallo', 'welt') "
 						+ ""
 						+ "string printMessages(string message1, string message2) { "
@@ -275,7 +272,7 @@ public class AstGeneratorTest extends TestCase {
 		root = p.parse(tl);
 		try {
 			env = new EnvironmentImpl(st);
-			result = g.generate(env, root);
+			g.generate(env, root);
 			fail("call to nonexisting super method");
 		} catch (GenerateException e) {
 			// expected

@@ -188,8 +188,6 @@ public class AstParserImpl {
 
 	private AstNode parseMethodAssignmentDeclaration(TokenList list, AstNode parent) {
 		Token token = list.getToken();
-		AstNode node = null;
-		AstNode child = null;
 		String type = token.getData();
 
 		list.skipToken();

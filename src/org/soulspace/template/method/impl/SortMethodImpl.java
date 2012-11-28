@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.soulspace.template.method.AbstractMethod;
-import org.soulspace.template.parser.ast.MethodNode;
-import org.soulspace.template.parser.ast.impl.ArgListNodeImpl;
 import org.soulspace.template.value.ListValue;
 import org.soulspace.template.value.MethodValue;
 import org.soulspace.template.value.Value;
@@ -41,11 +39,6 @@ public class SortMethodImpl extends AbstractMethod {
 		List<IndexValue> idxList = new ArrayList<IndexValue>();
 		if(arguments.size() > 1) {
 			method = (MethodValueImpl) arguments.get(1);
-			MethodNode methodNode = method.getMethodNode();
-
-//			ArgListNodeImpl argList = (ArgListNodeImpl) getChild(0);
-//			List<Value> valueList = evaluateArgList(argList);
-//			methodNode.getSignature().
 			for(int i = 0; i < list.size(); i++) {
 				List<Value> valueList = new ArrayList<Value>();
 				valueList.add(list.getData().get(i));

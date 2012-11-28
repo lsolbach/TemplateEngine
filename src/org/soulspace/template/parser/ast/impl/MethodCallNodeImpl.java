@@ -9,11 +9,9 @@ import org.soulspace.template.parser.ast.AstNode;
 import org.soulspace.template.parser.ast.AstNodeType;
 import org.soulspace.template.parser.ast.MethodNode;
 import org.soulspace.template.value.MethodValue;
-import org.soulspace.template.value.SymbolTable;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.ValueType;
 import org.soulspace.template.value.impl.StringValueImpl;
-import org.soulspace.template.value.impl.SymbolTableImpl;
 
 public class MethodCallNodeImpl extends AbstractAstNode {
 

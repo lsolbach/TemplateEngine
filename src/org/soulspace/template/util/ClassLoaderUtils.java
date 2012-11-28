@@ -15,6 +15,13 @@ import java.util.jar.JarFile;
 
 public class ClassLoaderUtils {
 	
+	/**
+	 * Returns the list of classes in the given package.
+	 * @param pkgName
+	 * @return list of classes
+	 * @throws ClassNotFoundException
+	 */
+	@SuppressWarnings("rawtypes")
 	public static List<Class> getClassesForPackage(String pkgName)
 			throws ClassNotFoundException {
 		// This will hold a list of directories matching the package name.
@@ -78,6 +85,13 @@ public class ClassLoaderUtils {
 		return classes;
 	}
 
+	/**
+	 * Returns a list of all classes implementing the given interface.
+	 * @param pkgName The package to search for implementations
+	 * @param theInterface The interface for which implementations should be listed
+	 * @return List of implementations of the given interface
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List<Class> getImplementationsInPackage(String pkgName,
 			Class theInterface) {
 		List<Class> classList = new ArrayList<Class>();

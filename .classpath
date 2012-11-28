@@ -3,12 +3,12 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="examples"/>
 	<classpathentry kind="src" path="fittest"/>
-	<classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
 	<classpathentry kind="src" path="unittest"/>
 	<classpathentry kind="lib" path="lib/dev/fitlibrary.jar"/>
 	<classpathentry kind="lib" path="lib/dev/fitnesse.jar"/>
 	<classpathentry kind="lib" path="lib/dev/junit.jar"/>
 	<classpathentry kind="lib" path="lib/dev/junitperf.jar"/>
 	<classpathentry kind="lib" path="lib/runtime/oro.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

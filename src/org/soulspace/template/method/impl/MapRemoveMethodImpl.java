@@ -6,9 +6,7 @@ import java.util.List;
 import org.soulspace.template.method.AbstractMethod;
 import org.soulspace.template.value.StringValue;
 import org.soulspace.template.value.Value;
-import org.soulspace.template.value.impl.ListValueImpl;
 import org.soulspace.template.value.impl.MapValueImpl;
-import org.soulspace.template.value.impl.NumericValueImpl;
 import org.soulspace.template.value.impl.StringValueImpl;
 
 public class MapRemoveMethodImpl extends AbstractMethod {

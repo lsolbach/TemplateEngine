@@ -17,6 +17,7 @@ public class DynamicMethodRegistryImpl implements MethodRegistry {
 		registerPackage("org.soulspace.template.method.impl");
 	}
 
+	@SuppressWarnings("rawtypes")
 	public final void registerPackage(String packageName) {
 		List<Class> classList = ClassLoaderUtils.getImplementationsInPackage(
 				packageName, Method.class);
