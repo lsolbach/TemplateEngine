@@ -6,8 +6,8 @@ engine for processing the language and transforming and emitting texts
 
 Features:
 ---------
-* simple things are easy to accomplish, really complex things are possible
 * syntax is easy to learn
+* simple things are easy, complex things are possible
 * data binding for java beans (use bean objects as input) and xml files
 * string, numeric, list, map and method datatypes
 * arithmetic, relational and logical operators
@@ -24,25 +24,24 @@ Features:
 	(if getters on objects have no side effects, which is bad design anyway)
 * extensible library of type methods (e.g. s.split(';') or s.toLower() on strings)
 * enables building of complex data structures
-* turing complete language
-
-Rationale:
-----------
-
 
 Runtime Requirements:
 ---------------------
 Jakarta ORO >= 2.0.8 (could be refactored to use standard Java RegEx,
 then there would be no external dependencies anymore. Volunteers?)
 
+Project Lead
+------------
+Ludger Solbach
+
 License
 -------
-Eclipse Public License 1.0 (http://www.eclipse.org/legal/epl-v10.html)
+[Eclipse Public License 1.0] (http://www.eclipse.org/legal/epl-v10.html "EPL 1.0")
 
 History
 -------
 
-Version 1.0.0 (--.--.2011)
+Version 1.0.0 (--.--.2012)
 --------------------------
 * added XmlDataSource for generic XML data binding
 * added method datatype as first class citizen to enable functional programming

@@ -1,14 +1,11 @@
-Todo's TemplateEngine:
+TODO's
+======
 
-Version 1.0
-* Closure support (Done)
+* Simple ant build file
 * Fix string.utf8tolatin1() and string.latin1ToUtf8() methods
 * Document abstract and rationale
 * Document method values and functional programming
-* English documentation (Michael)
-* Source code publication
+* English documentation (MichaelJ?)
 * License reference in source files
-
-Version 1.1
 * range operator '..', cons operator '&' or '->'?
 * super method check on parsing
