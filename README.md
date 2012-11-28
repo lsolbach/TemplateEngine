@@ -15,6 +15,6 @@ History
 -------
 Version 0.1.0 (--.--.2012)
 --------------------------
-* intitial import to github
+* initial import to github
 * switched to git
 * initial release
