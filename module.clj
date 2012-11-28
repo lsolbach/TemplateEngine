@@ -5,7 +5,7 @@
  :vendor "soulspace.org"
  :type "framework"
  :version "0.1.0"
- :description "Ant task for the template engine."
+ :description "Ant task for the use of the template engine in ant build files."
  :license ["Eclipse Public License 1.0" "http://www.eclipse.org/legal/epl-v10.html"]
  :plugins ["global" "deps" "java" "package"]
  :dependencies [["org.soulspace" "TemplateEngine" "1.0.0rc7"]
