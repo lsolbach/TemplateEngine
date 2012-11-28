@@ -1,7 +1,7 @@
 TemplateEditor
 ==============
 
-Eclipse plugin providing an editor with syntax highlighting for templates of the soulspace template engine.
+Eclipse plugin providing an editor with syntax highlighting for templates of the soulspace.org template engine.
 
 Project Lead
 ------------
