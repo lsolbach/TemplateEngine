@@ -10,7 +10,7 @@ public class Contact {
 
   String name;
   String firstname;
-  List<Address> addresses = new ArrayList<Address>();
+  List<Address> addressList = new ArrayList<Address>();
   
   public Contact(String name, String firstname) {
     super();
@@ -18,16 +18,16 @@ public class Contact {
     this.firstname = firstname;
   }
 
-  public List<Address> getAddresses() {
-    return addresses;
+  public List<Address> getAddressList() {
+    return addressList;
   }
 
-  public void setAddresses(List<Address> addresses) {
-    this.addresses = addresses;
+  public void setAddressList(List<Address> addresses) {
+    this.addressList = addresses;
   }
 
   public void addAddress(Address address) {
-    this.addresses.add(address);
+    this.addressList.add(address);
   }
   
   public String getFirstname() {

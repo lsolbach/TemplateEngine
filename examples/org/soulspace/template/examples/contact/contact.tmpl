@@ -4,17 +4,16 @@
 </head>
 <body>
 	<h1>Contact details of <?Firstname?> <?Name?></h1>
-	<p>
-<?printAddresses(Addresses)?>
+	<p><?
+	printAddressList(AddressList)?>
 	</p>
 </body>
 </html>
-
 <?
-string printAddresses(list addresses) {
-	foreach addresses {?>
-	<?addresses:Street?> <?addresses:HouseNo?>, <?addresses:Zip?> <?addresses:City?><br>
-<?
+string printAddressList(list addressList) {
+	foreach address <- addressList {?>
+<? /* linefeed */
+		address:Street + ' ' + address:HouseNo + ', ' + address:Zip + ' ' + address:City + '<br>'
 	}
 }
 ?>

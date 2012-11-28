@@ -12,6 +12,11 @@ import org.soulspace.template.TemplateEngine;
 import org.soulspace.template.datasource.impl.BeanDataSourceImpl;
 import org.soulspace.template.impl.TemplateEngineImpl;
 
+/**
+ * Simple example for the use of the soulspace template engine.
+ * @author soulman
+ *
+ */
 public class ContactMain {
 
 	/**
@@ -32,33 +37,37 @@ public class ContactMain {
 		c2.addAddress(a3);
 		c2.addAddress(a4);
 
-		String template;
 		try {
 			// create template engine
 			TemplateEngine te = new TemplateEngineImpl();
 
 			// load template
-			template = loadStringFromStream(ContactMain.class
+			String template = loadStringFromStream(ContactMain.class
 					.getResourceAsStream("contact.tmpl"));
 			te.loadTemplate(template);
 
 			// setup data sources
-			BeanDataSourceImpl ds1 = new BeanDataSourceImpl(c1);
-			BeanDataSourceImpl ds2 = new BeanDataSourceImpl(c2);
+			BeanDataSourceImpl ds1 = new BeanDataSourceImpl(c1); // contact 1
+			BeanDataSourceImpl ds2 = new BeanDataSourceImpl(c2); // contact 2
 
 			// generate with first contact
-			System.out.println(te.generate(ds1));
-
-			System.out.println("\n>>> 8< <<<\n");
+			System.out.print(te.generate(ds1));
+			System.out.println("----8<----\n");
 
 			// generate with second contact
-			System.out.println(te.generate(ds2));
+			System.out.print(te.generate(ds2));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
 
+	/**
+	 * Reads a stream as string.
+	 * @param is input stream
+	 * @return string
+	 * @throws IOException
+	 */
 	public static String loadStringFromStream(InputStream is)
 			throws IOException {
 		StringBuilder buffer = new StringBuilder(128);
