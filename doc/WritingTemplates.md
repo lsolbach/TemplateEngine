@@ -5,7 +5,7 @@ Introduction
 ------------
 
 
-
+Template example:
 ```
 <?!-- Comment: Template Example --?>
 <html>
@@ -58,11 +58,14 @@ name
 Datatypes
 ---------
 
+The template language is a functional language.
+
 * string
 * numeric
 * list
 * map
 * method
+
 
 Variables
 ---------
@@ -82,17 +85,52 @@ map resultMap
 
 
 Another way to provide the template with variables is the data binding of Java Beans.
-See [Data Binding of JavaBeans] (UsingTemplateEngine.md "DataBinding")
+See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 
 Operators
 ---------
 
-Arithmetic Operators
+### Arithmetic Operators ###
 
-Relational Operators
+Numerical arithmetic operaters 
+* `+`
+* `-`
+* `*`
+* `/`
+* `//`
+* `%`
 
-Logical Operators
 
+### Relational Operators ###
+
+Numeric
+* `<`
+* `<=`
+* `>`
+* `>=`
+* `==`
+* `!=`
+
+### Relational Operators ###
+
+String
+* `lt`
+* `le`
+* `gt`
+* `ge`
+* `eq`
+* `ne`
+
+### Logical Operators ###
+
+* `&&`
+* `||`
+* `!`
+
+### Operators on other Datatypes ###
+
+* `+`
+* `:`
 
 Dereferencing Lists and Maps
 ----------------------------
