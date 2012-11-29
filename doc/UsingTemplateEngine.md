@@ -4,17 +4,15 @@ Using the TemplateEngine
 The TemplateEngine Interface
 ----------------------------
 
-*TODO check in code*
 ```
 public interface TemplateEngine {
-  void loadTemplate(String template);
-  void loadTemplate(File templateFile);
-  void loadTemplates(String[] templates);
-  void loadTemplates(File[] templateFiles);
-
-  String generate();
-  String generate(ISymbolTable symbolTable);
-  String generate(IDataSource dataSource);
+  void loadTemplate(String template) throws UnknownTokenException, SyntaxException;
+  void loadTemplate(File templateFile) throws UnknownTokenException, SyntaxException, IOException;
+  void loadTemplates(String[] templates) throws UnknownTokenException, SyntaxException;  
+  void loadTemplates(File[] templateFiles) throws UnknownTokenException, SyntaxException, IOException;
+  
+  String generate(SymbolTable symbolTable) throws SyntaxException, GenerateException;
+  String generate(DataSource dataSource) throws SyntaxException, GenerateException;
 }
 ```
 
@@ -28,6 +26,7 @@ Code example:
   te.loadTemplate(template);
   System.out.println(te.generate());
 ```
+> Hello World!
 
 Loading templates
 -----------------
