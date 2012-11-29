@@ -40,8 +40,7 @@ Template Code
 -------------
 
 
-Expressions
------------
+### Expressions ###
 
 Examples:
 ```
@@ -55,8 +54,7 @@ name = FirstName + ' ' + LastName
 name
 ```
 
-Datatypes
----------
+### Datatypes ###
 
 The template language is a functional language.
 
@@ -67,9 +65,7 @@ The template language is a functional language.
 * method
 
 
-Variables
----------
-
+### Variables ###
 
 Examples:
 ```
@@ -87,12 +83,9 @@ map resultMap
 Another way to provide the template with variables is the data binding of Java Beans.
 See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 
-Operators
----------
+### Operators ###
 
-### Arithmetic Operators ###
-
-Numerical arithmetic operaters 
+#### Numerical arithmetic operaters #### 
 * `+`
 * `-`
 * `*`
@@ -100,10 +93,8 @@ Numerical arithmetic operaters
 * `//`
 * `%`
 
+#### Numeric Relational Operators ####
 
-### Relational Operators ###
-
-Numeric
 * `<`
 * `<=`
 * `>`
@@ -111,9 +102,8 @@ Numeric
 * `==`
 * `!=`
 
-### Relational Operators ###
+#### String Relational Operators ####
 
-String
 * `lt`
 * `le`
 * `gt`
@@ -121,13 +111,13 @@ String
 * `eq`
 * `ne`
 
-### Logical Operators ###
+#### Logical Operators ####
 
 * `&&`
 * `||`
 * `!`
 
-### Operators on other Datatypes ###
+#### Operators on other Datatypes ####
 
 * `+`
 * `:`
@@ -152,13 +142,11 @@ rc = resultMap:Code
 
 
 
-Statements and Statement Blocks
--------------------------------
+### Statements and Statement Blocks ###
 
 Blocks of statements are delimited with `{` and `}`.
 
-If Statement
-------------
+#### If Statement ####
 
 ```
 if(EXPR) BLOCK_STMT [ else BLOCK_STMT]
@@ -176,8 +164,7 @@ if(i < 0) {
 ```
 
 
-While Statement
----------------
+#### While Statement #####
 
 ```
 while(EXPR) BLOCK_STMT
@@ -193,8 +180,7 @@ while(i < 10) {
 ```
 
 
-Foreach Statement
------------------
+#### Foreach Statement ####
 
 ```
 foreach VAR [ | FILTER_EXPR] <- LIST_VAR BLOCK_STMT
@@ -214,10 +200,9 @@ foreach item | (item:Count > 10) <- orderItems {
 }
 ```
 
+### Methods ###
 
-
-Methods on Datatypes
---------------------
+#### Methods on Datatypes ####
 
 Example:
 ```
@@ -255,8 +240,7 @@ map put(string key, <any> element)
 list keyList()
 
 
-Template Methods
-----------------
+#### Template Methods ####
 
 ```
 numeric increment(numeric value) {
