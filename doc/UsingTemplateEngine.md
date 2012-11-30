@@ -53,10 +53,10 @@ has to be provided with some external data.
 Data Binding
 ------------
 You can provide the template engine with external data for each call
-to a 'generate' method.
+to a `generate()` method.
 
-Data Binding of Java Beans
---------------------------
+### Data Binding of Java Beans ###
+
 The `BeanDataSourceImpl` class can be used to bind Java Beans as
 external data. This data source converts a bean to a map with an
 entry for every property of the bean.
@@ -80,11 +80,12 @@ entry for every property of the bean.
   System.out.print(generated);
 ```
 
-Data Binding of XML Data
-------------------------
-The `XmlDataSourceImpl` class can be used to bind XML as external data.
+### Data Binding of XML Data ###
+
+With the `XmlDataSourceImpl` class you can bind any XML data as external data for the generation.
 
 ```
+TODO example code
 ```
 
 [Table of Content] (TemplateEngine.md "Table of Content")

@@ -99,7 +99,8 @@ See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 
 ### Operators ###
 
-#### Arithmetic Operators Defined for `numeric` Data Types #### 
+#### Arithmetic Operators Defined for `numeric` Data Types ####
+ 
 * `+` Addition
 * `-` Substraction
 * `*` Multiplication
@@ -132,6 +133,7 @@ See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 * `!` Logical not
 
 #### Other Operators ####
+
 * `=` Assignment
 * `+` Concatenation of strings and lists
 * `:` Dereferencing of maps
@@ -260,34 +262,49 @@ Example:
 list values = csvLine.split(';')
 ```
 
-`string split(string pattern)`
+##### split
+ `string split(string pattern)`
 
-`numeric matches(string pattern)`
+##### matches
+ `numeric matches(string pattern)`
 
-`numeric startsWith(string start)`
+##### startsWith
+ `numeric startsWith(string start)`
 
-`numeric endsWith(string end)`
+##### endsWith
+ `numeric endsWith(string end)`
 
-`string toLower()`
+##### toLower
+ `string toLower()`
 
-`string toUpper()`
+##### toUpper
+ `string toUpper()`
 
-`string firstLower()`
+##### firstLower
+ `string firstLower()`
 
-`string firstUpper()`
+##### firstUpper
+ `string firstUpper()`
 
+##### replace
 `string replace(string substring, string replacement)`
 
+##### camelCaseToUnderScore
 `string camelCaseToUnderScore()`
 
+##### size
 `numeric size()`
 
+##### add
 `list add(any element)`
 
+##### hasNext
 `numeric hasNext()`
 
+##### put
 `map put(string key, <any> element)`
 
+##### keyList
 `list keyList()`
 
 [Table of Content] (TemplateEngine.md "Table of Content")
