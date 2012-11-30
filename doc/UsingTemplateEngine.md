@@ -60,6 +60,9 @@ to a `generate()` method.
 The `BeanDataSourceImpl` class can be used to bind Java Beans as
 external data. This data source converts a bean to a map with an
 entry for every property of the bean.
+If the getters of the bean have no side effects (which is bad
+design anyway) the beans will not be changed by the binding
+process.
 
 ```
   TemplateEngine te; // injected
