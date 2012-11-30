@@ -32,9 +32,9 @@ Template example:
 Anatomy of a Template
 ---------------------
 
-TEXT
-CODE
-COMMENT
+* TEXT
+* CODE
+* COMMENT
 
 Template Code
 -------------
@@ -118,10 +118,10 @@ See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 
 #### Relational Operators Defined for 'string' Data Types ####
 
-* `lt` Less
-* `le` Less or equal
-* `gt` Greater
-* `ge` Greater or equal
+* `lt` Lexical less
+* `le` Lexical less or equal
+* `gt` Lexical greater
+* `ge` Lexical greater or equal
 * `eq` Equal
 * `ne` Not equal
 
@@ -139,6 +139,7 @@ See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 Dereferencing Lists and Maps
 ----------------------------
 
+
 Example:
 ```
 result = resultList[0]
@@ -153,7 +154,6 @@ Example:
 ```
 rc = resultMap:Code
 ```
-
 
 
 ### Statements and Statement Blocks ###
@@ -177,9 +177,9 @@ if(i < 0) {
 }
 ```
 
-
 #### `while` Statement #####
-The `while` statement is a generic loop statement. The block of code is executed repeatedly as long as the expression evaluates to `true`.
+The `while` statement is a generic loop statement. The block of code is
+evaluated repeatedly as long as the expression evaluates to `true`.
 
 ```
 while(EXPR) BLOCK_STMT
@@ -195,7 +195,15 @@ while(i < 10) {
 ```
 
 
-#### Foreach Statement ####
+#### `foreach` Statement ####
+The `foreach` statement is used to loop over a `list` expression.
+The block of code is evaluated for every element of the list.
+For every iteration the current element is assigned to the specified
+variable.
+
+An optional filter expression can be defined with the `|` operator.
+List elements for which the evaluation of the filter expression returns
+false are skipped.
 
 ```
 foreach VAR [ | FILTER_EXPR] <- LIST_VAR BLOCK_STMT
@@ -216,6 +224,34 @@ foreach item | (item:Count > 10) <- orderItems {
 ```
 
 ### Methods ###
+
+
+#### Template Methods ####
+
+```
+numeric increment(numeric value) {
+  value + 1
+}
+
+increment(2)
+```
+> 3
+
+```
+string countToZero(numeric value) {
+  string result
+  if(value > 0) {
+    result = value + ', ' + countToZero(value - 1)
+  } else if(value == 0) {
+    result = 0
+  }
+  result
+}
+
+countToZero(5) 
+```
+
+> 5, 4, 3, 2 ,1, 0
 
 #### Methods on Datatypes ####
 
@@ -253,32 +289,4 @@ numeric hasNext()
 map put(string key, <any> element)
 
 list keyList()
-
-
-#### Template Methods ####
-
-```
-numeric increment(numeric value) {
-  value + 1
-}
-
-increment(2)
-```
-> 3
-
-```
-string countToZero(numeric value) {
-  string result
-  if(value > 0) {
-    result = value + ', ' + countToZero(value - 1)
-  } else if(value == 0) {
-    result = 0
-  }
-  result
-}
-
-countToZero(5) 
-```
-
-> 5, 4, 3, 2 ,1, 0
 
