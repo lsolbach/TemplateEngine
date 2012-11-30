@@ -99,7 +99,7 @@ See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 
 ### Operators ###
 
-#### Arithmetic Operators Defined for 'numeric' Data Types #### 
+#### Arithmetic Operators Defined for `numeric` Data Types #### 
 * `+` Addition
 * `-` Substraction
 * `*` Multiplication
@@ -107,7 +107,7 @@ See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 * `//` Integer division
 * `%` Modulo
 
-#### Relational Operators Defined for 'numeric' Data Types ####
+#### Relational Operators Defined for `numeric` Data Types ####
 
 * `<` Less
 * `<=` Less or equal
@@ -116,7 +116,7 @@ See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 * `==` Equal
 * `!=` Not Equal
 
-#### Relational Operators Defined for 'string' Data Types ####
+#### Relational Operators Defined for `string` Data Types ####
 
 * `lt` Lexical less
 * `le` Lexical less or equal
@@ -260,33 +260,34 @@ Example:
 list values = csvLine.split(';')
 ```
 
-string split(string pattern)
+`string split(string pattern)`
 
-numeric matches(string pattern)
+`numeric matches(string pattern)`
 
-numeric startsWith(string start)
+`numeric startsWith(string start)`
 
-numeric endsWith(string end)
+`numeric endsWith(string end)`
 
-string toLower()
+`string toLower()`
 
-string toUpper()
+`string toUpper()`
 
-string firstLower()
+`string firstLower()`
 
-string firstUpper()
+`string firstUpper()`
 
-string replace(string substring, string replacement)
+`string replace(string substring, string replacement)`
 
-string camelCaseToUnderScore()
+`string camelCaseToUnderScore()`
 
-numeric size()
+`numeric size()`
 
-list add(any element)
+`list add(any element)`
 
-numeric hasNext()
+`numeric hasNext()`
 
-map put(string key, <any> element)
+`map put(string key, <any> element)`
 
-list keyList()
+`list keyList()`
 
+[Table of Content] (TemplateEngine.md "Table of Content")

@@ -25,3 +25,5 @@ Generator
 Type Methods
 ------------
 
+
+[Table of Content] (TemplateEngine.md "Table of Content")
