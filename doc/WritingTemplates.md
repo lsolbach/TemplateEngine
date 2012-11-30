@@ -54,17 +54,31 @@ name = FirstName + ' ' + LastName
 name
 ```
 
-### Datatypes ###
+#### Constants ####
 
+#### Boolean Values ####
 
+### Data Types ###
+
+In the template language constants, variables and expressions are typed. The template language defines these data types:
+  
 #### `string`
-#### `numeric`
-#### `list`
-#### `map`
-#### `method`
+The string data type
 
-The template language is a functional language. Methods (functions) are first class citizens and they have their own datatype `method`.
+#### `numeric`
+The `numeric` data type represents the real numbers (integer or floating point).
+
+#### `list`
+The list data type represents an ordered list of elements. The elements can be of any data type.
+
+#### `map`
+The `map` data type is an associative key/value store. The keys must be strings, but the values can be of any data type.
+
+#### `method`
+As a functional language, methods (functions) are first class citizens in the template language and they have their own data type `method`.
 Methods can be used as return values or parameters of other methods and they can be assigned to variables.
+
+#### `any`
 
 ### Variables ###
 
@@ -85,7 +99,7 @@ See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 
 ### Operators ###
 
-#### Numerical arithmetic operaters #### 
+#### Arithmetic Operators Defined for 'numeric' Data Types #### 
 * `+` Addition
 * `-` Substraction
 * `*` Multiplication
@@ -93,7 +107,7 @@ See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 * `//` Integer division
 * `%` Modulo
 
-#### Numeric Relational Operators ####
+#### Relational Operators Defined for 'numeric' Data Types ####
 
 * `<` Less
 * `<=` Less or equal
@@ -102,7 +116,7 @@ See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 * `==` Equal
 * `!=` Not Equal
 
-#### String Relational Operators ####
+#### Relational Operators Defined for 'string' Data Types ####
 
 * `lt` Less
 * `le` Less or equal
@@ -117,10 +131,10 @@ See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 * `||` Logical or
 * `!` Logical not
 
-#### Operators on other Datatypes ####
-
+#### Other Operators ####
+* `=` Assignment
 * `+` Concatenation of strings and lists
-* `:` Dereferenciation of maps
+* `:` Dereferencing of maps
 
 Dereferencing Lists and Maps
 ----------------------------
@@ -164,7 +178,8 @@ if(i < 0) {
 ```
 
 
-#### While Statement #####
+#### `while` Statement #####
+The `while` statement is a generic loop statement. The block of code is executed repeatedly as long as the expression evaluates to `true`.
 
 ```
 while(EXPR) BLOCK_STMT
