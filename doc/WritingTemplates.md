@@ -86,41 +86,41 @@ See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 ### Operators ###
 
 #### Numerical arithmetic operaters #### 
-* `+`
-* `-`
-* `*`
-* `/`
-* `//`
-* `%`
+* `+` Addition
+* `-` Substraction
+* `*` Multiplication
+* `/` Division
+* `//` Integer division
+* `%` Modulo
 
 #### Numeric Relational Operators ####
 
-* `<`
-* `<=`
-* `>`
-* `>=`
-* `==`
-* `!=`
+* `<` Less
+* `<=` Less or equal
+* `>` Greater
+* `>=` Greater or equal
+* `==` Equal
+* `!=` Not Equal
 
 #### String Relational Operators ####
 
-* `lt`
-* `le`
-* `gt`
-* `ge`
-* `eq`
-* `ne`
+* `lt` Less
+* `le` Less or equal
+* `gt` Greater
+* `ge` Greater or equal
+* `eq` Equal
+* `ne` Not equal
 
 #### Logical Operators ####
 
-* `&&`
-* `||`
-* `!`
+* `&&` Logical and
+* `||` Logical or
+* `!` Logical not
 
 #### Operators on other Datatypes ####
 
-* `+`
-* `:`
+* `+` Concatenation of strings and lists
+* `:` Dereferenciation of maps
 
 Dereferencing Lists and Maps
 ----------------------------
