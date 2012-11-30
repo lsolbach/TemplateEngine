@@ -10,7 +10,5 @@ import org.soulspace.template.value.SymbolTable;
  * @author soulman
  */
 public interface DataSource {
-
 	SymbolTable getSymbolTable();
-
 }

@@ -21,6 +21,10 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+/**
+ * DataSource implementation to bind generic XML data for the TemplateEngine.
+ * @author lsolbach
+ */
 public class XmlDataSourceImpl extends DefaultHandler implements DataSource {
 
 	private XMLReader xmlReader;

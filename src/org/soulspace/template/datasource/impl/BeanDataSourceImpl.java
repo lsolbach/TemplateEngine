@@ -20,7 +20,7 @@ import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.SymbolTableImpl;
 
 /**
- *  Transforms a bean (hierachy) to a SymbolTableImpl.<br>
+ *  Transforms a bean (hierachy) to a SymbolTable.<br>
  *  Calls the getter methods for all properties. The following mapping is
  *  used:<br>
  *  Object (except String) to MapSymbol<br>
@@ -40,23 +40,33 @@ public class BeanDataSourceImpl implements DataSource {
 		this.symbolTable = new SymbolTableImpl();
 	}
 
+	/**
+	 * 
+	 * @param rootBean
+	 */
 	public BeanDataSourceImpl(Object rootBean) {
 		this.symbolTable = parse(rootBean);
 	}
 
+	/**
+	 * 
+	 * @param rootBean
+	 * @param ds
+	 */
 	public BeanDataSourceImpl(Object rootBean, BeanDataSourceImpl ds) {
 		setCache(ds.getCache());
 		this.symbolTable = parse(rootBean);
 	}
 	
-	Map<Object, SymbolTable> getCache() {
-		return cache;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.soulspace.dataloader.IDataSource#getSymbolTable()
+	 */
+	public SymbolTable getSymbolTable() {
+		return symbolTable;
 	}
-	
-	void setCache(Map<Object, SymbolTable> cache) {
-		this.cache = cache;
-	}
-	
+
 	/**
 	 * Add an object to this data source under the given key. 
 	 * @param name
@@ -76,22 +86,13 @@ public class BeanDataSourceImpl implements DataSource {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.soulspace.dataloader.IDataSource#getSymbolTable()
-	 */
-	public SymbolTable getSymbolTable() {
-		return symbolTable;
-	}
-
 	/**
 	 * Parse an object into the symbol table of this bean data source.
 	 * @param symbolTable
 	 * @param object
 	 * @return
 	 */
-	SymbolTable parse(Object object) {
+	protected SymbolTable parse(Object object) {
 		SymbolTable symbolTable = new SymbolTableImpl();
 		if (object instanceof Map) {
 			insert(symbolTable, "MAP", object);
@@ -152,7 +153,7 @@ public class BeanDataSourceImpl implements DataSource {
 	 * @param object
 	 * @return
 	 */
-	boolean parse(ListValue listSymbol, Object object) {
+	protected boolean parse(ListValue listSymbol, Object object) {
 		Class<? extends Object> myClass = object.getClass();
 		Method methods[] = myClass.getMethods();
 
@@ -200,7 +201,7 @@ public class BeanDataSourceImpl implements DataSource {
 	 * @param result The object to add.
 	 */
 	@SuppressWarnings("rawtypes")
-	public void insert(SymbolTable symbolTable, String symbolName,
+	protected void insert(SymbolTable symbolTable, String symbolName,
 			Object result) {
 		// add the symbol to the symbol table
 		if(result == null) {
@@ -265,8 +266,13 @@ public class BeanDataSourceImpl implements DataSource {
 		}
 	}
 
+	/**
+	 * 
+	 * @param listSymbol
+	 * @param result
+	 */
 	@SuppressWarnings("rawtypes")
-	public void insert(ListValue listSymbol, Object result) {
+	protected void insert(ListValue listSymbol, Object result) {
 		if(result == null) {
 			return;
 		} else if (result instanceof String) {
@@ -327,4 +333,13 @@ public class BeanDataSourceImpl implements DataSource {
 			listSymbol.addNewMapValue(sTable);
 		}
 	}
+
+	protected Map<Object, SymbolTable> getCache() {
+		return cache;
+	}
+	
+	protected void setCache(Map<Object, SymbolTable> cache) {
+		this.cache = cache;
+	}
+	
 }
