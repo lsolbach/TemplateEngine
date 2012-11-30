@@ -1,7 +1,6 @@
 Syntax of the Template Language
 ===============================
 
-
 Grammar
 -------
 
@@ -31,6 +30,8 @@ SYMBOL_DECL = TYPE, IDENTIFIER [, '=', EXPR] ;
 METHOD_DECL = TYPE, IDENTIFIER, '(', PARAM_DECL, ')' ;
 
 PARAM_DECL = [SYMBOL_DECL [{, ',', SYMBOL_DECL}])];
+
+TYPE = 'numeric' | 'string' | 'list' | 'map' | 'method' | 'any';
 
 EXPR = ASSIGN_EXPR ;
 
