@@ -10,7 +10,8 @@ public interface TemplateEngine {
   void loadTemplate(File templateFile) throws UnknownTokenException, SyntaxException, IOException;
   void loadTemplates(String[] templates) throws UnknownTokenException, SyntaxException;  
   void loadTemplates(File[] templateFiles) throws UnknownTokenException, SyntaxException, IOException;
-  
+
+  String generate() throws SyntaxException, GenerateException;
   String generate(SymbolTable symbolTable) throws SyntaxException, GenerateException;
   String generate(DataSource dataSource) throws SyntaxException, GenerateException;
 }

@@ -15,61 +15,77 @@ import org.soulspace.template.value.SymbolTable;
 /**
  * 
  * @author Ludger Solbach
- *
+ * 
  */
 public interface TemplateEngine {
 
-  /**
-   * Initializes the template engine using the given string as template.
-   * @param template
-   * @return
-   * @throws UnknownTokenException
-   * @throws SyntaxException
-   */
-  void loadTemplate(String template) throws UnknownTokenException, SyntaxException;
+	/**
+	 * Initializes the template engine using the given string as template.
+	 * 
+	 * @param template
+	 * @return
+	 * @throws UnknownTokenException
+	 * @throws SyntaxException
+	 */
+	void loadTemplate(String template) throws UnknownTokenException, SyntaxException;
 
-  /**
-   * Initializes the template engine loading the given file as template.
-   * @param templateFile
-   * @throws UnknownTokenException
-   * @throws SyntaxException
-   * @throws IOException
-   */
-  void loadTemplate(File templateFile) throws UnknownTokenException, SyntaxException, IOException;
-  
-  /**
-   * Initializes the template engine using the given string template array.
-   * @param templates
-   * @throws UnknownTokenException
-   * @throws SyntaxException
-   */
-  void loadTemplates(String[] templates) throws UnknownTokenException, SyntaxException;
-  
-  /**
-   * Initializes the template engine loading the files from the given file array.
-   * @param templateFiles
-   * @throws UnknownTokenException
-   * @throws SyntaxException
-   * @throws IOException
-   */
-  void loadTemplates(File[] templateFiles) throws UnknownTokenException, SyntaxException, IOException;
-  
-  /**
-   * Generates the output with data from the given symbol table.
-   * @param symbolTable
-   * @return
-   * @throws SyntaxException
-   * @throws GenerateException
-   */
-  String generate(SymbolTable symbolTable) throws SyntaxException, GenerateException;
+	/**
+	 * Initializes the template engine loading the given file as template.
+	 * 
+	 * @param templateFile
+	 * @throws UnknownTokenException
+	 * @throws SyntaxException
+	 * @throws IOException
+	 */
+	void loadTemplate(File templateFile) throws UnknownTokenException, SyntaxException, IOException;
 
-  /**
-   * Generates the output with data from the given data source.
-   * @param dataSource
-   * @return output
-   * @throws SyntaxException
-   * @throws GenerateException
-   */
-  String generate(DataSource dataSource) throws SyntaxException, GenerateException;
+	/**
+	 * Initializes the template engine using the given string template array.
+	 * 
+	 * @param templates
+	 * @throws UnknownTokenException
+	 * @throws SyntaxException
+	 */
+	void loadTemplates(String[] templates) throws UnknownTokenException, SyntaxException;
+
+	/**
+	 * Initializes the template engine loading the files from the given file
+	 * array.
+	 * 
+	 * @param templateFiles
+	 * @throws UnknownTokenException
+	 * @throws SyntaxException
+	 * @throws IOException
+	 */
+	void loadTemplates(File[] templateFiles) throws UnknownTokenException, SyntaxException, IOException;
+
+	/**
+	 * Generates the output without any external data.
+	 * 
+	 * @return
+	 * @throws SyntaxException
+	 * @throws GenerateException
+	 */
+	String generate() throws SyntaxException, GenerateException;
+
+	/**
+	 * Generates the output with data from the given symbol table.
+	 * 
+	 * @param symbolTable
+	 * @return
+	 * @throws SyntaxException
+	 * @throws GenerateException
+	 */
+	String generate(SymbolTable symbolTable) throws SyntaxException, GenerateException;
+
+	/**
+	 * Generates the output with data from the given data source.
+	 * 
+	 * @param dataSource
+	 * @return output
+	 * @throws SyntaxException
+	 * @throws GenerateException
+	 */
+	String generate(DataSource dataSource) throws SyntaxException, GenerateException;
 
 }

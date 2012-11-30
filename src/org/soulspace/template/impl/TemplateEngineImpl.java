@@ -45,12 +45,17 @@ public class TemplateEngineImpl implements TemplateEngine {
 		MethodRegistryImpl.setMethodRegisty(new StaticMethodRegistryImpl());
 	}
 
+	/**
+	 * Constructor with an array of packages to scan for type method implementations.
+	 * 
+	 * @param methodPackages array of package names
+	 */
 	public TemplateEngineImpl(String[] methodPackages) {
 		try {
 			DynamicMethodRegistryImpl registry = new DynamicMethodRegistryImpl();
-			if(methodPackages != null) {
-				for(String packageName : methodPackages) {
-					if(packageName != null) {
+			if (methodPackages != null) {
+				for (String packageName : methodPackages) {
+					if (packageName != null) {
 						registry.registerPackage(packageName);
 					}
 				}
@@ -61,15 +66,14 @@ public class TemplateEngineImpl implements TemplateEngine {
 			MethodRegistryImpl.setMethodRegisty(new StaticMethodRegistryImpl());
 		}
 	}
-	
+
 	/**
 	 * Load and parse the given template
 	 * 
 	 * @throws UnknownTokenException
 	 * @throws SyntaxException
 	 */
-	public void loadTemplate(String template) throws UnknownTokenException,
-			SyntaxException {
+	public void loadTemplate(String template) throws UnknownTokenException, SyntaxException {
 		TokenList tokenList = tokenizer.createTokenList();
 		tokenList = tokenize(tokenList, "Template", template);
 		parse(tokenList);
@@ -82,8 +86,7 @@ public class TemplateEngineImpl implements TemplateEngine {
 	 * @throws SyntaxException
 	 * @throws IOException
 	 */
-	public void loadTemplate(File templateFile) throws UnknownTokenException,
-			SyntaxException, IOException {
+	public void loadTemplate(File templateFile) throws UnknownTokenException, SyntaxException, IOException {
 		TokenList tokenList = tokenizer.createTokenList();
 		tokenList = tokenize(tokenList, templateFile.getPath(), FileUtils.loadStringFromFile(templateFile));
 		parse(tokenList);
@@ -95,10 +98,9 @@ public class TemplateEngineImpl implements TemplateEngine {
 	 * @throws UnknownTokenException
 	 * @throws SyntaxException
 	 */
-	public void loadTemplates(String[] templates)
-			throws UnknownTokenException, SyntaxException {
+	public void loadTemplates(String[] templates) throws UnknownTokenException, SyntaxException {
 		TokenList tokenList = tokenizer.createTokenList();
-		for(String template : templates) {
+		for (String template : templates) {
 			tokenList = tokenize(tokenList, "Template", template);
 		}
 		parse(tokenList);
@@ -111,10 +113,9 @@ public class TemplateEngineImpl implements TemplateEngine {
 	 * @throws SyntaxException
 	 * @throws IOException
 	 */
-	public void loadTemplates(File[] templateFiles)
-			throws UnknownTokenException, SyntaxException, IOException {
+	public void loadTemplates(File[] templateFiles) throws UnknownTokenException, SyntaxException, IOException {
 		TokenList tokenList = tokenizer.createTokenList();
-		for(File templateFile : templateFiles) {
+		for (File templateFile : templateFiles) {
 			tokenList.setCurrentLine(1);
 			tokenList = tokenize(tokenList, templateFile.getPath(), FileUtils.loadStringFromFile(templateFile));
 		}
@@ -122,29 +123,27 @@ public class TemplateEngineImpl implements TemplateEngine {
 	}
 
 	/**
-	 * Generate output with the parsed template
+	 * Generates the output without any external data.
 	 * 
 	 * @return generated output
 	 * @throws SyntaxException
 	 * @throws GenerateException
 	 */
-	public String generate() throws SyntaxException,
-			GenerateException {
+	public String generate() throws SyntaxException, GenerateException {
 		Environment environment = new EnvironmentImpl(new SymbolTableImpl());
-		return root.generateValue(environment).evaluate();		
+		return root.generateValue(environment).evaluate();
 	}
-	
+
 	/**
 	 * Generate output for the given symbol table with the parsed template
 	 * 
 	 * @param symbolTable
-	 *          to use for the generation
+	 *            to use for the generation
 	 * @return generated output
 	 * @throws SyntaxException
 	 * @throws GenerateException
 	 */
-	public String generate(SymbolTable symbolTable) throws SyntaxException,
-			GenerateException {
+	public String generate(SymbolTable symbolTable) throws SyntaxException, GenerateException {
 		Environment environment = new EnvironmentImpl(symbolTable);
 		return root.generateValue(environment).evaluate();
 	}
@@ -153,17 +152,16 @@ public class TemplateEngineImpl implements TemplateEngine {
 	 * Generate output for the given data source with the parsed template
 	 * 
 	 * @param dataSource
-	 *          to use for the generation
+	 *            to use for the generation
 	 * @return generated output
 	 * @throws SyntaxException
 	 * @throws GenerateException
 	 */
-	public String generate(DataSource dataSource) throws SyntaxException,
-			GenerateException {
+	public String generate(DataSource dataSource) throws SyntaxException, GenerateException {
 		Environment environment = new EnvironmentImpl(dataSource.getSymbolTable());
 		return root.generateValue(environment).evaluate();
 	}
-	
+
 	private TokenList tokenize(TokenList tokenList, String name, String content) {
 		tokenList.setTemplate(name);
 		return tokenizer.tokenize(tokenList, content);
