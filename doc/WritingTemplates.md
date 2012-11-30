@@ -80,7 +80,6 @@ list resultList
 map resultMap
 ```
 
-
 Another way to provide the template with variables is the data binding of Java Beans.
 See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 
