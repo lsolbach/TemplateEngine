@@ -56,14 +56,15 @@ name
 
 ### Datatypes ###
 
-The template language is a functional language.
 
-* string
-* numeric
-* list
-* map
-* method
+#### `string`
+#### `numeric`
+#### `list`
+#### `map`
+#### `method`
 
+The template language is a functional language. Methods (functions) are first class citizens and they have their own datatype `method`.
+Methods can be used as return values or parameters of other methods and they can be assigned to variables.
 
 ### Variables ###
 
