@@ -229,6 +229,9 @@ foreach item | (item:Count > 10) <- orderItems {
 
 
 #### Template Methods ####
+You can declare methods in the template code. A method declaration has a
+return type, a name, a list of parameter declarations and a block of
+code. 
 
 ```
 numeric increment(numeric value) {
@@ -252,8 +255,13 @@ string countToZero(numeric value) {
 
 countToZero(5) 
 ```
-
 > 5, 4, 3, 2 ,1, 0
+
+Methods are declared in the order in which they are parsed. If you
+declare the same method (with the same name and parameter types) more
+than once, the previous method gets overridden. You can access the
+previous version with a call to `super()` inside the methods code
+block.
 
 #### Methods on Datatypes ####
 
@@ -306,5 +314,6 @@ list values = csvLine.split(';')
 
 ##### keyList
 `list keyList()`
+
 
 [Table of Content] (TemplateEngine.md "Table of Content")
