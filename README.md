@@ -3,7 +3,7 @@ Template Engine
 
 The soulspace.org TemplateEngine is as you might have guessed a
 template engine written in Java.
-It consists of a presentation language and an engine for processing
+It consists of a template language and an engine for processing
 the language and transforming and emitting texts.
 
 Features:
@@ -12,12 +12,11 @@ Features:
 * syntax is easy to learn
 * simple things are easy, complex things are possible
 * data binding for java beans (use bean objects as input) and xml files
-* safe by design, no modification of input java objects possible
+* view language, safe by design, no modification of input java objects possible
 	(if getters on objects have no side effects, which is bad design anyway)
 * string, numeric, list, map and method datatypes
 * arithmetic, relational and logical operators
-* branching with if/else
-* while loops and foreach loops with filters
+* branching with if/else, while loops and foreach loops with filters
 * declaration of variables and methods within the templates
 * full recursion and overriding support for methods
 * functional programming support
@@ -26,7 +25,6 @@ Features:
 	* higher order methods
 	* methods as return value (function builders)
 * extensible library of type methods (e.g. s.split(';') or s.toLower() on strings)
-* enables building of complex data structures
 
 Runtime Requirements:
 ---------------------
@@ -35,7 +33,7 @@ then there would be no external dependencies anymore. Volunteers?)
 
 Documentation
 -------------
-See [doc/TemplateEngine.md] (doc/TemplateEngine.md "doc/TemplateEngine.md") .
+See `doc/TemplateEngine.md`.
 
 Author/Project Lead
 -------------------
