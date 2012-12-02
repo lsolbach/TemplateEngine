@@ -35,10 +35,19 @@ for the html page with embedded code in the template language.
 
 Anatomy of a Template
 ---------------------
+A template can consist of TEXT, COMMENT and CODE blocks. Any simple text file is a valid template.
 
-* TEXT
-* CODE
-* COMMENT
+### TEXT ###
+Any text which is not inside a delimited COMMENT or CODE block.
+
+### COMMENT ###
+Any text between the delimiters `<?!--` and `--?>` is considered as a
+comment. 
+
+### CODE ###
+Any text between the delimiter `<?` and `?>` (like XML processing
+instructions) is considered as template code.
+
 
 Template Code
 -------------
