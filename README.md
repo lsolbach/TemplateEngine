@@ -8,9 +8,12 @@ the language and transforming and emitting texts.
 
 Features:
 ---------
+* general purpose template engine
 * syntax is easy to learn
 * simple things are easy, complex things are possible
 * data binding for java beans (use bean objects as input) and xml files
+* safe by design, no modification of input java objects possible
+	(if getters on objects have no side effects, which is bad design anyway)
 * string, numeric, list, map and method datatypes
 * arithmetic, relational and logical operators
 * branching with if/else
@@ -22,8 +25,6 @@ Features:
 	* closures
 	* higher order methods
 	* methods as return value (function builders)
-* safe by design, no modification of input java objects possible
-	(if getters on objects have no side effects, which is bad design anyway)
 * extensible library of type methods (e.g. s.split(';') or s.toLower() on strings)
 * enables building of complex data structures
 
@@ -32,13 +33,25 @@ Runtime Requirements:
 Jakarta ORO >= 2.0.8 (could be refactored to use standard Java RegEx,
 then there would be no external dependencies anymore. Volunteers?)
 
-Project Lead
-------------
+Documentation
+-------------
+See [doc/TemplateEngine.md] (doc/TemplateEngine.md "doc/TemplateEngine.md") .
+
+Author/Project Lead
+-------------------
 Ludger Solbach
 
 License
 -------
 [Eclipse Public License 1.0] (http://www.eclipse.org/legal/epl-v10.html "EPL 1.0")
+
+Copyright
+---------
+© 2002-2012 Ludger Solbach
+
+Code
+----
+[https://github.com/lsolbach/TemplateEngine] (https://github.com/lsolbach/TemplateEngine)
 
 History
 -------
@@ -69,6 +82,7 @@ Version 1.0.0 (--.--.2012)
 * refactored names of interfaces and classes
 * refactored method call mechanism for template methods
 * refactored symbol tables in AST nodes to a node independent value environment
+* refactored and enhanced the documentation
 
 Version 0.9.17 (21.09.2009)
 ---------------------------
