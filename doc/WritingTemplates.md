@@ -3,7 +3,9 @@ Writing Templates
 
 Introduction
 ------------
-
+Here is a simple template for an html order page as an introduction to
+the template language. As input it takes an Order containing a list of
+order items and generates a html table with a row for every order item.
 
 Template example:
 ```
@@ -28,6 +30,8 @@ Template example:
   </body>
 </html>
 ```
+The first line is a comment and the following lines contain the code
+for the html page with embedded code in the template language.
 
 Anatomy of a Template
 ---------------------
