@@ -35,23 +35,30 @@ for the html page with embedded code in the template language.
 
 Anatomy of a Template
 ---------------------
-A template can consist of TEXT, COMMENT and CODE blocks. Any simple text file is a valid template.
+A template can consist of TEXT, COMMENT and CODE blocks. Any simple
+text file (containing only TEXT) is a valid template. If a template
+contains only TEXT, the output of the generation is a copy of the
+template.
 
 ### TEXT ###
 Any text which is not inside a delimited COMMENT or CODE block.
 
 ### COMMENT ###
 Any text between the delimiters `<?!--` and `--?>` is considered as a
-comment. 
+comment. Any text inside a comment will not be transformed to the
+output of the generation. You can use comments to comment out CODE
+blocks.
 
 ### CODE ###
 Any text between the delimiter `<?` and `?>` (like XML processing
-instructions) is considered as template code.
-
+instructions) is considered as template code. 
+You can archive dynamic output with template code and variable input
+data.
 
 Template Code
 -------------
-
+Template code can contain expressions, statements (like if or while),
+variable or method declarations and method calls. 
 
 ### Expressions ###
 
@@ -67,31 +74,35 @@ name = FirstName + ' ' + LastName
 name
 ```
 
-#### Constants ####
-
-#### Boolean Values ####
-
 ### Data Types ###
 
 In the template language constants, variables and expressions are typed. The template language defines these data types:
   
-#### `string`
+#### `string` ####
 The string data type
 
-#### `numeric`
+#### `numeric` ####
 The `numeric` data type represents the real numbers (integer or floating point).
 
-#### `list`
+#### `list` ####
 The list data type represents an ordered list of elements. The elements can be of any data type.
 
-#### `map`
+#### `map` ####
 The `map` data type is an associative key/value store. The keys must be strings, but the values can be of any data type.
 
-#### `method`
+#### `method` ####
 As a functional language, methods (functions) are first class citizens in the template language and they have their own data type `method`.
 Methods can be used as return values or parameters of other methods and they can be assigned to variables.
 
-#### `any`
+#### `any` ####
+
+
+#### Constants ####
+
+#### Boolean Values ####
+The string constant `false` and  and the numeric `0` are considered FALSE in boolean
+
+
 
 ### Variables ###
 
