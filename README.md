@@ -47,8 +47,8 @@ Copyright
 ---------
 © 2002-2012 Ludger Solbach
 
-Code
-----
+Code Repository
+---------------
 [https://github.com/lsolbach/TemplateEngine] (https://github.com/lsolbach/TemplateEngine)
 
 History
