@@ -62,6 +62,11 @@ variable or method declarations and method calls.
 
 ### Expressions ###
 
+Every expression except an assignment expression results in the value
+of the expression being written in the generated output. A `<?2 + 2?>`
+results in a `4` in the output but for the assignment
+`<?numeric i = 2 + 2?>` nothing is generated. 
+
 Examples:
 ```
 2 + 2
@@ -76,35 +81,48 @@ name
 
 ### Data Types ###
 
-In the template language constants, variables and expressions are typed. The template language defines these data types:
+In the template language constants, variables and expressions are
+typed. The template language defines these data types:
   
 #### `string` ####
-The string data type
+The string data type.
 
 #### `numeric` ####
-The `numeric` data type represents the real numbers (integer or floating point).
+The `numeric` data type represents the real numbers (integer or
+floating point).
 
 #### `list` ####
-The list data type represents an ordered list of elements. The elements can be of any data type.
+The list data type represents an ordered list of elements. The elements
+can be of any data type.
 
 #### `map` ####
-The `map` data type is an associative key/value store. The keys must be strings, but the values can be of any data type.
+The `map` data type is an associative key/value store. The keys must be
+strings, but the values can be of any data type.
 
 #### `method` ####
-As a functional language, methods (functions) are first class citizens in the template language and they have their own data type `method`.
-Methods can be used as return values or parameters of other methods and they can be assigned to variables.
+As a functional language, methods (functions) are first class citizens
+in the template language and they have their own data type `method`.
+Methods can be used as return values or parameters of other methods and
+they can be assigned to variables.
 
 #### `any` ####
+Any can be used as the type of the return value of methods but not for
+method parameters or variables.
 
-
-#### Constants ####
+#### Literals ####
+`1` `2.5`
+`'Hello World!'`
 
 #### Boolean Values ####
-The string constant `false` and  and the numeric `0` are considered FALSE in boolean
-
-
+There is no boolean datatype defined in the template language.
+Use the numeric literals `0` and `1` as FALSE and TRUE.
+The string constant `false` and  and the numeric `0` are considered
+FALSE in boolean expressions. Empty lists and maps are also considered
+FALSE in boolean expressions. Any other value is considered TRUE.
 
 ### Variables ###
+You can declare and use variables in the template code. Variables have
+to be declared before use.
 
 Examples:
 ```
@@ -118,7 +136,8 @@ list resultList
 map resultMap
 ```
 
-Another way to provide the template with variables is the data binding of Java Beans.
+Another way to provide the template with variables is the data binding
+of Java Beans.
 See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
 
 ### Operators ###
