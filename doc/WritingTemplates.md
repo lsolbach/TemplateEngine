@@ -85,14 +85,14 @@ In the template language constants, variables and expressions are
 typed. The template language defines these data types:
   
 #### `string` ####
-The string data type.
+The `string` data type represents character data a.k.a. strings.
 
 #### `numeric` ####
 The `numeric` data type represents the real numbers (integer or
 floating point).
 
 #### `list` ####
-The list data type represents an ordered list of elements. The elements
+The `list` data type represents an ordered list of elements. The elements
 can be of any data type.
 
 #### `map` ####
@@ -110,8 +110,9 @@ Any can be used as the type of the return value of methods but not for
 method parameters or variables.
 
 #### Literals ####
-`1` `2.5`
-`'Hello World!'`
+Numeric literals can contain integer numbers like `-20`, `0` or `42` or
+floating point numbers like `-2.5` or `6.9`
+String literals are enclosed in apostrophs: `'Hello World!'`
 
 #### Boolean Values ####
 There is no boolean datatype defined in the template language.
@@ -360,9 +361,7 @@ Signature: `string <string>.replace(string substring, string replacement)`
 Signature: `string <string>.camelCaseToUnderScore()`
 
 ##### size
-Signature: `<string>.numeric size()`
-Signature: `<list>.numeric size()`
-Signature: `<map>.numeric size()`
+Signatures: `numeric <string>.size()`, `numeric <list>.size()`and `numeric <map>.size()`
 
 ##### add
 Signature: `list <list>.add(any element)`
