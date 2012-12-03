@@ -136,54 +136,62 @@ list resultList
 map resultMap
 ```
 
-Another way to provide the template with variables is the data binding
-of Java Beans.
-See [Data Binding of JavaBeans] (UsingTemplateEngine.md "UsingTemplateEngine")
+Another way to provide the template with variables is by providing
+external data with data binding.
+See [Data Binding] (UsingTemplateEngine.md "UsingTemplateEngine")
+
+#### Variable Scopes ####
+
+TODO Difference between dynamic and lexical Scoping
 
 ### Operators ###
 
 #### Arithmetic Operators Defined for `numeric` Data Types ####
  
-* `+` Addition
-* `-` Substraction
-* `*` Multiplication
-* `/` Division
-* `//` Integer division
-* `%` Modulo
+* `+` Addition.
+* `-` Substraction.
+* `*` Multiplication.
+* `/` Division.
+* `//` Integer division.
+* `%` Modulo.
 
 #### Relational Operators Defined for `numeric` Data Types ####
 
-* `<` Less
-* `<=` Less or equal
-* `>` Greater
-* `>=` Greater or equal
-* `==` Equal
-* `!=` Not Equal
+* `<` Less.
+* `<=` Less or equal.
+* `>` Greater.
+* `>=` Greater or equal.
+* `==` Equal.
+* `!=` Not Equal.
 
 #### Relational Operators Defined for `string` Data Types ####
 
-* `lt` Lexical less
-* `le` Lexical less or equal
-* `gt` Lexical greater
-* `ge` Lexical greater or equal
-* `eq` Equal
-* `ne` Not equal
+* `lt` Lexical less.
+* `le` Lexical less or equal.
+* `gt` Lexical greater.
+* `ge` Lexical greater or equal.
+* `eq` Equal.
+* `ne` Not equal.
 
 #### Logical Operators ####
 
-* `&&` Logical and
-* `||` Logical or
-* `!` Logical not
+* `&&` Logical and.
+* `||` Logical or.
+* `!` Logical not.
 
 #### Other Operators ####
 
-* `=` Assignment
-* `+` Concatenation of strings and lists
-* `:` Dereferencing of maps
+* `=` Assignment to a variable.
+* `+` Concatenation of strings and lists.
+* `:` Dereferencing of maps.
 
-Dereferencing Lists and Maps
-----------------------------
-
+Accessing elements of Lists and Maps
+------------------------------------
+You can access elements of lists or maps with index or key lookups.
+An element of a list is looked up with an index number in square
+brackets. The index is 0 based to be consistent with other programming
+languages. The first element has the index 0 and the last element has
+the index list.size() - 1
 
 Example:
 ```
@@ -199,7 +207,6 @@ Example:
 ```
 rc = resultMap:Code
 ```
-
 
 ### Statements and Statement Blocks ###
 
@@ -224,7 +231,7 @@ if(i < 0) {
 
 #### `while` Statement #####
 The `while` statement is a generic loop statement. The block of code is
-evaluated repeatedly as long as the expression evaluates to `true`.
+evaluated repeatedly as long as the expression evaluates to TRUE.
 
 ```
 while(EXPR) BLOCK_STMT
@@ -248,7 +255,7 @@ variable.
 
 An optional filter expression can be defined with the `|` operator.
 List elements for which the evaluation of the filter expression returns
-false are skipped.
+FALSE are skipped.
 
 ```
 foreach VAR [ | FILTER_EXPR] <- LIST_VAR BLOCK_STMT
@@ -269,12 +276,18 @@ foreach item | (item:Count > 10) <- orderItems {
 ```
 
 ### Methods ###
-
+There are 2 different kinds of methods in the template language. The
+first kind of methods are called Template Methods which can be declared
+and implemented in the template code. The second type of methods are
+methods defined on the data types of the template language.
 
 #### Template Methods ####
 You can declare methods in the template code. A method declaration has a
 return type, a name, a list of parameter declarations and a block of
-code. 
+code with the implementation of the method. 
+
+The return value of the method is the value of last expression of the
+method.
 
 ```
 numeric increment(numeric value) {
@@ -306,7 +319,9 @@ than once, the previous method gets overridden. You can access the
 previous version with a call to `super()` inside the methods code
 block.
 
-#### Methods on Datatypes ####
+#### Methods on Data Types ####
+The methods defined on the data types of the template language are
+written in Java. The template engine provides the following methods.
 
 Example:
 ```
@@ -314,49 +329,71 @@ list values = csvLine.split(';')
 ```
 
 ##### split
- `string split(string pattern)`
+Signature: `string <string>.split(string pattern)`
 
 ##### matches
- `numeric matches(string pattern)`
+Signature: `numeric <string>.matches(string pattern)`
 
 ##### startsWith
- `numeric startsWith(string start)`
+Signature: `numeric <string>.startsWith(string start)`
 
 ##### endsWith
- `numeric endsWith(string end)`
+Signature: `numeric <string>.endsWith(string end)`
 
 ##### toLower
- `string toLower()`
+Signature: `string <string>.toLower()`
 
 ##### toUpper
- `string toUpper()`
+Signature: `string <string>.toUpper()`
 
 ##### firstLower
- `string firstLower()`
+Signature: `string <string>.firstLower()`
 
 ##### firstUpper
- `string firstUpper()`
+Signature: `string <string>.firstUpper()`
 
 ##### replace
-`string replace(string substring, string replacement)`
+Signature: `string <string>.replace(string substring, string replacement)`
 
 ##### camelCaseToUnderScore
-`string camelCaseToUnderScore()`
+Signature: `string <string>.camelCaseToUnderScore()`
 
 ##### size
-`numeric size()`
+Signature: `<string>.numeric size()`
+Signature: `<list>.numeric size()`
+Signature: `<map>.numeric size()`
 
 ##### add
-`list add(any element)`
+Signature: `list <list>.add(any element)`
 
 ##### hasNext
-`numeric hasNext()`
+Signature: `numeric <list>.hasNext()`
 
 ##### put
-`map put(string key, <any> element)`
+Signature: `map <map>.put(string key, <any> element)`
 
 ##### keyList
-`list keyList()`
+Signature: `list <map>.keyList()`
 
+Functional Programming
+----------------------
+
+### Higher order Methods ###
+
+```
+list mapMethod(method m, list elementList) {
+	list resultList
+	foreach element <- elementList {
+		resultList.add(m(element))
+	}
+	resultList
+}
+```
+
+
+### Closures ###
+
+```
+```
 
 [Table of Content] (TemplateEngine.md "Table of Content")
