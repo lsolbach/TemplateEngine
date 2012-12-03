@@ -378,7 +378,7 @@ Signature: `list <map>.keyList()`
 Functional Programming
 ----------------------
 
-### Higher order Methods ###
+### Higher Order Methods ###
 
 ```
 list mapMethod(method m, list elementList) {
@@ -388,12 +388,27 @@ list mapMethod(method m, list elementList) {
 	}
 	resultList
 }
+
+any reduceMethod(method m, list elementList) {
+	
+}
 ```
 
 
 ### Closures ###
 
 ```
+string join(list elementList, string separator) {
+	
+}
+
+method cJoin(string separator) {
+	string s = separator
+	method resultMethod = string fn(list elementList) {
+		join(elementList, s)
+	}
+	resultMethod
+}
 ```
 
 [Table of Content] (TemplateEngine.md "Table of Content")
