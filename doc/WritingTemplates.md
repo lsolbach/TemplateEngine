@@ -213,6 +213,7 @@ rc = resultMap:Code
 Blocks of statements are delimited with `{` and `}`.
 
 #### If Statement ####
+conditional evaluation, branching
 
 ```
 if(EXPR) BLOCK_STMT [ else BLOCK_STMT]
@@ -241,11 +242,11 @@ Example:
 ```
 numeric i = 1
 while(i < 10) {
-  print(i)
-  i = i + 1
+	i + ''
+	i = i + 1
 }
 ```
-
+> 1 2 3 4 5 6 7 8 9 
 
 #### `foreach` Statement ####
 The `foreach` statement is used to loop over a `list` expression.
