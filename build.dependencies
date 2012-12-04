@@ -13,7 +13,7 @@
 	</dependency>
 	<dependency type="runtime">
 		<package name="jakarta-oro" version="2.0.8" type="lib">
-			<module name="jakarta-oro"/>
+			<module name="oro"/>
 		</package>
 	</dependency>
 </dependencies>

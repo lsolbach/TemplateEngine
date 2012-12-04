@@ -14,6 +14,7 @@ import org.soulspace.template.value.SymbolTable;
  * @author Ludger Solbach
  */
 public interface DataSource {
+	
 	/**
 	 * Returns a symbol table for this data source.
 	 * @return symbol table
