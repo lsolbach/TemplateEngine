@@ -81,6 +81,7 @@ Version 1.0.0 (--.--.2012)
 * refactored method call mechanism for template methods
 * refactored symbol tables in AST nodes to a node independent value environment
 * refactored and enhanced the documentation
+* updated docs
 
 Version 0.9.17 (21.09.2009)
 ---------------------------
