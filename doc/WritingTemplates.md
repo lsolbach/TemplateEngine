@@ -224,7 +224,7 @@ Blocks of statements are delimited with `{` and `}`.
 
 TODO Difference between dynamic and lexical Scoping
 
-#### `if` Statement ####
+#### `if` Statement
 The `if` statement is used for conditional evaluation and branching.
 
 ```
@@ -242,7 +242,7 @@ if(i < 0) {
 }
 ```
 
-#### `while` Statement #####
+#### `while` Statement
 The `while` statement is a generic loop statement. The block of code is
 evaluated repeatedly as long as the expression evaluates to TRUE.
 
@@ -260,7 +260,7 @@ while(i < 10) {
 ```
 > 1 2 3 4 5 6 7 8 9 
 
-#### `foreach` Statement ####
+#### `foreach` Statement
 The `foreach` statement is used to loop over a `list` expression.
 The block of code is evaluated for every element of the list.
 For every iteration the current element is assigned to the specified
@@ -268,7 +268,7 @@ variable.
 
 An optional filter expression can be defined with the `|` operator.
 List elements for which the evaluation of the filter expression returns
-FALSE are skipped.
+*FALSE* are skipped.
 
 ```
 foreach VAR [| FILTER_EXPR] <- LIST_VAR BLOCK_STMT
