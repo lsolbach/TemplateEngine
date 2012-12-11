@@ -33,23 +33,23 @@ Template example:
 The first line is a comment and the following lines contain the code
 for the html page with embedded code in the template language.
 
-Anatomy of a Template
----------------------
+The Anatomy of a Template
+-------------------------
 A template can consist of TEXT, COMMENT and CODE blocks. Any simple
 text file (containing only TEXT) is a valid template. If a template
 contains only TEXT, the output of the generation is a copy of the
 template.
 
-### TEXT ###
+### TEXT
 Any text which is not inside a delimited COMMENT or CODE block.
 
-### COMMENT ###
+### COMMENT
 Any text between the delimiters `<?!--` and `--?>` is considered as a
 comment. Any text inside a comment will not be transformed to the
 output of the generation. You can use comments to comment out CODE
 blocks.
 
-### CODE ###
+### CODE
 Any text between the delimiter `<?` and `?>` (like XML processing
 instructions) is considered as template code. 
 You can archive dynamic output with template code and variable input
@@ -60,7 +60,7 @@ Template Code
 Template code can contain expressions, statements (like if or while),
 variable or method declarations and method calls. 
 
-### Expressions ###
+### Expressions
 
 Every expression except an assignment expression results in the value
 of the expression being written in the generated output. A `<?2 + 2?>`
@@ -79,49 +79,49 @@ name = FirstName + ' ' + LastName
 name
 ```
 
-### Data Types ###
+### Data Types
 
 In the template language constants, variables and expressions are
 typed. The template language defines these data types:
   
-#### `string` ####
+#### `string`
 The `string` data type represents character data a.k.a. strings.
 
-#### `numeric` ####
+#### `numeric`
 The `numeric` data type represents the real numbers (integer or
 floating point).
 
-#### `list` ####
+#### `list`
 The `list` data type represents an ordered list of elements. The elements
 can be of any data type.
 
-#### `map` ####
+#### `map`
 The `map` data type is an associative key/value store. The keys must be
 strings, but the values can be of any data type.
 
-#### `method` ####
+#### `method`
 As a functional language, methods (functions) are first class citizens
 in the template language and they have their own data type `method`.
 Methods can be used as return values or parameters of other methods and
 they can be assigned to variables.
 
-#### `any` ####
+#### `any`
 Any can be used as the type of the return value of methods but not for
 method parameters or variables.
 
-#### Literals ####
+#### Literals
 Numeric literals can contain integer numbers like `-20`, `0` or `42` or
 floating point numbers like `-2.5` or `6.9`
 String literals are enclosed in apostrophs: `'Hello World!'`
 
-#### Boolean Values ####
+#### Boolean Values
 There is no boolean datatype defined in the template language.
-Use the numeric literals `0` and `1` as FALSE and TRUE.
+Use the numeric literals `0` and `1` as *FALSE* and *TRUE*.
 The string constant `false` and  and the numeric `0` are considered
-FALSE in boolean expressions. Empty lists and maps are also considered
-FALSE in boolean expressions. Any other value is considered TRUE.
+*FALSE* in boolean expressions. Empty lists and maps are also considered
+*FALSE* in boolean expressions. Any other value is considered *TRUE*.
 
-### Variables ###
+### Variables
 You can declare and use variables in the template code. Variables have
 to be declared before use.
 
@@ -141,13 +141,9 @@ Another way to provide the template with variables is by providing
 external data with data binding.
 See [Data Binding] (UsingTemplateEngine.md "UsingTemplateEngine")
 
-#### Variable Scopes ####
+### Operators
 
-TODO Difference between dynamic and lexical Scoping
-
-### Operators ###
-
-#### Arithmetic Operators Defined for `numeric` Data Types ####
+#### Arithmetic Operators Defined for `numeric` Data Types
  
 * `+` Addition.
 * `-` Substraction.
@@ -156,7 +152,7 @@ TODO Difference between dynamic and lexical Scoping
 * `//` Integer division.
 * `%` Modulo.
 
-#### Relational Operators Defined for `numeric` Data Types ####
+#### Relational Operators Defined for `numeric` Data Types
 
 * `<` Less.
 * `<=` Less or equal.
@@ -165,7 +161,7 @@ TODO Difference between dynamic and lexical Scoping
 * `==` Equal.
 * `!=` Not Equal.
 
-#### Relational Operators Defined for `string` Data Types ####
+#### Relational Operators Defined for `string` Data Types
 
 * `lt` Lexical less.
 * `le` Lexical less or equal.
@@ -174,19 +170,21 @@ TODO Difference between dynamic and lexical Scoping
 * `eq` Equal.
 * `ne` Not equal.
 
-#### Logical Operators ####
+#### Logical Operators
 
 * `&&` Logical and.
 * `||` Logical or.
 * `!` Logical not.
 
-#### Other Operators ####
+#### Other Operators
 
 * `=` Assignment to a variable.
 * `+` Concatenation of strings and lists.
 * `:` Dereferencing of maps.
 
-Accessing elements of Lists and Maps
+### Operator Precedence
+
+Accessing Elements of Lists and Maps
 ------------------------------------
 You can access elements of lists or maps with index or key lookups.
 An element of a list is looked up with an index number in square
@@ -196,25 +194,38 @@ the index list.size() - 1
 
 Example:
 ```
-result = resultList[0]
+result = someList[0]
 ```
+The result is set to the first element of the list someList.
 
 Example:
 ```
-rc = ResultMap['Code']
+result = someMap['Name']
+```
+The result is set to the value of the Name entry of someMap.
+
+This Example is equivalent to the last example:
+```
+result = someMap:Name
 ```
 
-Example:
+The dereference operators and index access can be chained, too:
 ```
-rc = resultMap:Code
+User:Orders[0]:OrderItems[0]:Name
 ```
+But if the list of Orders or OrderItems is empty, you will get an error while generating.
 
-### Statements and Statement Blocks ###
+
+### Statements and Statement Blocks
 
 Blocks of statements are delimited with `{` and `}`.
 
-#### If Statement ####
-conditional evaluation, branching
+#### Variable Scopes
+
+TODO Difference between dynamic and lexical Scoping
+
+#### `if` Statement ####
+The `if` statement is used for conditional evaluation and branching.
 
 ```
 if(EXPR) BLOCK_STMT [ else BLOCK_STMT]
@@ -260,7 +271,7 @@ List elements for which the evaluation of the filter expression returns
 FALSE are skipped.
 
 ```
-foreach VAR [ | FILTER_EXPR] <- LIST_VAR BLOCK_STMT
+foreach VAR [| FILTER_EXPR] <- LIST_VAR BLOCK_STMT
 ```
 
 Example 1:
@@ -277,13 +288,13 @@ foreach item | (item:Count > 10) <- orderItems {
 }
 ```
 
-### Methods ###
+### Methods
 There are 2 different kinds of methods in the template language. The
 first kind of methods are called Template Methods which can be declared
 and implemented in the template code. The second type of methods are
 methods defined on the data types of the template language.
 
-#### Template Methods ####
+#### Template Methods
 You can declare methods in the template code. A method declaration has a
 return type, a name, a list of parameter declarations and a block of
 code with the implementation of the method. 
@@ -321,58 +332,80 @@ than once, the previous method gets overridden. You can access the
 previous version with a call to `super()` inside the methods code
 block.
 
-#### Methods on Data Types ####
+#### Methods on Data Types
 The methods defined on the data types of the template language are
 written in Java. The template engine provides the following methods.
 
-Example:
-```
-list values = csvLine.split(';')
-```
-
 ##### split
-Signature: `string <string>.split(string pattern)`
+Signature: `list <string>.split(string pattern)`
+* Splits a string into a list using the pattern as delimiter.
 
 ##### matches
 Signature: `numeric <string>.matches(string pattern)`
+* Matches the string against the regular expression pattern. Returns
+  *TRUE* if there's a match, otherwise *FALSE*.
 
 ##### startsWith
 Signature: `numeric <string>.startsWith(string start)`
+* Returns *TRUE* if the string starts with start.
 
 ##### endsWith
 Signature: `numeric <string>.endsWith(string end)`
+* Returns *TRUE* if the string ends with end.
 
 ##### toLower
 Signature: `string <string>.toLower()`
+* Converts the whole string to lower case characters.
 
 ##### toUpper
 Signature: `string <string>.toUpper()`
+* Converts the whole string to upper case characters.
 
 ##### firstLower
 Signature: `string <string>.firstLower()`
+* Converts the first character of the string to lower case.
 
 ##### firstUpper
 Signature: `string <string>.firstUpper()`
+* Converts the first character of the string to upper case.
 
 ##### replace
 Signature: `string <string>.replace(string substring, string replacement)`
+* Replaces every occurrence of the substring in the string with the
+  replacement.
 
 ##### camelCaseToUnderScore
 Signature: `string <string>.camelCaseToUnderScore()`
+* Converts the in word occurrences of an upper case characters to a
+  combination of an underscore and the lower case character.
+  E.g. `ThisSampleText` is converted to `This_sample_text`
 
 ##### size
 Signatures: `numeric <string>.size()`, `numeric <list>.size()`and `numeric <map>.size()`
+* Returns the size of the string, list or map value. For strings the
+  size is the length of the string. For lists and maps, the size is
+  the number of elements.
 
 ##### add
-Signature: `list <list>.add(any element)`
+Signatures `list <list>.add(any element)`
+* Appends the element to the list.
 
 ##### hasNext
 Signature: `numeric <list>.hasNext()`
+* Inside a foreach loop you can check if there are more elements in
+  the list after the current entry.
 
 ##### put
 Signature: `map <map>.put(string key, <any> element)`
+* Adds an element to the map under the given key.
 
 ##### keyList
 Signature: `list <map>.keyList()`
+* Returns a list of all the keys contained in the map.
+Example:
+```
+string csvLine = '1;Ludger;Solbach;VALUABLE_CUSTOMER'
+list values = csvLine.split(';')
+```
 
 [Table of Content] (TemplateEngine.md "Table of Content")

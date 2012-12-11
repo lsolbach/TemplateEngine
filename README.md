@@ -1,10 +1,9 @@
 Template Engine
 ===============
 
-The soulspace.org TemplateEngine is as you might have guessed a
-template engine written in Java.
-It consists of a template language and an engine for processing
-the language and transforming and emitting texts.
+The soulspace.org TemplateEngine is a template engine written in Java
+(as you might have guessed). It consists of a template language and an
+engine for processing the language and transforming and emitting texts.
 
 Features:
 ---------
