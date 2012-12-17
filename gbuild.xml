@@ -1,0 +1,12 @@
+<project name="TemplateEngine" default="distribute">
+		
+	<property environment="env"/>
+	<property file="build.properties"/>
+	<property name="global.build.dir" value="${env.GLOBAL_BUILD_HOME}"/>
+	
+	<!-- import common build files -->
+	<import file="${global.build.dir}/ant/global.properties.xml"/>
+	<import file="${global.build.dir}/ant/global.build.xml"/>
+	
+	<!--import file="${global.build.dir}/ant/plugins/simple-dependencies.xml"/-->
+</project>
