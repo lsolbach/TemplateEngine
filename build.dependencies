@@ -7,7 +7,7 @@
 		<package name="junit" version="3.8.1" type="lib">
 			<module name="junit"/>
 		</package>
-		<package name="junitperf" version="1.9.1" type="lib">
+		<package name="com/clarkware/junitperf" version="1.9.1" type="lib">
 			<module name="junitperf"/>
 		</package>
 	</dependency>
