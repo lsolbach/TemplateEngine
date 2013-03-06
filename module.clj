@@ -1,6 +1,6 @@
 [
  :name "TemplateEngine"
- :project "org.soulspace"
+ :project "org.soulspace.template"
  :project-lead "Ludger Solbach"
  :vendor "soulspace.org"
  :version "1.0.0"
