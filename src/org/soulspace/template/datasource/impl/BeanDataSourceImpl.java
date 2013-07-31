@@ -12,9 +12,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.soulspace.template.datasource.DataSource;
 import org.soulspace.template.value.ListValue;
+import org.soulspace.template.value.MapValue;
+import org.soulspace.template.value.NumericValue;
+import org.soulspace.template.value.StringValue;
 import org.soulspace.template.value.SymbolTable;
 import org.soulspace.template.value.Value;
 import org.soulspace.template.value.impl.SymbolTableImpl;
@@ -296,5 +300,5 @@ public class BeanDataSourceImpl implements DataSource {
 	protected void setCache(Map<Object, SymbolTable> cache) {
 		this.cache = cache;
 	}
-	
+
 }

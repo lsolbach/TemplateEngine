@@ -25,11 +25,6 @@ Features:
 	* methods as return value (function builders)
 * extensible library of type methods (e.g. s.split(';') or s.toLower() on strings)
 
-Runtime Requirements:
----------------------
-Jakarta ORO >= 2.0.8 (could be refactored to use standard Java RegEx,
-then there would be no external dependencies anymore. Volunteers?)
-
 Documentation
 -------------
 See `doc/TemplateEngine.md`.
@@ -46,6 +41,11 @@ Copyright
 ---------
 © 2002-2012 Ludger Solbach
 
+Runtime Requirements:
+---------------------
+Jakarta ORO >= 2.0.8 (could be refactored to use standard Java RegEx,
+then there would be no external dependencies anymore. Volunteers?)
+
 Code Repository
 ---------------
 [https://github.com/lsolbach/TemplateEngine] (https://github.com/lsolbach/TemplateEngine)
@@ -53,7 +53,12 @@ Code Repository
 History
 -------
 
-Version 1.0.0 (--.--.2012)
+Version 1.0.1 (--.--.2013)
+--------------------------
+* refactored module.clj
+* added DataSourceUtil to dump the content for debugging
+
+Version 1.0.0 (08.03.2013)
 --------------------------
 * initial import to github
 * switched to git
