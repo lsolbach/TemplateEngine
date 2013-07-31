@@ -4,10 +4,11 @@
 	<classpathentry kind="src" path="examples"/>
 	<classpathentry kind="src" path="fittest"/>
 	<classpathentry kind="src" path="unittest"/>
-	<classpathentry kind="lib" path="lib/dev/fitnesse.jar"/>
-	<classpathentry kind="lib" path="lib/dev/junit.jar"/>
-	<classpathentry kind="lib" path="lib/dev/junitperf.jar"/>
-	<classpathentry kind="lib" path="lib/runtime/oro.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="build/lib/dev/fitlibrary.jar"/>
+	<classpathentry kind="lib" path="build/lib/dev/fitnesse.jar"/>
+	<classpathentry kind="lib" path="build/lib/dev/junit.jar"/>
+	<classpathentry kind="lib" path="build/lib/dev/junitperf.jar"/>
+	<classpathentry kind="lib" path="build/lib/runtime/oro.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
