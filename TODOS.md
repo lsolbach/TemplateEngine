@@ -8,4 +8,5 @@ TODO's
 * English documentation (MichaelJ?)
 * License reference in source files
 * range operator '..', cons operator '&' or '->'?
+* literals for lists and maps
 * super method check on parsing
