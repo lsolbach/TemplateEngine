@@ -7,7 +7,7 @@
  :type :component
  :description "General purpose template engine"
  :license ["Eclipse Public License 1.0" "http://www.eclipse.org/legal/epl-v10.html"]
- :plugins ["global" "sdeps" "java" "junit" "package"]
+ :plugins ["global" "dependencies" "java" "junit" "package"]
  :dependencies [[["oro" "oro" "2.0.8"]]
                 [["junit" "junit" "3.8.1"] :dev]
                 [["com.clarkware" "junitperf" "1.9.1"] :dev]
