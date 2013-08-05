@@ -1,5 +1,11 @@
 /*
- * Created on Aug 14, 2005
+ *  Copyright (c) Ludger Solbach. All rights reserved.
+ *  The use and distribution terms for this software are covered by the
+ *  Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+ *  which can be found in the file license.txt at the root of this distribution.
+ *  By using this software in any fashion, you are agreeing to be bound by
+ *  the terms of this license.
+ *  You must not remove this notice, or any other, from this software.
  */
 package org.soulspace.template.examples.contact;
 
@@ -14,8 +20,9 @@ import org.soulspace.template.impl.TemplateEngineImpl;
 
 /**
  * Simple example for the use of the soulspace template engine.
+ * 
  * @author soulman
- *
+ * 
  */
 public class ContactMain {
 
@@ -42,8 +49,7 @@ public class ContactMain {
 			TemplateEngine te = new TemplateEngineImpl();
 
 			// load template
-			String template = loadStringFromStream(ContactMain.class
-					.getResourceAsStream("contact.tmpl"));
+			String template = loadStringFromStream(ContactMain.class.getResourceAsStream("contact.tmpl"));
 			te.loadTemplate(template);
 
 			// setup data sources
@@ -64,12 +70,13 @@ public class ContactMain {
 
 	/**
 	 * Reads a stream as string.
-	 * @param is input stream
+	 * 
+	 * @param is
+	 *            input stream
 	 * @return string
 	 * @throws IOException
 	 */
-	public static String loadStringFromStream(InputStream is)
-			throws IOException {
+	public static String loadStringFromStream(InputStream is) throws IOException {
 		StringBuilder buffer = new StringBuilder(128);
 		String line = null;
 

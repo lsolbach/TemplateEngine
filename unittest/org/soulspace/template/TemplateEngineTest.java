@@ -1,6 +1,11 @@
 /*
- * Created on May 2, 2004
- *
+ *  Copyright (c) Ludger Solbach. All rights reserved.
+ *  The use and distribution terms for this software are covered by the
+ *  Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+ *  which can be found in the file license.txt at the root of this distribution.
+ *  By using this software in any fashion, you are agreeing to be bound by
+ *  the terms of this license.
+ *  You must not remove this notice, or any other, from this software.
  */
 package org.soulspace.template;
 
@@ -88,8 +93,7 @@ public class TemplateEngineTest extends TestCase {
 
 	public void testTokenize() {
 		try {
-			tl = t
-					.tokenize("<html><head></head><body><?foreach Chapter <- Chapters {?><h1><?Chapter:Heading?</h1><?}?></body></html>");
+			tl = t.tokenize("<html><head></head><body><?foreach Chapter <- Chapters {?><h1><?Chapter:Heading?</h1><?}?></body></html>");
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
 		}
@@ -120,10 +124,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<html><?CONTENT?></html>");
 			root = p.parseTerm(tl, null, false);
 			assertNotNull("AST created", root);
-			assertEquals("AST has three children", 3, root.getChildNodes()
-					.size());
-			assertEquals("Expecting IDENTIFIER", AstNodeType.IDENTIFIER, root
-					.getChild(1).getType());
+			assertEquals("AST has three children", 3, root.getChildNodes().size());
+			assertEquals("Expecting IDENTIFIER", AstNodeType.IDENTIFIER, root.getChild(1).getType());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -140,10 +142,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a = b?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting ASSIGN ", AstNodeType.ASSIGN, root
-					.getChild(0).getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting ASSIGN ", AstNodeType.ASSIGN, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -160,10 +160,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a || b?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting LOGICAL_OR", AstNodeType.LOGICAL_OR, root
-					.getChild(0).getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting LOGICAL_OR", AstNodeType.LOGICAL_OR, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -180,18 +178,14 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?(a || b || c)?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting LOGICAL_OR", AstNodeType.LOGICAL_OR, root
-					.getChild(0).getType());
-			assertEquals("AST has tree children", 3, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting LOGICAL_OR", AstNodeType.LOGICAL_OR, root.getChild(0).getType());
+			assertEquals("AST has tree children", 3, root.getChild(0).getChildNodes().size());
 
 			tl = t.tokenize("<?a || b || c?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting LOGICAL_OR", AstNodeType.LOGICAL_OR, root
-					.getChild(0).getType());
-			assertEquals("AST has tree children", 3, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting LOGICAL_OR", AstNodeType.LOGICAL_OR, root.getChild(0).getType());
+			assertEquals("AST has tree children", 3, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -208,10 +202,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a && b?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting LOGICAL_AND", AstNodeType.LOGICAL_AND, root
-					.getChild(0).getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting LOGICAL_AND", AstNodeType.LOGICAL_AND, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -228,10 +220,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a && b && c?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting LOGICAL_AND", AstNodeType.LOGICAL_AND, root
-					.getChild(0).getType());
-			assertEquals("AST has tree children", 3, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting LOGICAL_AND", AstNodeType.LOGICAL_AND, root.getChild(0).getType());
+			assertEquals("AST has tree children", 3, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -248,10 +238,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a == b?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting EQUAL", AstNodeType.EQUAL, root.getChild(0)
-					.getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting EQUAL", AstNodeType.EQUAL, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -268,10 +256,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a != b?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting NOT_EQUAL", AstNodeType.NOT_EQUAL, root
-					.getChild(0).getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting NOT_EQUAL", AstNodeType.NOT_EQUAL, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -288,10 +274,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a eq b?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting STRING_EQUAL", AstNodeType.STRING_EQUAL,
-					root.getChild(0).getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting STRING_EQUAL", AstNodeType.STRING_EQUAL, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -308,10 +292,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a ne b?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting STRING_NOT_EQUAL",
-					AstNodeType.STRING_NOT_EQUAL, root.getChild(0).getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting STRING_NOT_EQUAL", AstNodeType.STRING_NOT_EQUAL, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -328,10 +310,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a > b?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting GREATER", AstNodeType.GREATER, root
-					.getChild(0).getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting GREATER", AstNodeType.GREATER, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -348,10 +328,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?(a >= b)?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting GREATER_EQUAL", AstNodeType.GREATER_EQUAL,
-					root.getChild(0).getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting GREATER_EQUAL", AstNodeType.GREATER_EQUAL, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -368,10 +346,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a < b?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting LESS", AstNodeType.LESS, root.getChild(0)
-					.getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting LESS", AstNodeType.LESS, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -388,10 +364,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a <= b?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting LESS_EQUAL", AstNodeType.LESS_EQUAL, root
-					.getChild(0).getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting LESS_EQUAL", AstNodeType.LESS_EQUAL, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -408,18 +382,14 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a + b?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting PLUS", AstNodeType.PLUS, root.getChild(0)
-					.getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting PLUS", AstNodeType.PLUS, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 			tl = t.tokenize("<?a + b + c?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting PLUS", AstNodeType.PLUS, root.getChild(0)
-					.getType());
-			assertEquals("AST has tree children", 3, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting PLUS", AstNodeType.PLUS, root.getChild(0).getType());
+			assertEquals("AST has tree children", 3, root.getChild(0).getChildNodes().size());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -436,20 +406,15 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a - b?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting MINUS", AstNodeType.MINUS, root.getChild(0)
-					.getType());
-			assertTrue("AST has two children", root.getChild(0).getChildNodes()
-					.size() == 2);
+			assertEquals("Expecting MINUS", AstNodeType.MINUS, root.getChild(0).getType());
+			assertTrue("AST has two children", root.getChild(0).getChildNodes().size() == 2);
 
 			tl = t.tokenize("<?a - b + c?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting PLUS", AstNodeType.PLUS, root.getChild(0)
-					.getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
-			assertEquals("Expecting MINUS", AstNodeType.MINUS, root.getChild(0)
-					.getChild(0).getType());
+			assertEquals("Expecting PLUS", AstNodeType.PLUS, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
+			assertEquals("Expecting MINUS", AstNodeType.MINUS, root.getChild(0).getChild(0).getType());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -466,28 +431,21 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a * b?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting MULT", AstNodeType.MULT, root.getChild(0)
-					.getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting MULT", AstNodeType.MULT, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 			tl = t.tokenize("<?a * b * c?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting MULT", AstNodeType.MULT, root.getChild(0)
-					.getType());
-			assertEquals("AST has tree children", 3, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting MULT", AstNodeType.MULT, root.getChild(0).getType());
+			assertEquals("AST has tree children", 3, root.getChild(0).getChildNodes().size());
 
 			tl = t.tokenize("<?a / b * c?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting MULT", AstNodeType.MULT, root.getChild(0)
-					.getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
-			assertEquals("Expecting DIV", AstNodeType.DIV, root.getChild(0)
-					.getChild(0).getType());
+			assertEquals("Expecting MULT", AstNodeType.MULT, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
+			assertEquals("Expecting DIV", AstNodeType.DIV, root.getChild(0).getChild(0).getType());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -504,10 +462,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a / b?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting DIV", AstNodeType.DIV, root.getChild(0)
-					.getType());
-			assertTrue("AST has two children", root.getChild(0).getChildNodes()
-					.size() == 2);
+			assertEquals("Expecting DIV", AstNodeType.DIV, root.getChild(0).getType());
+			assertTrue("AST has two children", root.getChild(0).getChildNodes().size() == 2);
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -524,10 +480,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a // b?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting IDIV", AstNodeType.IDIV, root.getChild(0)
-					.getType());
-			assertTrue("AST has two children", root.getChild(0).getChildNodes()
-					.size() == 2);
+			assertEquals("Expecting IDIV", AstNodeType.IDIV, root.getChild(0).getType());
+			assertTrue("AST has two children", root.getChild(0).getChildNodes().size() == 2);
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -544,10 +498,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?a % b?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting MODULO", AstNodeType.MODULO, root.getChild(
-					0).getType());
-			assertTrue("AST has two children", root.getChild(0).getChildNodes()
-					.size() == 2);
+			assertEquals("Expecting MODULO", AstNodeType.MODULO, root.getChild(0).getType());
+			assertTrue("AST has two children", root.getChild(0).getChildNodes().size() == 2);
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -564,10 +516,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?!b?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting LOGICAL_NOT", AstNodeType.LOGICAL_NOT, root
-					.getChild(0).getType());
-			assertTrue("AST has one child", root.getChild(0).getChildNodes()
-					.size() == 1);
+			assertEquals("Expecting LOGICAL_NOT", AstNodeType.LOGICAL_NOT, root.getChild(0).getType());
+			assertTrue("AST has one child", root.getChild(0).getChildNodes().size() == 1);
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -584,10 +534,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?-b?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting MINUS", AstNodeType.MINUS, root.getChild(0)
-					.getType());
-			assertTrue("AST has one child", root.getChild(0).getChildNodes()
-					.size() == 1);
+			assertEquals("Expecting MINUS", AstNodeType.MINUS, root.getChild(0).getType());
+			assertTrue("AST has one child", root.getChild(0).getChildNodes().size() == 1);
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -604,14 +552,12 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?(a)?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting IDENTIFIER", AstNodeType.IDENTIFIER, root
-					.getChild(0).getType());
+			assertEquals("Expecting IDENTIFIER", AstNodeType.IDENTIFIER, root.getChild(0).getType());
 
 			tl = t.tokenize("<?((a))?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting IDENTIFIER", AstNodeType.IDENTIFIER, root
-					.getChild(0).getType());
+			assertEquals("Expecting IDENTIFIER", AstNodeType.IDENTIFIER, root.getChild(0).getType());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -628,12 +574,9 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?b[a]?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting IDENTIFIER", AstNodeType.IDENTIFIER, root
-					.getChild(0).getType());
-			assertTrue("IDENTIFIER has one child", root.getChild(0)
-					.getChildNodes().size() == 1);
-			assertEquals("Expecting IDENTIFIER", AstNodeType.IDENTIFIER, root
-					.getChild(0).getChild(0).getType());
+			assertEquals("Expecting IDENTIFIER", AstNodeType.IDENTIFIER, root.getChild(0).getType());
+			assertTrue("IDENTIFIER has one child", root.getChild(0).getChildNodes().size() == 1);
+			assertEquals("Expecting IDENTIFIER", AstNodeType.IDENTIFIER, root.getChild(0).getChild(0).getType());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -650,8 +593,7 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?1.5?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting NUMERIC_CONST", AstNodeType.NUMERIC_CONST,
-					root.getChild(0).getType());
+			assertEquals("Expecting NUMERIC_CONST", AstNodeType.NUMERIC_CONST, root.getChild(0).getType());
 			// assertTrue("AST has one child",
 			// root.getChild(0).getChildNodes().size() == 1);
 
@@ -670,8 +612,7 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?'Hello'?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting STRING_CONST", AstNodeType.STRING_CONST,
-					root.getChild(0).getType());
+			assertEquals("Expecting STRING_CONST", AstNodeType.STRING_CONST, root.getChild(0).getType());
 			// assertTrue("AST has one child",
 			// root.getChild(0).getChildNodes().size() == 1);
 
@@ -688,10 +629,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?if(classes[1]:name eq 'Class2') { 'true' }?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting IF", AstNodeType.IF, root.getChild(0)
-					.getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting IF", AstNodeType.IF, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 
 			tl = t.tokenize("<?valueMap['expensive']?>");
 			root = p.parseTerm(tl, null, false);
@@ -701,8 +640,7 @@ public class TemplateEngineTest extends TestCase {
 			// assertEquals("AST has two children", 2,
 			// root.getChild(0).getChildNodes().size());
 
-			tl = t
-					.tokenize("<?taggedValue = Classes:TaggedValueMap['documentation']?>");
+			tl = t.tokenize("<?taggedValue = Classes:TaggedValueMap['documentation']?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
 			// assertEquals("Expecting IF", AstNodeType.IF,
@@ -725,10 +663,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?if(a) { b }?>");
 			root = p.parseTerm(tl, null, false);
 			assertEquals("AST has one child", 1, root.getChildNodes().size());
-			assertEquals("Expecting IF", AstNodeType.IF, root.getChild(0)
-					.getType());
-			assertEquals("AST has two children", 2, root.getChild(0)
-					.getChildNodes().size());
+			assertEquals("Expecting IF", AstNodeType.IF, root.getChild(0).getType());
+			assertEquals("AST has two children", 2, root.getChild(0).getChildNodes().size());
 			// assertEquals("Expectin");
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -745,10 +681,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?if (a) { b } else { c }?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting IF", AstNodeType.IF, root.getChild(0)
-					.getType());
-			assertTrue("AST has three children", root.getChild(0)
-					.getChildNodes().size() == 3);
+			assertEquals("Expecting IF", AstNodeType.IF, root.getChild(0).getType());
+			assertTrue("AST has three children", root.getChild(0).getChildNodes().size() == 3);
 			// assertEquals("Expectin");
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -765,10 +699,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?" + "foreach x <- a { " + " b " + "}" + "?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting FOREACH", AstNodeType.FOREACH, root
-					.getChild(0).getType());
-			assertTrue("AST has two children", root.getChild(0).getChildNodes()
-					.size() == 3);
+			assertEquals("Expecting FOREACH", AstNodeType.FOREACH, root.getChild(0).getType());
+			assertTrue("AST has two children", root.getChild(0).getChildNodes().size() == 3);
 			// assertEquals("Expectin");
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -784,10 +716,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?while(a) { b }?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting WHILE", AstNodeType.WHILE, root.getChild(0)
-					.getType());
-			assertTrue("AST has two children", root.getChild(0).getChildNodes()
-					.size() == 2);
+			assertEquals("Expecting WHILE", AstNodeType.WHILE, root.getChild(0).getType());
+			assertTrue("AST has two children", root.getChild(0).getChildNodes().size() == 2);
 			// assertEquals("Expectin");
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -803,10 +733,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?{ a } { b }?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has two child", root.getChildNodes().size() == 2);
-			assertEquals("Expecting TERM", AstNodeType.TERM, root.getChild(0)
-					.getType());
-			assertTrue("AST has 1 children", root.getChild(0).getChildNodes()
-					.size() == 1);
+			assertEquals("Expecting TERM", AstNodeType.TERM, root.getChild(0).getType());
+			assertTrue("AST has 1 children", root.getChild(0).getChildNodes().size() == 1);
 			// assertEquals("Expecting");
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -822,10 +750,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?string a?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting DECLARATION", AstNodeType.DECLARATION, root
-					.getChild(0).getType());
-			assertTrue("AST has 1 children", root.getChild(0).getChildNodes()
-					.size() == 1);
+			assertEquals("Expecting DECLARATION", AstNodeType.DECLARATION, root.getChild(0).getType());
+			assertTrue("AST has 1 children", root.getChild(0).getChildNodes().size() == 1);
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
 		} catch (SyntaxException e) {
@@ -840,10 +766,8 @@ public class TemplateEngineTest extends TestCase {
 			tl = t.tokenize("<?foreach x <- a { if (x) { b } }?>");
 			root = p.parseTerm(tl, null, false);
 			assertTrue("AST has one child", root.getChildNodes().size() == 1);
-			assertEquals("Expecting FOREACH", AstNodeType.FOREACH, root
-					.getChild(0).getType());
-			assertTrue("AST has 2 children", root.getChild(0).getChildNodes()
-					.size() == 3);
+			assertEquals("Expecting FOREACH", AstNodeType.FOREACH, root.getChild(0).getType());
+			assertTrue("AST has 2 children", root.getChild(0).getChildNodes().size() == 3);
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
 		} catch (SyntaxException e) {
@@ -877,8 +801,7 @@ public class TemplateEngineTest extends TestCase {
 		tl = t.tokenize("<?string a?><?a = 'hello World'?><?echo(a)?>");
 		root = p.parse(tl);
 		assertTrue("AST has one child", root.getChildNodes().size() == 1);
-		assertEquals("Expecting METHOD_CALL", AstNodeType.METHOD_CALL, root
-				.getChild(0).getChild(2).getType());
+		assertEquals("Expecting METHOD_CALL", AstNodeType.METHOD_CALL, root.getChild(0).getChild(2).getType());
 		// assertEquals("AST has 1 child", 1,
 		// root.getChild(0).getChildNodes().size());
 		// assertEquals("Expecting ARG_LIST", AstNodeType.ARG_LIST,
@@ -888,13 +811,10 @@ public class TemplateEngineTest extends TestCase {
 	public void testAstTypeMethodCall() {
 		AstNode root = null;
 
-		tl = t.tokenize("<?" + "string a " + "a = 'hello World' "
-				+ "a.firstUpper()" + "?>");
+		tl = t.tokenize("<?" + "string a " + "a = 'hello World' " + "a.firstUpper()" + "?>");
 		root = p.parse(tl);
 		assertTrue("AST has one child", root.getChildNodes().size() == 1);
-		assertEquals("Expecting TYPE_METHOD_CALL",
-				AstNodeType.TYPE_METHOD_CALL, root.getChild(0).getChild(2)
-						.getType());
+		assertEquals("Expecting TYPE_METHOD_CALL", AstNodeType.TYPE_METHOD_CALL, root.getChild(0).getChild(2).getType());
 		// assertEquals("AST has 1 child", 1,
 		// root.getChild(0).getChildNodes().size());
 		// assertEquals("Expecting ARG_LIST", AstNodeType.ARG_LIST,
@@ -1284,8 +1204,7 @@ public class TemplateEngineTest extends TestCase {
 		((ListValue) st.getSymbol("e")).addNewStringValue("Ju");
 		((ListValue) st.getSymbol("e")).addNewStringValue("Hu");
 		((ListValue) st.getSymbol("e")).addNewStringValue("Bu");
-		tl = t.tokenize("<?" + "numeric i " + "i = 0 " + "while(i < 3) { "
-				+ "  e[i] " + "  i = i + 1 " + "}" + "?>");
+		tl = t.tokenize("<?" + "numeric i " + "i = 0 " + "while(i < 3) { " + "  e[i] " + "  i = i + 1 " + "}" + "?>");
 		root = p.parse(tl);
 		env = new EnvironmentImpl(st);
 		result = g.generate(env, root);

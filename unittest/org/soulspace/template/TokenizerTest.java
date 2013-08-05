@@ -1,3 +1,12 @@
+/*
+ *  Copyright (c) Ludger Solbach. All rights reserved.
+ *  The use and distribution terms for this software are covered by the
+ *  Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+ *  which can be found in the file license.txt at the root of this distribution.
+ *  By using this software in any fashion, you are agreeing to be bound by
+ *  the terms of this license.
+ *  You must not remove this notice, or any other, from this software.
+ */
 package org.soulspace.template;
 
 import junit.framework.TestCase;
@@ -36,8 +45,7 @@ public class TokenizerTest extends TestCase {
 
 	public void testTokMultiLine() {
 		try {
-			tl = t.tokenize("<html>\n" + "<head>\n" + "</head>\n" + "<body>\n"
-					+ "</body>\n" + "</html>");
+			tl = t.tokenize("<html>\n" + "<head>\n" + "</head>\n" + "<body>\n" + "</body>\n" + "</html>");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -94,8 +102,7 @@ public class TokenizerTest extends TestCase {
 			tl = t.tokenize("<?name.toUpper()?>");
 			assertEquals("Tokenlist has 5 Tokens", 5, tl.size());
 			assertEquals(TokenType.IDENTIFIER, tl.getToken().getType());
-			assertEquals(TokenType.TYPE_METHOD_CALL, tl.getNextToken()
-					.getType());
+			assertEquals(TokenType.TYPE_METHOD_CALL, tl.getNextToken().getType());
 			assertEquals(TokenType.IDENTIFIER, tl.getNextToken().getType());
 			assertEquals(TokenType.PAREN_LEFT, tl.getNextToken().getType());
 			assertEquals(TokenType.PAREN_RIGHT, tl.getNextToken().getType());
@@ -108,16 +115,13 @@ public class TokenizerTest extends TestCase {
 		try {
 			tl = t.tokenize("<?'\\''?>");
 			assertEquals("Tokenlist has 1 Tokens", 1, tl.size());
-			assertEquals("TokenImpl is string constant", TokenType.STRING_CONST, tl
-					.getToken().getType());
+			assertEquals("TokenImpl is string constant", TokenType.STRING_CONST, tl.getToken().getType());
 			assertEquals("TokenImpl data is '", "'", tl.getToken().getData());
 
 			tl = t.tokenize("<?'begin'?>");
 			assertEquals("Tokenlist has 1 Tokens", 1, tl.size());
-			assertEquals("TokenImpl is string constant", TokenType.STRING_CONST, tl
-					.getToken().getType());
-			assertEquals("TokenImpl data is 'begin'", "begin", tl.getToken()
-					.getData());
+			assertEquals("TokenImpl is string constant", TokenType.STRING_CONST, tl.getToken().getType());
+			assertEquals("TokenImpl data is 'begin'", "begin", tl.getToken().getData());
 
 		} catch (UnknownTokenException e) {
 			e.printStackTrace();
@@ -125,8 +129,7 @@ public class TokenizerTest extends TestCase {
 	}
 
 	public void testTokenLines() {
-		tl = t.tokenize("<html>\n" + "<head>\n" + "</head>\n" + "\n"
-				+ "<body>\n" + "<?\n" + "foreach item <- list {\n" + "\n"
+		tl = t.tokenize("<html>\n" + "<head>\n" + "</head>\n" + "\n" + "<body>\n" + "<?\n" + "foreach item <- list {\n" + "\n"
 				+ "  item:Name\n" + "}\n" + "?>\n" + "</body>\n" + "</html>");
 		Token tk;
 		tk = tl.getToken();
@@ -152,10 +155,8 @@ public class TokenizerTest extends TestCase {
 		tk = tl.getNextToken();
 		assertEquals("Line 10, TokenImpl " + tk, 11, tk.getLine());
 
-		tl = t.tokenize("<?!--multiline\n" + "comment\n" + "test--?>\n"
-				+ "<html>\n" + "<head>\n" + "</head>\n" + "\n" + "<body>\n"
-				+ "<?\n" + "foreach item <- list {?>\n" + "  <?item:Name?>\n"
-				+ "<?}\n" + "?>\n" + "</body>\n" + "</html>");
+		tl = t.tokenize("<?!--multiline\n" + "comment\n" + "test--?>\n" + "<html>\n" + "<head>\n" + "</head>\n" + "\n" + "<body>\n"
+				+ "<?\n" + "foreach item <- list {?>\n" + "  <?item:Name?>\n" + "<?}\n" + "?>\n" + "</body>\n" + "</html>");
 
 	}
 

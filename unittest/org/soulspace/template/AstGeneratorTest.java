@@ -1,3 +1,12 @@
+/*
+ *  Copyright (c) Ludger Solbach. All rights reserved.
+ *  The use and distribution terms for this software are covered by the
+ *  Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+ *  which can be found in the file license.txt at the root of this distribution.
+ *  By using this software in any fashion, you are agreeing to be bound by
+ *  the terms of this license.
+ *  You must not remove this notice, or any other, from this software.
+ */
 package org.soulspace.template;
 
 import java.io.File;
@@ -188,8 +197,7 @@ public class AstGeneratorTest extends TestCase {
 		((ListValue) st.getSymbol("myList")).addValue(st.getSymbol("myMap2"));
 
 		try {
-			tl = t.tokenize("<?foreach m <- myList {?>"
-					+ "<?m['Greetings']?> <?m['Name']?> " + "<?} ?>");
+			tl = t.tokenize("<?foreach m <- myList {?>" + "<?m['Greetings']?> <?m['Name']?> " + "<?} ?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
@@ -208,20 +216,15 @@ public class AstGeneratorTest extends TestCase {
 		String result = "";
 
 		try {
-			tl = t.tokenize("<?" + "printMessage('hallo') " + ""
-					+ "string printMessage(string message) { " + "  message "
-					+ "} " + "?>");
+			tl = t.tokenize("<?" + "printMessage('hallo') " + "" + "string printMessage(string message) { " + "  message " + "} "
+					+ "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			assertEquals("Result", "hallo", result);
 
-			tl = t
-					.tokenize("<?"
-							+ "print2Messages('hallo', 'welt') "
-							+ ""
-							+ "string print2Messages(string message1, string message2) { "
-							+ "  message1?> <?message2" + "} " + "?>");
+			tl = t.tokenize("<?" + "print2Messages('hallo', 'welt') " + ""
+					+ "string print2Messages(string message1, string message2) { " + "  message1?> <?message2" + "} " + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
@@ -238,19 +241,15 @@ public class AstGeneratorTest extends TestCase {
 		st.addStringValue("name", "Ludger Solbach");
 
 		try {
-			tl = t.tokenize("<?" + "string printMessage(string message) { "
-					+ "?> hyper <?message " + "} "
-					+ "string printMessage(string message) { "
-					+ "?> super <?message " + "super(message) " + "} "
-					+ "string printMessage(string message) {" + "super(message) "
-					+ "?> plain <?message " + "} " + "printMessage('hallo') "
-					+ "?>");
+			tl = t.tokenize("<?" + "string printMessage(string message) { " + "?> hyper <?message " + "} "
+					+ "string printMessage(string message) { " + "?> super <?message " + "super(message) " + "} "
+					+ "string printMessage(string message) {" + "super(message) " + "?> plain <?message " + "} "
+					+ "printMessage('hallo') " + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			System.out.println(result);
-			assertEquals("Result", " super hallo hyper hallo plain hallo",
-					result);
+			assertEquals("Result", " super hallo hyper hallo plain hallo", result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("Super methods");
@@ -259,16 +258,10 @@ public class AstGeneratorTest extends TestCase {
 	}
 
 	public void testCallToNonexistingSuperMethod() {
-		tl = t.tokenize("<?"
-						+ "printMessages('hallo', 'welt') "
-						+ ""
-						+ "string printMessages(string message1, string message2) { "
-						+ "  message1 + ' ' + message2 "
-						+ "super() "
-						+ "} "
-						+ "string printMessages(string message1, string message2, string message3) { "
-						+ "  message1 + ' ' + message2 + ' ' + message3" + "} "
-						+ "?>");
+		tl = t.tokenize("<?" + "printMessages('hallo', 'welt') " + "" + "string printMessages(string message1, string message2) { "
+				+ "  message1 + ' ' + message2 " + "super() " + "} "
+				+ "string printMessages(string message1, string message2, string message3) { "
+				+ "  message1 + ' ' + message2 + ' ' + message3" + "} " + "?>");
 		root = p.parse(tl);
 		try {
 			env = new EnvironmentImpl(st);
@@ -352,8 +345,7 @@ public class AstGeneratorTest extends TestCase {
 		((ListValue) st.getSymbol("xList")).addNewNumericValue("5");
 
 		try {
-			tl = t.tokenize("<?" + "foreach x | (x % 2 == 1) <- xList { "
-					+ " x" + "} " + "?>");
+			tl = t.tokenize("<?" + "foreach x | (x % 2 == 1) <- xList { " + " x" + "} " + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
@@ -391,7 +383,7 @@ public class AstGeneratorTest extends TestCase {
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			assertEquals("Result", "1", result);
-			
+
 			tl = t.tokenize("<?name.substring(1, 4)?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
@@ -428,8 +420,7 @@ public class AstGeneratorTest extends TestCase {
 			result = g.generate(env, root);
 			assertEquals("Result", "Roger Solbach", result);
 
-			tl = t.tokenize("<?" + "if(myMap:Greetings.startsWith('Gr')) { "
-					+ " myMap:Greetings.toUpper() " + "} " + "?>");
+			tl = t.tokenize("<?" + "if(myMap:Greetings.startsWith('Gr')) { " + " myMap:Greetings.toUpper() " + "} " + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
@@ -477,8 +468,8 @@ public class AstGeneratorTest extends TestCase {
 			result = g.generate(env, root);
 			assertEquals("Result", "4", result);
 
-			tl = t.tokenize("<?" + "list pkgs " + "pkgs = path.split('/') "
-					+ "foreach pkg <- pkgs { " + " pkg?>\\<? " + "} " + "?>");
+			tl = t.tokenize("<?" + "list pkgs " + "pkgs = path.split('/') " + "foreach pkg <- pkgs { " + " pkg?>\\<? " + "} "
+					+ "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
@@ -490,15 +481,13 @@ public class AstGeneratorTest extends TestCase {
 			result = g.generate(env, root);
 			assertEquals("Result", "2", result);
 
-			tl = t.tokenize("<?foreach str <- e {?>" + "<?str.toLower()?> "
-					+ "<?}?>");
+			tl = t.tokenize("<?foreach str <- e {?>" + "<?str.toLower()?> " + "<?}?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			assertEquals("Result", "ju hu ", result);
 
-			tl = t.tokenize("<?foreach str <- e {?>" + "<?str.toUpper()?> "
-					+ "<?}?>");
+			tl = t.tokenize("<?foreach str <- e {?>" + "<?str.toUpper()?> " + "<?}?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
@@ -520,50 +509,22 @@ public class AstGeneratorTest extends TestCase {
 		((ListValue) st.getSymbol("e")).addNewStringValue("Hu");
 		st.addListValue("d", new ArrayList<Value>());
 		try {
-			tl = t.tokenize("<?" +
-					"list f = reflect(e)" +
-					"foreach s <- f {" +
-					"  s" +
-					"}" +
-					"" +
-					"list reflect(list myList) {" +
-					"  myList " +
-					"}" +
-					"?>");
+			tl = t.tokenize("<?" + "list f = reflect(e)" + "foreach s <- f {" + "  s" + "}" + "" + "list reflect(list myList) {"
+					+ "  myList " + "}" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			assertEquals("Result", "JuHu", result);
 
-			tl = t.tokenize("<?" +
-					"list f = reflect(e)" +
-					"foreach s <- f {" +
-					"  s" +
-					"}" +
-					"" +
-					"any reflect(list myList) {" +
-					"  myList " +
-					"}" +
-					"?>");
+			tl = t.tokenize("<?" + "list f = reflect(e)" + "foreach s <- f {" + "  s" + "}" + "" + "any reflect(list myList) {"
+					+ "  myList " + "}" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			assertEquals("Result", "JuHu", result);
 
-			tl = t.tokenize("<?" +
-					"list f = reflect(d)" +
-					"foreach s <- f {" +
-					"  s" +
-					"}" +
-					"" +
-					"any reflect(list myList) {" +
-					"	list result" +
-					"	if(myList) {" +
-					"		result = myList" +
-					"	}" +
-					"	result" +
-					"}" +
-					"?>");
+			tl = t.tokenize("<?" + "list f = reflect(d)" + "foreach s <- f {" + "  s" + "}" + "" + "any reflect(list myList) {"
+					+ "	list result" + "	if(myList) {" + "		result = myList" + "	}" + "	result" + "}" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
@@ -574,7 +535,7 @@ public class AstGeneratorTest extends TestCase {
 			fail();
 		}
 	}
-	
+
 	public void testGenMethodReturnTypes2() {
 		String result = "";
 		st.addListValue("e", new ArrayList<Value>());
@@ -593,19 +554,8 @@ public class AstGeneratorTest extends TestCase {
 		((ListValue) st.getSymbol("List")).addValue(st.getSymbol("map1"));
 		((ListValue) st.getSymbol("List")).addValue(st.getSymbol("map2"));
 		try {
-			tl = t.tokenize("<?" +
-					"any head(list elements) {\n" +
-					"	if(elements) {\n" +
-					"		elements[0]\n" +
-					"	}\n" +
-					"}\n" +
-					"\n" +
-					"string name(map element) {\n" +
-					"	element:Name\n" +
-					"}\n" +
-					"\n" +
-					"name(head(List))\n" +
-					"?>");
+			tl = t.tokenize("<?" + "any head(list elements) {\n" + "	if(elements) {\n" + "		elements[0]\n" + "	}\n" + "}\n" + "\n"
+					+ "string name(map element) {\n" + "	element:Name\n" + "}\n" + "\n" + "name(head(List))\n" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
@@ -616,24 +566,15 @@ public class AstGeneratorTest extends TestCase {
 			fail();
 		}
 	}
-	
+
 	public void testGenParameterMatching() {
 		String result = "";
 		st.addListValue("e", new ArrayList<Value>());
 		((ListValue) st.getSymbol("e")).addNewStringValue("Ju");
 		((ListValue) st.getSymbol("e")).addNewStringValue("Hu");
 		try {
-			tl = t.tokenize("<?\n" +
-					"toString(e)\n" +
-					"string toString(string arg) {\n" +
-					"	arg\n" +
-					"}\n" +
-					"string toString(list argList) {\n" +
-					"	foreach item <- argList {\n" +
-					"		item\n" +
-					"	}\n" +
-					"}\n" +
-					"?>");
+			tl = t.tokenize("<?\n" + "toString(e)\n" + "string toString(string arg) {\n" + "	arg\n" + "}\n"
+					+ "string toString(list argList) {\n" + "	foreach item <- argList {\n" + "		item\n" + "	}\n" + "}\n" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
@@ -647,21 +588,14 @@ public class AstGeneratorTest extends TestCase {
 	public void testCodeComments() {
 		String result = "";
 		try {
-			tl = t.tokenize("<?" +
-					"/* this is a code comment */" +
-					"?>");
+			tl = t.tokenize("<?" + "/* this is a code comment */" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			assertEquals("Result", "", result);
 
-			tl = t.tokenize("<?" +
-					"helloWorld() " +
-					"/* this is a code comment for a nice little method */" +
-					"string helloWorld() {" +
-					"'Hello World!'" +
-					"}" +
-					"?>");
+			tl = t.tokenize("<?" + "helloWorld() " + "/* this is a code comment for a nice little method */"
+					+ "string helloWorld() {" + "'Hello World!'" + "}" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
@@ -671,7 +605,7 @@ public class AstGeneratorTest extends TestCase {
 			e.printStackTrace();
 			fail();
 		}
-		
+
 	}
 
 	public void testGenMethodValues() {
@@ -681,43 +615,22 @@ public class AstGeneratorTest extends TestCase {
 		((ListValue) st.getSymbol("e")).addNewStringValue("Mary");
 		((ListValue) st.getSymbol("e")).addNewStringValue("Helmut");
 		try {
-			tl = t.tokenize("<?\n" +
-					"method h = string toString(string arg) {\n" +
-					"	arg\n" +
-					"}\n" +
-					"h('hello method')\n" +
-					"?>");
+			tl = t.tokenize("<?\n" + "method h = string toString(string arg) {\n" + "	arg\n" + "}\n" + "h('hello method')\n" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			assertEquals("Result", "hello method", result);
 
-			tl = t.tokenize("<?\n" +
-					"method h = string toString(string arg) {\n" +
-					"	arg\n" +
-					"}\n" +
-					"string test(method m, string value) {\n" +
-					"	m(value)\n" +
-					"}\n" +
-					"test(h, 'hello method')\n" +
-					"?>");
+			tl = t.tokenize("<?\n" + "method h = string toString(string arg) {\n" + "	arg\n" + "}\n"
+					+ "string test(method m, string value) {\n" + "	m(value)\n" + "}\n" + "test(h, 'hello method')\n" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			assertEquals("Result", "hello method", result);
 
-			tl = t.tokenize("<?\n" +
-					"method h = string greet(string arg) {\n" +
-					"	'hello ' + arg + '!'?>\n" +
-					"<?\n" +
-					"}\n" +
-					"string apply(list e, method m) {\n" +
-					"	foreach name <- e {" +
-					"		m(name)\n" +
-					"	}" +
-					"}\n" +
-					"apply(e, h)\n" +
-					"?>\n");
+			tl = t.tokenize("<?\n" + "method h = string greet(string arg) {\n" + "	'hello ' + arg + '!'?>\n" + "<?\n" + "}\n"
+					+ "string apply(list e, method m) {\n" + "	foreach name <- e {" + "		m(name)\n" + "	}" + "}\n"
+					+ "apply(e, h)\n" + "?>\n");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
@@ -737,128 +650,71 @@ public class AstGeneratorTest extends TestCase {
 		((ListValue) st.getSymbol("e")).addNewStringValue("Mary");
 		((ListValue) st.getSymbol("e")).addNewStringValue("Helmut");
 		try {
-			tl = t.tokenize("<?\n" +
-					"method m1 = string hello(string arg) {\n" +
-					"	'hello ' + arg + '!'?>\n" +
-					"<?\n" +
-					"}\n" +
-					"method m2 = string hello(string arg) {\n" +
-					"	'goodbye ' + arg + '!'?>\n" +
-					"<?\n" +
-					"}\n" +
-					"mList.add(m1)" +
-					"mList.add(m2)" +
-					"string apply1(list e, list methodList) {\n" +
-					"	foreach name <- e {" +
-					"		foreach m <- methodList {" +
-					"			m(name)\n" +
-					"		}" +
-					"	}" +
-					"}\n" +
-					"string apply2(list e, list methodList) {\n" +
-					"	foreach m <- methodList {" +
-					"		foreach name <- e {" +
-					"			m(name)\n" +
-					"		}" +
-					"	}" +
-					"}\n" +
-					"apply1(e, mList)\n" +
-					"apply2(e, mList)\n" +
-					"?>\n");
+			tl = t.tokenize("<?\n" + "method m1 = string hello(string arg) {\n" + "	'hello ' + arg + '!'?>\n" + "<?\n" + "}\n"
+					+ "method m2 = string hello(string arg) {\n" + "	'goodbye ' + arg + '!'?>\n" + "<?\n" + "}\n" + "mList.add(m1)"
+					+ "mList.add(m2)" + "string apply1(list e, list methodList) {\n" + "	foreach name <- e {"
+					+ "		foreach m <- methodList {" + "			m(name)\n" + "		}" + "	}" + "}\n"
+					+ "string apply2(list e, list methodList) {\n" + "	foreach m <- methodList {" + "		foreach name <- e {"
+					+ "			m(name)\n" + "		}" + "	}" + "}\n" + "apply1(e, mList)\n" + "apply2(e, mList)\n" + "?>\n");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			System.out.println(result);
-//			assertEquals("Result", "hello method", result);
+			// assertEquals("Result", "hello method", result);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
 		}
 	}
-	
+
 	public void testGenMethodLookup() {
 		String result = "";
 		try {
-			tl = t.tokenize("<?" +
-					"string helloWorld() {" +
-					"	'hello world'" +
-					"}" +
-					"method f = helloWorld\n" +
-					"f()" +
-					"?>");
+			tl = t.tokenize("<?" + "string helloWorld() {" + "	'hello world'" + "}" + "method f = helloWorld\n" + "f()" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			System.out.println(result);
-//			assertEquals("Result", "hello method", result);
+			// assertEquals("Result", "hello method", result);
 
-			tl = t.tokenize("<?" +
-					"string hello(string name) {" +
-					"	'hello ' + name" +
-					"}" +
-					"method f = hello\n" +
-					"f('world')" +
-					"?>");
+			tl = t.tokenize("<?" + "string hello(string name) {" + "	'hello ' + name" + "}" + "method f = hello\n" + "f('world')"
+					+ "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			System.out.println(result);
-//			assertEquals("Result", "hello method", result);
+			// assertEquals("Result", "hello method", result);
 
-			tl = t.tokenize("<?\n" +
-					"string helloWorld() {\n" +
-					"	'hello world'\n" +
-					"}\n" +
-					"string helloWorld(string name) {\n" +
-					"	'hello ' + name\n" +
-					"}\n" +
-					"string helloWorld(numeric count) {\n" +
-					"	numeric i = 0\n" +
-					"	while(i < count) {\n" +
-					"		'hello world '\n" +
-					"		i = i + 1" +
-					"	}\n" +
-					"}\n" +
-					"method f = helloWorld\n" +
-					"f()\n" +
-					"' '\n" +
-					"f('world')\n" +
-					"' '\n" +
-					"f(3)\n" +
-					"?>");
+			tl = t.tokenize("<?\n" + "string helloWorld() {\n" + "	'hello world'\n" + "}\n" + "string helloWorld(string name) {\n"
+					+ "	'hello ' + name\n" + "}\n" + "string helloWorld(numeric count) {\n" + "	numeric i = 0\n"
+					+ "	while(i < count) {\n" + "		'hello world '\n" + "		i = i + 1" + "	}\n" + "}\n" + "method f = helloWorld\n"
+					+ "f()\n" + "' '\n" + "f('world')\n" + "' '\n" + "f(3)\n" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			System.out.println(result);
-//			assertEquals("Result", "hello method", result);
+			// assertEquals("Result", "hello method", result);
 
-			tl = t.tokenize("<?\n" +
-					"string helloWorld() {\n" +
-					"	'hello world'\n" +
-					"}\n" +
-					"string call(method f) {\n" +
-					"	f()\n" +
-					"}\n" +
-					"call(helloWorld)\n" +
-					"?>");
+			tl = t.tokenize("<?\n" + "string helloWorld() {\n" + "	'hello world'\n" + "}\n" + "string call(method f) {\n"
+					+ "	f()\n" + "}\n" + "call(helloWorld)\n" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			System.out.println(result);
-//			assertEquals("Result", "hello method", result);
+			// assertEquals("Result", "hello method", result);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
 		}
 	}
-	
+
 	public void testGenClosures() {
 		String result = "";
 		try {
 			System.out.println("Lexical scope");
-			File[] files = {new File("data/unittest/m_lex.tmpl")};
+			File[] files = { new File("data/unittest/m_lex.tmpl") };
 			te.loadTemplates(files);
 			result = te.generate();
 			System.out.println(result);
@@ -873,7 +729,7 @@ public class AstGeneratorTest extends TestCase {
 		String result = "";
 		try {
 			System.out.println("Anon method");
-			File[] files = {new File("data/unittest/lib.tinc"), new File("data/unittest/anon_method.tmpl")};
+			File[] files = { new File("data/unittest/lib.tinc"), new File("data/unittest/anon_method.tmpl") };
 			te.loadTemplates(files);
 			result = te.generate();
 			System.out.println(result);
@@ -882,7 +738,7 @@ public class AstGeneratorTest extends TestCase {
 			fail();
 		}
 	}
-	
+
 	public void testMapClosure() {
 		String result = "";
 
@@ -899,7 +755,7 @@ public class AstGeneratorTest extends TestCase {
 		((ListValue) st.getSymbol("myList")).addValue(st.getSymbol("map2"));
 		try {
 			System.out.println("Map Closure");
-			File[] files = {new File("data/unittest/lib.tinc"), new File("data/unittest/map_closure.tmpl")};
+			File[] files = { new File("data/unittest/lib.tinc"), new File("data/unittest/map_closure.tmpl") };
 			te.loadTemplates(files);
 			result = te.generate(st);
 			System.out.println(result);
@@ -926,14 +782,9 @@ public class AstGeneratorTest extends TestCase {
 		st.addMapValue("element", map4);
 
 		try {
-			tl = t.tokenize("<?\n" +
-					"string max = 'max'\n" +
-					"element:name + ' ' + \n" +
-					"element:taggedValueMap['min']  + ' ' + \n" +
-					"element:taggedValueMap['min']:value  + ' ' + \n" +
-					"element:taggedValueMap[max]  + ' ' + \n" +
-					"element:taggedValueMap[max]:value \n" +
-					"?>");
+			tl = t.tokenize("<?\n" + "string max = 'max'\n" + "element:name + ' ' + \n"
+					+ "element:taggedValueMap['min']  + ' ' + \n" + "element:taggedValueMap['min']:value  + ' ' + \n"
+					+ "element:taggedValueMap[max]  + ' ' + \n" + "element:taggedValueMap[max]:value \n" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
@@ -962,21 +813,13 @@ public class AstGeneratorTest extends TestCase {
 		st.addMapValue("element", map4);
 
 		try {
-			tl = t.tokenize("<?\n" +
-					"numeric hasTaggedValue(map element, string tag) { \n" +
-					"	element:taggedValueMap[tag] \n" +
-					"} \n" +
-					"string taggedValue(map element, string tag) { \n" +
-					"	element:taggedValueMap[tag]:value \n" +
-					"} \n" +
-					"if(hasTaggedValue(element, 'min')) { \n" +
-					"	taggedValue(element, 'min') \n" +
-					"} \n" +
-					"?>");
+			tl = t.tokenize("<?\n" + "numeric hasTaggedValue(map element, string tag) { \n" + "	element:taggedValueMap[tag] \n"
+					+ "} \n" + "string taggedValue(map element, string tag) { \n" + "	element:taggedValueMap[tag]:value \n"
+					+ "} \n" + "if(hasTaggedValue(element, 'min')) { \n" + "	taggedValue(element, 'min') \n" + "} \n" + "?>");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
-			//assertEquals("Test 1 10 1 20", result);
+			// assertEquals("Test 1 10 1 20", result);
 			System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -984,25 +827,24 @@ public class AstGeneratorTest extends TestCase {
 		}
 	}
 
-	
-//	public void testGenStringConversionCalls() {
-//		String result = "";
-//		st.addNewStringSymbol("test", new String("ÄÖÜßäöü"));
-//		try {
-//			tl = t.tokenize("<?" +
-//					"test.utf8ToLatin1() +" +
-//					"test.latin1ToUtf8()" +
-//					"?>");
-//			root = p.parse(tl);
-//			result = g.generate(root, st);
-//			assertEquals("Result", "14", result);
-//		} catch (UnknownTokenException e) {
-//			e.printStackTrace();
-//		} catch (SyntaxException e) {
-//			e.printStackTrace();
-//		} catch (GenerateException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	// public void testGenStringConversionCalls() {
+	// String result = "";
+	// st.addNewStringSymbol("test", new String("ÄÖÜßäöü"));
+	// try {
+	// tl = t.tokenize("<?" +
+	// "test.utf8ToLatin1() +" +
+	// "test.latin1ToUtf8()" +
+	// "?>");
+	// root = p.parse(tl);
+	// result = g.generate(root, st);
+	// assertEquals("Result", "14", result);
+	// } catch (UnknownTokenException e) {
+	// e.printStackTrace();
+	// } catch (SyntaxException e) {
+	// e.printStackTrace();
+	// } catch (GenerateException e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 }
