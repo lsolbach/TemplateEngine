@@ -7,7 +7,7 @@
  :version "0.1.0"
  :description "Ant task for the use of the template engine in ant build files."
  :license ["Eclipse Public License 1.0" "http://www.eclipse.org/legal/epl-v10.html"]
- :plugins ["global" "sdeps" "depsdot" "java" "package"]
+ :plugins ["global" "dependencies" "java" "package"]
  :dependencies [[["org.soulspace.template" "TemplateEngine" "1.0.0"]]
                 [["org.soulspace.common" "JavaUtilLibrary" "0.3.0"]]
                 [["org.apache.ant" "ant" "1.8.3"] :dev]
