@@ -13,7 +13,11 @@ License
 
 History
 -------
-Version 0.1.0 (--.--.2012)
+Version 1.0.1 (--.--.2012)
+--------------------------
+* updated TemplateEngine to 1.0.1
+
+Version 0.1.0 (05.08.2013)
 --------------------------
 * initial import to github
 * switched to git
