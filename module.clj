@@ -3,7 +3,7 @@
  :project "org.soulspace.template"
  :project-lead "Ludger Solbach"
  :provider "soulspace.org"
- :version "1.0.1"
+ :version "1.0.2"
  :type :component
  :description "General purpose template engine"
  :license ["Eclipse Public License 1.0" "http://www.eclipse.org/legal/epl-v10.html"]

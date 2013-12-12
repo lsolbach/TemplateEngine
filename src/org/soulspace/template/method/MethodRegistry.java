@@ -10,6 +10,19 @@
 package org.soulspace.template.method;
 
 public interface MethodRegistry {
-	Method lookup(String methodClassName);
+
+	/**
+	 * Register a method class by name.
+	 * 
+	 * @param methodClassName The name of the class to register.
+	 */
 	void register(String methodClassName);
+
+	/**
+	 * Lookup a method by the methods class name.
+	 * 
+	 * @param methodClassName The name of the class of the method.
+	 * @return The method, if it is registered by the class name.
+	 */
+	Method lookup(String methodClassName);
 }

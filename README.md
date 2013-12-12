@@ -53,7 +53,11 @@ Code Repository
 History
 -------
 
-Version 1.0.1 (--.--.2013)
+Version 1.0.2 (--.--.2013)
+--------------------------
+* changed camelCaseToUnderScore() handling for consecutive upper case characters
+
+Version 1.0.1 (05.08.2013)
 --------------------------
 * refactored module.clj
 * added DataSourceUtil to dump the content for debugging

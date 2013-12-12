@@ -362,6 +362,7 @@ public class AstGeneratorTest extends TestCase {
 		st.addStringValue("name", "Ludger Solbach");
 		st.addStringValue("property", "address");
 		st.addStringValue("class", "PhoneNumber");
+		st.addStringValue("abbrev", "PhoneNO");
 		st.addStringValue("path", "org/soulspace/template/method");
 		st.addListValue("e", new ArrayList<Value>());
 		((ListValue) st.getSymbol("e")).addNewStringValue("Ju");
@@ -455,6 +456,12 @@ public class AstGeneratorTest extends TestCase {
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);
 			assertEquals("Result", "PhoneNumber phone_number;", result);
+
+			tl = t.tokenize("<?abbrev?> <?abbrev.camelCaseToUnderScore()?>;");
+			root = p.parse(tl);
+			env = new EnvironmentImpl(st);
+			result = g.generate(env, root);
+			assertEquals("Result", "PhoneNO phone_no;", result);
 
 			tl = t.tokenize("<?class?> <?class.camelCaseToUnderScore().camelCaseToUnderScore()?>;");
 			root = p.parse(tl);
@@ -650,12 +657,32 @@ public class AstGeneratorTest extends TestCase {
 		((ListValue) st.getSymbol("e")).addNewStringValue("Mary");
 		((ListValue) st.getSymbol("e")).addNewStringValue("Helmut");
 		try {
-			tl = t.tokenize("<?\n" + "method m1 = string hello(string arg) {\n" + "	'hello ' + arg + '!'?>\n" + "<?\n" + "}\n"
-					+ "method m2 = string hello(string arg) {\n" + "	'goodbye ' + arg + '!'?>\n" + "<?\n" + "}\n" + "mList.add(m1)"
-					+ "mList.add(m2)" + "string apply1(list e, list methodList) {\n" + "	foreach name <- e {"
-					+ "		foreach m <- methodList {" + "			m(name)\n" + "		}" + "	}" + "}\n"
-					+ "string apply2(list e, list methodList) {\n" + "	foreach m <- methodList {" + "		foreach name <- e {"
-					+ "			m(name)\n" + "		}" + "	}" + "}\n" + "apply1(e, mList)\n" + "apply2(e, mList)\n" + "?>\n");
+			tl = t.tokenize("<?\n"
+					+ "method m1 = string hello(string arg) {\n"
+					+ "	'hello ' + arg + '!'?>\n"
+					+ "<?\n"
+					+ "}\n"
+					+ "method m2 = string hello(string arg) {\n"
+					+ "	'goodbye ' + arg + '!'?>\n"
+					+ "<?\n" + "}\n" + "mList.add(m1)"
+					+ "mList.add(m2)"
+					+ "string apply1(list e, list methodList) {\n"
+					+ "	foreach name <- e {"
+					+ "		foreach m <- methodList {"
+					+ "			m(name)\n"
+					+ "		}"
+					+ "	}"
+					+ "}\n"
+					+ "string apply2(list e, list methodList) {\n"
+					+ "	foreach m <- methodList {"
+					+ "		foreach name <- e {"
+					+ "			m(name)\n"
+					+ "		}"
+					+ "	}"
+					+ "}\n"
+					+ "apply1(e, mList)\n"
+					+ "apply2(e, mList)\n"
+					+ "?>\n");
 			root = p.parse(tl);
 			env = new EnvironmentImpl(st);
 			result = g.generate(env, root);

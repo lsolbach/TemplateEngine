@@ -13,53 +13,52 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.soulspace.template.method.AbstractMethodRegistry;
 import org.soulspace.template.method.Method;
 import org.soulspace.template.method.MethodRegistry;
 import org.soulspace.template.util.ClassLoaderUtils;
 
-public class DynamicMethodRegistryImpl implements MethodRegistry {
+public class DynamicMethodRegistryImpl extends AbstractMethodRegistry implements MethodRegistry {
 
-	Map<String, Method> registry = new HashMap<String, Method>();
-
+	/**
+	 * Constructs a MethodRegistry for the default package.
+	 */
 	public DynamicMethodRegistryImpl() {
-		System.out.println("registering Methods...");
-		registerPackage("org.soulspace.template.method.impl");
+		this("org.soulspace.template.method.impl");
 	}
 
+	/**
+	 * Constructs a MethodRegistry for the given package.
+	 * 
+	 * @param packageName The name of the package.
+	 */
+	public DynamicMethodRegistryImpl(String packageName) {
+		registerPackage(packageName);
+	}
+
+	/**
+	 * Constructs a MethodRegistry for the given package.
+	 * 
+	 * @param packageNames The names of the packages.
+	 */
+	public DynamicMethodRegistryImpl(String... packageNames) {
+		for(String packageName : packageNames) {
+			registerPackage(packageName);
+		}
+	}
+
+	/**
+	 * Register the method classes in the given package.
+	 * 
+	 * @param packageName The name of the package.
+	 */
 	@SuppressWarnings("rawtypes")
 	public final void registerPackage(String packageName) {
+		//System.out.println("registering methods from package " + packageName + "...");
 		List<Class> classList = ClassLoaderUtils.getImplementationsInPackage(
 				packageName, Method.class);
-		Method method;
 		for (Class methodClass : classList) {
-			try {
-				method = (Method) methodClass.newInstance();
-				registry.put(method.getName(), method);
-				System.out.println("registered method " + method.getName());
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			register(methodClass.getName());
 		}
-	}
-
-	public void register(String methodClassName) {
-		try {
-			Method method = (Method) Class.forName(methodClassName).newInstance();
-			registry.put(method.getName(), method);
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public Method lookup(String name) {
-		return registry.get(name);
 	}
 }

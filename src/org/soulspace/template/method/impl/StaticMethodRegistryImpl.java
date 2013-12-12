@@ -14,10 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.soulspace.template.method.AbstractMethodRegistry;
 import org.soulspace.template.method.Method;
 import org.soulspace.template.method.MethodRegistry;
 
-public class StaticMethodRegistryImpl implements MethodRegistry {
+public class StaticMethodRegistryImpl extends AbstractMethodRegistry implements MethodRegistry {
+
 	static List<String> methodClassList = new ArrayList<String>();
 	static {
 		methodClassList.add("org.soulspace.template.method.impl.FirstLowerMethodImpl");
@@ -54,44 +56,21 @@ public class StaticMethodRegistryImpl implements MethodRegistry {
 		methodClassList.add("org.soulspace.template.method.impl.DebugMethodImpl");
 	}
 	
-	String name = "";
-	String className = "";
-	Map<String, Method> registry = new HashMap<String, Method>();
-
+	/**
+	 * Constructs a MethodRegistry with the statically configured methods.
+	 */
 	public StaticMethodRegistryImpl() {
 		this(methodClassList);
 	}
 	
+	/**
+	 * Constructs a MethodRegistry for the list of method class names.
+	 * @param methodClassList The list of method class names.
+	 */
 	public StaticMethodRegistryImpl(List<String> methodClassList) {
 		for(String methodClassName : methodClassList) {
-			try {
-				Method method = (Method) Class.forName(methodClassName).newInstance();
-				registry.put(method.getName(), method);
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-	}	
-	
-	public void register(String methodClassName) {
-		try {
-			Method method = (Method) Class.forName(methodClassName).newInstance();
-			registry.put(method.getName(), method);
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			register(methodClassName);
 		}
 	}
 	
-	public Method lookup(String name) {
-		return registry.get(name);
-	}
-
 }
