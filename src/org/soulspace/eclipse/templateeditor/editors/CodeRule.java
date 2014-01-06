@@ -21,19 +21,16 @@ public class CodeRule extends MultiLineRule {
 
 	public CodeRule(String startSequence, String endSequence, IToken token) {
 		super(startSequence, endSequence, token);
-		// TODO Auto-generated constructor stub
 	}
 
 	public CodeRule(String startSequence, String endSequence, IToken token,
 			char escapeCharacter) {
 		super(startSequence, endSequence, token, escapeCharacter);
-		// TODO Auto-generated constructor stub
 	}
 
 	public CodeRule(String startSequence, String endSequence, IToken token,
 			char escapeCharacter, boolean breaksOnEOF) {
 		super(startSequence, endSequence, token, escapeCharacter, breaksOnEOF);
-		// TODO Auto-generated constructor stub
 	}
 
 //	protected boolean sequenceDetected(ICharacterScanner scanner,
