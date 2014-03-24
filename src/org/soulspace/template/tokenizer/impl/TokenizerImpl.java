@@ -33,6 +33,7 @@ public class TokenizerImpl implements Tokenizer {
 	;
 
 	// TODO add additional tokens
+	// TODO list and map literals: [a, b, c], #{'a', 1, 'b', 2}?
 	// TODO range operator '..', cons operator '&' or '->'?
 	// pattern for token splitting of code
 	private final static String REGEX_2 = "("
@@ -44,7 +45,6 @@ public class TokenizerImpl implements Tokenizer {
 			+ "|(?:while)(?!\\w)" // WHILE
 			+ "|(?:break)(?!\\w)" // BREAK
 			+ "|(?:continue)(?!\\w)" // CONTINUE
-//			+ "|(?:fn)(?!\\w)" // FUNCTION
 			+ "|(?:any|string|numeric|list|map|method)(?!\\w)" // DECLARATION
 			+ "|(?:(?:begin)(?!\\w)|(?:\\{))" // BLOCK_BEGIN
 			+ "|(?:(?:end(?!\\w))|(?:\\}))" // BLOCK_END
@@ -65,7 +65,7 @@ public class TokenizerImpl implements Tokenizer {
 			+ "|(?:\\.)" // TYPE METHOD
 			+ "|(?:\\=)" // ASSIGN
 			+ "|(?:\\,)" // SEQUENCE
-			+ "|(?:\\w+)" // IDENTIFIER
+			+ "|(?:\\w(?:\\w|[_-])*)" // IDENTIFIER
 			+ ")";
 
 	private static Pattern pattern1;
@@ -333,7 +333,7 @@ public class TokenizerImpl implements Tokenizer {
 			tokenList.addToken(TokenType.ASSIGN);
 		} else if ((result = RegExHelper.match(code, "\\,")) != null) {
 			tokenList.addToken(TokenType.SEPERATOR);
-		} else if ((result = RegExHelper.match(code, "\\w+(?:\\:\\w+)*")) != null) {
+		} else if ((result = RegExHelper.match(code, "\\w(?:\\w|[_-])*(?:\\:\\w(?:\\w|[_-])*)*")) != null) {
 			// Identifier
 			tokenList.addToken(TokenType.IDENTIFIER, result.group(0));
 		} else {

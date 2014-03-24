@@ -103,10 +103,24 @@ public class BeanDataSourceImpl implements DataSource {
 	 * @param object
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	protected SymbolTable parse(Object object) {
 		SymbolTable symbolTable = new SymbolTableImpl();
 		if (object instanceof Map) {
-			insert(symbolTable, "MAP", object);
+			Map map = (Map) object;
+			if(stringKeysOnly(map)) {
+				// string keys, add map key/values directly into the symbol table
+				for(Object key : map.keySet()) {
+					String stringKey = key.toString();
+					if(stringKey.isEmpty()) {
+						stringKey = "EMPTY_STRING";
+					}
+					insert(symbolTable, key.toString(), map.get(key));
+				}
+			} else {
+				// no string keys, insert the whole map under the key 'MAP'
+				insert(symbolTable, "MAP", object);
+			}
 		} else if (object instanceof Collection) {
 			insert(symbolTable, "LIST", object);
 		} else {
@@ -154,7 +168,6 @@ public class BeanDataSourceImpl implements DataSource {
 				}
 			}
 		}
-
 		return symbolTable;
 	}
 
@@ -191,12 +204,9 @@ public class BeanDataSourceImpl implements DataSource {
 		} else if (result instanceof Map) {
 			// Map
 			SymbolTable st = new SymbolTableImpl();
-			Iterator it = ((Map) result).keySet().iterator();
-			while (it.hasNext()) {
-				Object key = it.next();
-				if (key != null) {
-					insert(st, key.toString(), ((Map) result).get(key));
-				}
+			Map map = (Map) result;
+			for(Object key : map.keySet()) {
+				insert(st, key.toString(), map.get(key));
 			}
 			symbolTable.addMapValue(symbolName, st);
 		} else if (result instanceof Collection) {
@@ -210,7 +220,7 @@ public class BeanDataSourceImpl implements DataSource {
 			}
 		} else if (result instanceof Object[]) {
 			// Object Array
-			// TODO add handling for arrays of base types
+			// TODO add handling for arrays of base types?
 			Object[] objects = (Object[]) result;
 			List<Value> list = new ArrayList<Value>();
 			symbolTable.addListValue(symbolName, list);
@@ -306,4 +316,13 @@ public class BeanDataSourceImpl implements DataSource {
 		this.cache = cache;
 	}
 
+	@SuppressWarnings("rawtypes")
+	protected boolean stringKeysOnly(Map map) {
+		for(Object key : map.keySet()) {
+			if(!(key instanceof String)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
