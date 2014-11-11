@@ -206,6 +206,11 @@ public class BeanDataSourceImpl implements DataSource {
 			SymbolTable st = new SymbolTableImpl();
 			Map map = (Map) result;
 			for(Object key : map.keySet()) {
+				if(key == null) {
+					key = "NULL_KEY";
+				} else if(key instanceof String && ((String) key).isEmpty()) {
+					key = "EMPTY_STRING";
+				}
 				insert(st, key.toString(), map.get(key));
 			}
 			symbolTable.addMapValue(symbolName, st);
