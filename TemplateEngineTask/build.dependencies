@@ -1,0 +1,21 @@
+<dependencies>
+	<dependency type="dev">
+		<package name="junit" version="3.8.1" type="lib">
+			<module name="junit"/>
+		</package>
+		<package name="apache-ant" version="1.6.5" type="lib">
+			<module name="ant"/>
+		</package>
+	</dependency>
+	<dependency type="runtime">
+		<package name="TemplateEngine" version="1.0.0rc7" type="project">
+			<module name="TemplateEngine"/>
+		</package>
+		<package name="JavaUtilLibrary" version="0.2.0" type="project">
+			<module name="JavaUtilLibrary"/>
+		</package>
+		<package name="jakarta-oro" version="2.0.8" type="lib">
+			<module name="jakarta-oro"/>
+		</package>		
+	</dependency>
+</dependencies>

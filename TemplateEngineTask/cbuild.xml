@@ -1,0 +1,15 @@
+<project name="TemplateEngineTask" default="distribute">
+	
+	<property environment="env"/>
+	<property file="build.properties"/>
+	<property name="common.build.dir" value="${env.COMMON_BUILD_HOME}"/>
+	
+	<!-- import common build files -->
+	<import file="${common.build.dir}/ant/common.properties.xml"/>
+	<import file="${common.build.dir}/ant/common.build.xml"/>
+
+	<!--
+	  -  project specific
+	  -->
+
+</project>
