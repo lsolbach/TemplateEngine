@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-SymbolicName: org.soulspace.eclipse.TemplateEditor;singleton:=true
+Bundle-Version: 1.0.2
+Bundle-Activator: org.soulspace.eclipse.templateeditor.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Vendor: %Bundle-Vendor
+Export-Package: org.soulspace.eclipse.templateeditor,
+ org.soulspace.eclipse.templateeditor.editors

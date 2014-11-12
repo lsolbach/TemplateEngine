@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="%editor.name"
+            extensions="tmpl,tinc"
+            icon="icons/sample.gif"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="org.soulspace.eclipse.templateeditor.editors.TemplateEditor"
+            id="org.soulspace.eclipse.templateeditor.editors.TemplateEditor">
+      </editor>
+   </extension>
+
+</plugin>
