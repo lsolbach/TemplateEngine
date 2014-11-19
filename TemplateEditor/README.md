@@ -1,7 +1,7 @@
 TemplateEditor
 ==============
 
-Eclipse plugin providing an editor with syntax highlighting for templates of the soulspace.org template engine.
+Eclipse plugin providing an editor with syntax highlighting for templates of the Soulspace Template Engine.
 
 Project Lead
 ------------
@@ -10,6 +10,15 @@ Ludger Solbach
 License
 -------
 [Eclipse Public License 1.0] (http://www.eclipse.org/legal/epl-v10.html "EPL 1.0")
+
+Download
+--------
+A prebuild TemplateEditor plugin can be found at [http://downloads.soulspace.org/TemplateEditor/]
+(http://downloads.soulspace.org/TemplateEditor/).
+
+Installation
+------------
+Just copy the TemplateEditor plugin into the eclipse plugin directory.
 
 History
 -------
