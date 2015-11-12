@@ -8,7 +8,6 @@
  :description "Ant task for the use of the template engine in ant build files."
  :license ["Eclipse Public License 1.0" "http://www.eclipse.org/legal/epl-v10.html"]
  :plugins ["global"
-           ["org.soulspace.baumeister/DependencyPlugin"]
            ["org.soulspace.baumeister/JavaPlugin"]
            ["org.soulspace.baumeister/JUnitPlugin"]
            ["org.soulspace.baumeister/PackagePlugin"]]
